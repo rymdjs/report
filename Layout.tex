@@ -1,0 +1,39 @@
+% Sample file on how to use subfiles.
+\documentclass[Report.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Introduction}
+	\input{sections/Introduction.tex}
+\chapter{Background}
+	\input{sections/background.tex}
+
+\chapter{Purpose}
+	\input{sections/purpose.tex}
+    
+\chapter{Scope}
+	\input{sections/scope.tex}
+
+\chapter{Problem}
+\input{sections/problem.tex}
+
+
+\chapter{Related work}
+\input{sections/relatedwork.tex}
+
+
+\chapter{Methodology}
+\input{sections/methodology.tex}
+
+\chapter{Time plan}
+\subfile{sections/timeplan.tex}
+
+\nocite{*} % Cites everything from the bibliography
+ 
+\printbibliography% This command is new in biblatex. Do not attempt to use style files as with old latex.
+
+\chapter*{Appendix I: Communication flow}
+\addcontentsline{toc}{chapter}{Appendi} 
+\subfile{sections/flow.tex}
+
+\end{document}

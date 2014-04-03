@@ -1,0 +1,39 @@
+The project will put large focus on security through all layers in Rymd, which means that theoretical research and evaluation of suitable technologies will be made important. Since several of the technologies are still under active development, a number of them will be evaluated against each other and their drawbacks and benefits will be presented.
+
+The group consists of five people, four of whom study at the Software Engineering programme, and one at the Computer Science and Engineering programme. There will not be any special separation of areas in the project with respect to this distinction, since the whole project deals with software engineering and development.
+\section{Research}
+Considerable time will be spent studying different technologies. This will be done in order for the group to get a better grasp of the different subjects and to provide sufficient knowledge, in order to choose the most fitting APIs for the development. There are some ideas about where to focus, although the group will certainly consider more technologies than those already known by the group members.
+In order to effectively work as a team, the project has initially been divided into four sub-areas (Modules, see below). Each of these areas will be owned by some members of the team. They did research, development, testing and evaluation, and presented the results to the rest of the team in form of a written text or small presentation. With this approach, the researching part, which in this project is vital, were off-loaded to cooperation between individuals and then shared with the team. By separating the main problem areas, the group also got a better grasp of the core problem and how the different pieces fit together. Project specific tasks, as creating a time plan, will also be helped by splitting the project up. Since the responsibilities are overlapping (each member is a part of two modules) the knowledge then will be shared between modules.
+\begin{itemize} 
+\item Data storage 
+     \begin{itemize} 
+        \item Evaluation of different technologies
+        \item Implementation of an isolated module (micro library) to interface with the underlying data store
+        \item Encryption of stored data
+     \end{itemize}
+\item Communication
+	\begin{itemize} 
+        \item Client-to-client 
+        \item Client-to-server
+        \item Encryption
+     \end{itemize}
+\item Authentication and Permissions
+	\begin{itemize} 
+        \item How to connect nodes to their resource
+        \item Identification of nodes
+        \item Identification of resources
+     \end{itemize}
+\item Prototyping, iterating and evaluating application frameworks and technologies
+\begin{itemize} 
+        \item Development of sample module skeleton for use in other modules
+        \item Production of general skeleton architecture code
+     \end{itemize}
+\end{itemize}
+\section{Development}
+The project will be split up in a few iterations in order to match the complexity levels in the system. An iteration will include different focus areas for the group members, where these areas all are assembled into a working prototype in the end of the iteration. 
+
+Following the module pattern from above (see Research) the development of the client side architecture should follow common patterns and best practices for writing modular JavaScript. That is, specific parts of the system should also live in modules, and may thus be switched out for another subsystem. A concrete example might be how the data storage module can be switched out for another different implementation.
+
+Since the focus should be on security, the system’s quality should preferably be validated by a third party in other to find weak spots and security issues. This party should ideally be a person at Chalmers, whose area of focus is computer security.
+
+A server for the central communication between clients will be needed. The system will be version controlled by git and the main implementation language will be JavaScript. GitHub.com will be used for managing code repositories and code collaboration.
