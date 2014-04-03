@@ -1,4 +1,17 @@
-\section{IndexedDB}  
+\section{WebRTC}
+WebRTC is a project which enables different types of peer-to-peer communication in the browser through three APIs: MediaStream, RTCPeerConnection and RTCDataChannel.
+
+\subsection{RTCDataChannel}
+RTCDataChannel allows for arbitrary data being sent between peers. Data transfers are secured with the help of the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is used for UDP and TLS for TCP.
+
+Before a connection can be initiated between peers, one peer must extend something called an offer to another peer - this is often referred to as the signaling phase. The standard does not provide any recommendations regarding the choice of signaling channel or protocol - this is for developers to decide.
+
+Brokering server
+
+\subsection{ICE}
+Mention how WebRTC can handle the whole ICE workflow, STUN, TURN etc.
+
+\section{IndexedDB}
 The IndexedDB is a transactional, indexed client database capable of storing different types of data structures with an asynchronous API. The specification is a Candidate Recommendation by the W3C, as of July 2013:
 
 \begin{quote}
