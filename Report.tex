@@ -18,7 +18,7 @@
 % This package helps prevent you from doing things wrong.
 
 % change masters to bachelors if necessary
-\documentclass[projectreport,a4paper]{chalmers-thesis}
+\documentclass[bachelors,a4paper]{chalmers-thesis}
 % All options are; doctorate, licentiate, masters, bachelors, techreport, projectreport, nocover, draft, g5paper,
 % and everything the standard report class support.
 \usepackage{ifluatex} % Automatic check for luatex.
@@ -75,8 +75,8 @@
 
 %\renewcommand{\firstabstract}{} 
 
-\firstabstract{" "}
-%\secondabstract{swedish}{\lipsum} % Optional
+\firstabstract{\lipsum}
+\secondabstract{swedish}{\lipsum} % Optional
 \keywords{Some stuff, More stuff, Stuff}
 
 %\preface{\lipsum} % You can use \input to put preface and acknowledgements in another document
@@ -113,12 +113,14 @@
 % If you need to do any modifications, you can redefine each page respectively, or just call them manually as;
 %\makecoverpage
 %\maketitlepage
-%\makeprintinfopage
+%\makeabstractpage
 %\makesecondabstractpage
+%\tableofcontents
+%\makeprintinfopage
 %\makededicationpage
 %\makeprefacepage
 %\makeacknowledgementspage
-%\maketableofpaperspage
+% \maketableofpaperspage
 %\cleardoublepage\tableofcontents
 %\cleardoublepage\pagenumbering{arabic}
 
