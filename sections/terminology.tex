@@ -1,16 +1,24 @@
-\begin{itemize}
-  \item CA: Certificate Authority. A third party that is trusted to verify the validity of public keys and certificates.
-  \item Cloud: A term for something that is hosted on an externally hosted server and accessed over the internet, like storage syncing solutions.
-  \item Centralized: A system which has several nodes connecting and depends on a central endpoint.
-  \item Decentralized: A system where responsibilities are shared across the nodes and does not depend on a single, central server.
-  \item DHT: Distributed Hash Table.
-  \item GUID: Globally Unique Identifier. Used as pseudo-unique identifiers, such as keys in a database. Usually 128-bit values stored as 32 hexadecimal in groups separated by hyphens. 
-  \item Module: A specific area of interest in the system design (such as Communication)
-  \item Node: A client in the network (such as a web browser).
-  \item OpenPGP: A standard for data encryption and signing, originally coming from the proprietary software Pretty Good Privacy (PGP) and widely spread through the free implementation GPG.
-  \item PKI: Public Key Infrastructure.A system that associates (unique) user identities with their public keys. Typically implemented as a Web of Trust or with one or several CAs. Typically, trusted parties use their private keys to sign the public keys of users to verify the connection between an identity and a public key.
-  \item Resource: A file or folder in the network (a thing that can be shared)
-  \item RSA: A widely used cryptosystem, containing a public key for encrypting data, and a private key for decrypting the same data. This system is asymmetric and the security relies on the practical difficulty of factoring the product of two large prime numbers.
-  \item Rymd: The developer library for web based peer-to-peer sharing – the main product. Is also the Swedish word for "space", which encompass the main ideas of the project.
-  \item Web of Trust: A type of distributed PKI that builds on peer-to-peer trust. If Alice trusts Bob, then Bob is trusted introduce new identities and public keys for Alice.
-\end{itemize}
+\section{General terminology}
+\begin{description}
+  \item[API] Application Programming Interface. An interface that software developers can use to get easy access to data and/or particular functionality for their software. Typically exposed as a software library or HTTP service.
+  \item[CA] Certificate Authority. A third party that is trusted to verify the validity of public keys and certificates.
+  \item[Cloud storage] A service that hosts data externally with seamless access over the internet.
+  \item[Centralized system] A system which has several nodes connecting and depends on one or a few central endpoints.
+  \item[Decentralized] A system where responsibilities are shared across the nodes and does not depend on a single, central endpoint.
+  \item[DHT] Distributed Hash Table. A notion in computer science of a distributed key-value store.
+  \item[GUID] Globally Unique Identifier. Used as pseudo-unique identifiers, such as keys in a database. Usually 128-bit values stored as 32 hexadecimal in groups separated by hyphens. 
+  \item[OpenPGP] A standard for data encryption and signing, originally coming from the proprietary software Pretty Good Privacy (PGP) and widely spread through the free implementation GPG.
+  \item[P2P] Peer-to-peer. Distributed, direct communication.
+  \item[PKI] Public Key Infrastructure.A system that associates (unique) user identities with their public keys. Typically implemented as a Web of Trust or with one or several CAs. Typically, trusted parties use their private keys to sign the public keys of users to verify the connection between an identity and a public key.
+  \item[RSA] A widely used public-key cryptosystem. As such, it builds on pairs of private and public keys where encryption with one can be reversed with decryption of the other. This system is asymmetric and the security relies on the practical difficulty of factoring the product of two large prime numbers.
+  \item[Web of Trust] A type of distributed PKI that builds on peer-to-peer trust. If Alice trusts Bob, then Bob is trusted introduce new identities and public keys for Alice.
+\end{description}
+
+\section{Terms with specific meaning in the Rymd project}
+\begin{description}
+  \item[Identity] A unique, memorable string identifying a user within the network.
+  \item[Module] A delimited area of interest and functionality in system architecture.
+  \item[Node] A client in the network (such as a web browser).
+  \item[Resource] A file or folder in the network (a thing that can be shared between nodes)
+  \item[Rymd] The developer library for web based peer-to-peer sharing – the main product. Is also the Swedish word for "space", which encompass the main ideas of the project.
+\end{description}
