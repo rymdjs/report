@@ -2,11 +2,11 @@
 WebRTC is a project which enables different types of peer-to-peer communication in the browser through three APIs: MediaStream, RTCPeerConnection and RTCDataChannel.
 
 \subsection{RTCDataChannel}
-RTCDataChannel allows for arbitrary data being sent between peers. Data transfers are secured with the help of the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is used for UDP and TLS for TCP.
+The API which demonstrated the capabilitees that Rymd desired was the RTCDataChannel API. This API allows for arbitrary data being sent between peers. Data transfers are secured with the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is constructed for datagrams while TLS is used for more reliable transport protocols like TCP.
 
-Before a connection can be initiated between peers, one peer must extend something called an offer to another peer - this is often referred to as the signaling phase. The standard does not provide any recommendations regarding the choice of signaling channel or protocol - this is for developers to decide.
+Before a connection can be initiated between peers, one of two parts must extend an offer which contains data describing the connection to the other part - this is often referred to as the signaling phase. The signaling phase requires a channel where the offer can be negotiated - the channel is often a dedicated signaling server but examples of a more serverless approach can be found\cite{webrtcsignalserver}. The standard does not provide any recommendations regarding the choice of signaling channel and protocol - this is for developers to decide.
 
-Brokering server
+The connection phase is handled by ICE (Interactive Connectivity Establishment).
 
 \subsection{ICE}
 Mention how WebRTC can handle the whole ICE workflow, STUN, TURN etc.

@@ -15,7 +15,7 @@
 % http://en.wikibooks.org/wiki/LaTeX/
 % See chalmers-thesis.cls for the documentation on this actual template.
 
-\RequirePackage[l2tabu,orthodox]{nag} 
+\RequirePackage[l2tabu,orthodox]{nag}
 % This package helps prevent you from doing things wrong.
 
 % change masters to bachelors if necessary
@@ -24,7 +24,6 @@
 % and everything the standard report class support.
 \usepackage{ifluatex} % Automatic check for luatex.
 %\usepackage[style=ieee]{biblatex}
-\usepackage{pgfgantt}
 \ifluatex
  \usepackage{fontspec}
 \else
@@ -39,7 +38,7 @@
 \usepackage{csquotes} % Needed for biblatex
 % Biblatex allows you to choose backend, either the old "bibtex", or the new "biber".
 
-\usepackage[firstinits=true, style=ieee, backend=bibtex]{biblatex} 
+\usepackage[firstinits=true, style=ieee, backend=bibtex]{biblatex}
 
 
 % Modern bibliography facilities (you may change style to numeric)
@@ -64,7 +63,7 @@
 \title{Rymd}
 \subtitle{Distributed encrypted peer-to-peer storage} % Optional
 \author{Niklas Andréasson \and Robin Andersson \and Johannes Ringmark \and Johan Brook \and Robert Edström}
-\thesisin{Computer Science}%%needs to bee changed 
+\thesisin{Computer Science}%%needs to bee changed
 \department{Department of Computer Science and Engineering}
 \division{Division of Software Engineering}
 \reportno{2014:01}
@@ -74,7 +73,7 @@
 % \coverfigure{\includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio]{figures/Zooko_s_Triangle}}
 % \covercaption{Some explanation}
 
-%\renewcommand{\firstabstract}{} 
+%\renewcommand{\firstabstract}{}
 
 \firstabstract{\lipsum}
 \secondabstract{swedish}{\lipsum} % Optional
