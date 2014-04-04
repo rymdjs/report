@@ -1,25 +1,26 @@
 \section{Purpose}
-Rymd aims to be a distributed peer-to-peer encrypted system for storage and communication of resources, with a web browser as the only client-side dependency. The current state of modern web standards will be investigated as well as to what extent they can be used to realize a developer-targeted library for dealing with communication and data transfer between clients. This involves writing the actual client side code, as well as setting up a (thin) server side that will deal with connections between clients.
-The main deliverable of the project will consist of this library. It will solve the communication and data transfer between clients, as well as providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client side code, such as a regular front-end web application, browser extension, or widget. A proof-of-concept prototype using the library will be developed to show its functionality.
+Rymd aims to be a distributed peer-to-peer encrypted system for storage and communication of resources, with a web browser as the only client-side dependency. In this report, the current state of modern web standards will be laid out as well as to what extent they can and have been utilized to realize a developer-targeted library for dealing with communication and data transfer between clients.
 
-The system should meet the following requirements:
+This library, Rymd, is the main outcome and end goal of the project. It will solve authentication and data transfer between nodes, as well as providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client side code, such as a regular front-end web application, browser extension, or widget. Shuttle, a proof-of-concept prototype using the library to show its functionality has also been developed and will be discussed.
+
+Below are the important goals and requirements of the library:
 \begin{itemize}
   \item Only users that are given explicit access to a resource should be able to deduce anything useful about its content
   
-  
   \item Encryption in all layers, from resource storage to data transfer.
   
-  \item No central point of failure: If a server goes down and can not be recovered, no damage is done to the network as a whole as long as anyone can host a new server using the same source code.
+  \item If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
   
   \item No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client.
   
-  \item Support for open web technologies shall be the only system requirements for users.
-
+  \item  A web client with support for open web technologies shall be the only system requirements for users.
   
-  \item Modularization: The system as a whole should not depend on particular solutions used for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
+  \item Modularization: The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
 
 \item Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
 
-\item The system should be possible to implement with a user-friendly interface.
+\item The system should be possible to implement with a user-friendly user interface.
 
 \end{itemize}
+
+Shuttle should be a working example of a file-sharing application that leverages Rymd to provide all these features.
