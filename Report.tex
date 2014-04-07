@@ -50,7 +50,8 @@
 %\usepackage{pdfpages} % For included other pdf files (like articles).
 %\usepackage{thmtools} % For theorems.
 %\usepackage{algorithms} % For algorithms.
-%\usepackage{listings} % For source code.
+\usepackage{listings} % For source code.
+\usepackage{color}  % Custom colors
 %\usepackage{booktabs} % High quality tables.
 %\usepackage{siunitx} % For all your numerical values and units.
 %\usepackage{pgfplots} % Make plots directly in latex. Also tables. Excellent package.
@@ -69,6 +70,20 @@
 \division{Division of Software Engineering}
 \reportno{2014:01}
 \copyrightyear{2014}
+
+% Colors
+\definecolor{mygray}{rgb}{0.95,0.95,0.95}
+
+% Code settings
+\lstset{
+  basicstyle=\small\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  captionpos=b,
+  xleftmargin=1.5em,
+  xrightmargin=1.5em,
+  belowskip=2\baselineskip
+}
 
 % Dropping initial letter color
 \renewcommand{\LettrineFontHook}{\color[gray]{0.5}}
@@ -128,16 +143,12 @@
 %\cleardoublepage\tableofcontents
 %\cleardoublepage\pagenumbering{arabic}
 
- % Sets up page numbering for the rest of the document.
-% Highly recommended to put contents into subfiles, or use \input.
+% Sets up page numbering for the rest of the document.
+
+% Main layout
 \subfile{Layout}
-%\subfile{Introduction}
-%\subfile{Theory}
-%\subfile{Method}
-%\subfile{Results}
 
 
 
 
 \end{document}
-
