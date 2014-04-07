@@ -72,24 +72,26 @@
 \copyrightyear{2014}
 
 % Colors
-\definecolor{lightorange}{rgb}{0.21,0.57,0.82}
+\definecolor{lightblue}{rgb}{0.21,0.57,0.82}
 \definecolor{lightgreen}{rgb}{0.44,0.64,0.19}
 \definecolor{lightred}{rgb}{0.84,0.33,0.33}
+\definecolor{lightgray}{rgb}{0.4,0.4,0.4}
+\definecolor{lightorange}{rgb}{0.71,0.44,0.0}
 
 % Code settings
 
 % Add Javascript language
 \lstdefinelanguage{JavaScript}{
-  keywords={break, case, catch, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, new, return, switch, this, throw, try, typeof, var, void, while, with},
-  keywordstyle=\color{blue}\bfseries,
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, new, return, switch, try, typeof, var, void, while, with},
+  keywordstyle=\color{lightblue}\bfseries,
   ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{darkgray}\bfseries,
+  ndkeywordstyle=\color{lightred}\bfseries,
   identifierstyle=\color{black},
   sensitive=false,
   comment=[l]{//},
   morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{lightgray}\ttfamily,
+  stringstyle=\color{lightgreen}\ttfamily,
   morestring=[b]',
   morestring=[b]"
 }
