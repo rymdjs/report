@@ -76,6 +76,14 @@
 \definecolor{lightred}{rgb}{0.84,0.33,0.33}
 \definecolor{lightgray}{rgb}{0.4,0.4,0.4}
 \definecolor{lightorange}{rgb}{0.71,0.44,0.0}
+\definecolor{gray75}{gray}{0.75}
+
+% Fancy chapter titles
+\usepackage{fancyhdr} % For page styles
+\newcommand{\hsp}{\hspace{20pt}}
+\usepackage[T1]{fontenc}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
 
 % Code settings
 
