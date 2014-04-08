@@ -143,7 +143,7 @@
   \setlength{\paperwidth}{169mm}
   \setlength{\paperheight}{239mm}
 \fi
-\RequirePackage[top=0.1\paperheight, bottom=0.1\paperheight, left=0.1\paperwidth, right=0.1\paperwidth]{geometry}
+\RequirePackage[top=0.1\paperheight, bottom=0.1\paperheight, left=0.168\paperwidth, right=0.168\paperwidth]{geometry}
 
 % Makes the chapters act like a big section
 \RequirePackage{titlesec}
