@@ -661,18 +661,9 @@
  \@checkifdefined{keywords}
 
  \newpage
- {\noindent \@title\\
-  \@ifundefined{@subtitle}{}{\@subtitle\\}
-  \thesisname\ \inname\ \@thesisin\\
-   {\renewcommand{\and}{\\}\MakeUppercase{\@author}}\\
-  \@department\\
-  \@ifundefined{@division}{}{\@division\\}
-  \universityname
-  \if@university\\\seconduniversityname\fi
- \par}
  \presectiontitle{\abstractname}
  \@firstabstract
- \vskip 1em
+ \vskip \baselineskip
  \noindent \keywordsname: \@keywords
 }
 
