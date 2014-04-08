@@ -2,7 +2,7 @@ Initially the project was split into two parts: a research phase and an implemen
 
 \section{Research}
 
-Before actual work could commence, research had to be made about open web technologies. The usage of open web technologies was a requirement of the project's end product, Rymd, which meant that no native code could be written as part of the system and that the quality of the product would be completely dependent on the state of existing APIs and tools of web development. Thus research was made in order to survey the landscape of existing technologies at the time in order to determine which, if any, fulfilled the requirements so that the end product actually could be developed using them.
+Research was made about open web technologies, mainly belonging to the HTML5 standard. The usage of open web technologies was a requirement of the project's end product, Rymd, which meant that no native code could be written as part of the system and that the quality of the product would be completely dependent on the state of existing APIs and tools of web development. Thus research was made in order to survey the landscape of existing technologies at the time in order to determine which, if any, fulfilled the requirements so that the end product actually could be developed using them.
 
 In order to organize the research within the group, the members split up in a number of areas which connected with the core problems stated within the project. Each area included two collaborating project members. The task was to evaluate and compare the tools for accomplishing the sub-goal of the area. For instance, the data storage area had to investigate the possibilities for storing data locally, in terms of file size, browser availability, and a number of other factors. This included researching APIs and prototyping actual test cases implementing isolated forms of future system features. In the end of the research phase, each area was to present the results and conclusions for the rest of the group. The research areas were divided as follows:
 
@@ -23,7 +23,7 @@ There are essentially three alternatives for persisting data on the client:
 \item FileSystem API
 \end{itemize}
 
-LocalStorage is included in the HTML5 WebStorage specification, and is a basic key-value store with a simplistic API. It is supported across all major browsers and has a maximum storage limit of 5 megabytes. The latter was a deal-breaker, since the product would have to support larger files than could possibly fit into that space. LocalStorage further does not support complex structures and indexing, and storing different data types is complex and needs manual serialization and deserialization. Thus this solution was thus rejected at once.
+LocalStorage is included in the HTML5 WebStorage specification, and is a basic key-value store with a simplistic API. It is supported across all major browsers and has a maximum storage limit of 5 megabytes. The latter was a deal-breaker, since the product would have to support larger files than could possibly fit into that space. LocalStorage further does not support complex structures and indexing, and storing different data types is complex and needs manual serialization and deserialization. Thus this solution was rejected at once.
 
 IndexedDB and WebSQL are both client side databases and more sophisticated storage solutions than LocalStorage. WebSQL is supported by Google Chrome, Apple Safari (desktop and iOS), Opera and Android. The specification is not longer maintained by W3C, and will probably be deprecated on all browsers in the future. IndexedDB is supported by all major browsers except for Safari (desktop and iOS), and is a Candidate Recommendation of W3C. Arbitrary types of data can be stored in the database, such as strings, numbers, Javascript objects, and raw binary data.
 
@@ -35,7 +35,11 @@ The conclusion was to use IndexedDB for persisted resource storage. It was chose
 
 \subsection{Communication}
 
+% TODO
+
 \subsection{Authentication and Permissions}
+
+% TODO
 
 \subsection{Prototyping}
 The aim for the prototyping group was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Thus was a rough prototype of Rymd created, which implemented two basic test cases: storing a file in the chosen data storage implementation, and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the group's choice of technologies.
