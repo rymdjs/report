@@ -1,17 +1,25 @@
-Initially the project was split into two parts: a research phase and an implementation phase. This chapter intends to further detail the results of each phase and how it relates to the end product.
+Initially the project was split into two parts: an evaluation phase and an implementation phase. This chapter intends to further detail the results of each phase and how it relates to the end product.
 
 \section{Evaluation of technologies}
 
+The goal of the evaluation phase was to map out the landscape of relevant technologies. Different options were compared  to each other in order to analyze strengths and weaknesses in regards to a set of given parameters:
+
+\begin{description}
+  \item[Suitability]. How well does the technology suit the needs and demands of the job? Are there any technical limitations?
+  \item[Maintenance]. Is the technology actively maintained? If not, does it pose an issue? What are the future scenarios?
+  \item[Industry support]. Are some unsupported browsers neglible? What are the industry's current opinions?
+\end{description}
+
 Research was made about open web technologies, mainly belonging to the HTML5 standard. The usage of open web technologies was a requirement of the project's end product, Rymd, which meant that no native code could be written as part of the system and that the quality of the product would be completely dependent on the state of existing APIs and tools of web development. Thus research was made in order to survey the landscape of existing technologies at the time in order to determine which, if any, fulfilled the requirements so that the end product actually could be developed using them.
 
-In order to organize the research within the group, the members split up in a number of areas which connected with the core problems stated within the project. Each area included two collaborating project members. The task was to evaluate and compare the tools for accomplishing the sub-goal of the area. For instance, the data storage area had to investigate the possibilities for storing data locally, in terms of file size, browser availability, and a number of other factors. This included researching APIs and prototyping actual test cases implementing isolated forms of future system features. In the end of the research phase, each area was to present the results and conclusions for the rest of the group. The research areas were divided as follows:
+A set of areas were created, where each area connected with one or several core problems stated within the project. In each area, evaluation and comparisons were made, which included researching APIs and prototyping actual test cases implementing isolated forms of future system features. The research areas were divided as follows:
 
-\begin{itemize}
-\item Data storage – Investigated how to store data locally for each node. This was crucial in order to meet with the overall requirement of building a decentralized system.
-\item Communication – Reviewed the possibilities for communicating and sending data with peer-to-peer technology between two nodes.
-\item Authentication and Permissions – How to solve authentication for nodes.
-\item Prototyping – Rapidly produced a rough test case for sending a file from one node to another.
-\end{itemize}
+\begin{description}
+\item[Data storage]. Investigated how to store data locally for each node. This was crucial in order to meet with the overall requirement of building a decentralized system.
+\item[Communication]. Reviewed the possibilities for communicating and sending data with peer-to-peer technology between two nodes.
+\item[Authentication and Permissions]. How to solve authentication for nodes.
+\item[Prototyping]. Rapidly produced a rough test case for sending a file from one node to another.
+\end{description}
 
 \subsection{Data storage}
 
@@ -42,4 +50,5 @@ The conclusion was to use IndexedDB for persisted resource storage. It was chose
 % TODO
 
 \subsection{Prototyping}
+
 The aim for the prototyping group was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Thus was a rough prototype of Rymd created, which implemented two basic test cases: storing a file in the chosen data storage implementation, and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the group's choice of technologies.
