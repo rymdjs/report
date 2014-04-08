@@ -505,10 +505,10 @@
 % Renew the table of contents title to fit the rest of the frontmatter
 \renewcommand{\tableofcontents}{
  %\phantomsection\addcontentsline{toc}{chapter}{\contentsname}\section*{\contentsname}
- \presectiontitle{\contentsname}
- \vskip 1em
+ \section*{\contentsname} % Remove 'Section' from ToC
+ \vskip 2\baselineskip
  \@starttoc{toc}
- \vskip 1em
+ \vskip \baselineskip
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
