@@ -26,6 +26,7 @@
 %\usepackage[style=ieee]{biblatex}
 \ifluatex
  \usepackage{fontspec}
+ \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
 \else
  \usepackage[utf8]{inputenc} % File encoding, you should try to stick to utf8.
 \fi
@@ -83,6 +84,13 @@
 \newcommand{\hsp}{\hspace{20pt}}
 \usepackage[T1]{fontenc}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+% Custom appendix page style
+\fancypagestyle{appendix}{%
+    \fancyhead{} % Clear all
+    \renewcommand{\headrulewidth}{0pt}
+}
+\setlength{\headheight}{15pt} % fixes \headheight warning
 
 % Increase spacing in non-empty chapters in ToC
 \usepackage{etoolbox}
@@ -166,7 +174,6 @@
 \begin{document}
 %\selectlanguage{swedish} % Use this if you are writing your thesis in swedish.
 \makecoverpage
-\tableofcontents
 % If you need to do any modifications, you can redefine each page respectively, or just call them manually as;
 %\makecoverpage
 %\maketitlepage
