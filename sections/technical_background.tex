@@ -12,22 +12,45 @@ The connection phase is handled by ICE (Interactive Connectivity Establishment).
 Mention how WebRTC can handle the whole ICE workflow, STUN, TURN etc.
 
 \section{IndexedDB}
-The IndexedDB is a transactional, indexed client database capable of storing different types of data structures with an asynchronous API. The specification is a Candidate Recommendation by the W3C, as of July 2013:
+The IndexedDB is a transactional, indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera: its specification is a Candidate Recommendation by the W3C, as of July 2013:
 
 \begin{quote}
 This document defines APIs for a database of records holding simple values and hierarchical objects. Each record consists of a key and some value. Moreover, the database maintains indexes over records it stores. An application developer directly uses an API to locate records either by their key or by using an index. A query language can be layered on this API. An indexed database can be implemented using a persistent B-tree data structure.
 – Indexed Database API, W3C
 \end{quote}
 
-IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. An IndexedDB database includes a set of \emph{object stores}, which act like tables in relational database management systems. An object store can hold \emph{records} of different types, including binary data and Javascript primitives and objects. Each record has a \emph{key} (either specified by the developer or automatically managed by the database) that is used for indexing and retrieving records.
+\subsection{Basic structure}
+% Cursors, Object Stores, Indexes
+Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act like tables in relational database management systems. An object store can hold \emph{objects} of different types, including binary data and Javascript primitives and objects. Each object has a \emph{key} (either specified by the developer from the object's properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
 
-Its API is asynchronous and includes some degree of complexity. Unlike its competitor, WebSQL, IndexedDB does not support the SQL language, and instead exposes ways for querying and manipulating data via API methods and transactions objects. A positive facet of the rejection of SQL in favor of API methods is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers.
+% Async API
+% -----------
+% Requests, Callbacks, Events, NoSQL
+The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. The Javascript code snippets below show the difference in synchronous and asynchronous calls.
 
-\subsection{Privacy and reliability of IndexedDB}
+\begin{lstlisting}[caption=Synchronous call]
+// Fetch a record with id 10 from a database and store in variable
+var result = DB.find(10);
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Asynchronous call]
+// Fetch a record with id 10 from a database and handle result in callback
+var request = DB.find(10);
+
+request.onsuccess = function(evt) {
+  var result = evt.result;
+};
+\end{lstlisting}
+
+\subsection{Security and reliability in IndexedDB}
+\label{subsec:security}
+IndexedDB is built on a transactional model, which implicates that all commands runs inside a transaction context. Transactions have a certain lifetime, and cannot be used after its expiration. This transactional model is especially useful for when several instances of a client application is using the same database and issuing commands: without transactions, concurrency problems and other collisions might occur with data loss as a result. Transactions are able to abort and be rolled back to the state of the database before the transaction was started.
+
+The \emph{Same Origin Policy} is used in IndexedDB. An origin is the transfer protocol, the domain, and the port number. Thus every database is associated with an origin, which implicates certain security aspects: an application in \emph{http://domain.com/subdir} may retrieve data from \emph{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \emph{https://domain.com:3000} due to the different protocol and port number.
 
 \section{Namecoin}
 A phenomenon that has been on the rise during recent years is that of cryptocurrencies such as Bitcoin \cite{CryptoCoinInsider:2014:Online}. Each participant in the Bitcoin network keeps a ledger of all transactions throughout the history of the network. In order for a transaction to be deemed valid, it needs to be included in a cryptographically signed block together with a salt by one of the nodes, with a hash that has a special format. It is this brute-force search for salts that generate these hashes that are called "mining" and constitute the work done by "miners" to keep the network running. As an incentive, each verified block also includes a reward to the miner that first finds it and submits it to the blockchain\cite{InternetForBeginners:2014:Online}. In effect, all transactions ever made are publicly available and tracked so that anyone can confirm their validity. This prevents forgery and double-spending of bitcoins.
 
-Another cryptocurrency is Namecoin\cite{CryptoCoinInsider:2014:Online}. Namecoin is essentially a fork of Bitcoin with new transaction types that allows its blockchain to be utilized as a distributed key-value store. Although similar in nature to Bitcoin, its main purpose is to be used as a decentralized domain name system (DNS), rather than as a monetary currency. 
+Another cryptocurrency is Namecoin\cite{CryptoCoinInsider:2014:Online}. Namecoin is essentially a fork of Bitcoin with new transaction types that allows its blockchain to be utilized as a distributed key-value store. Although similar in nature to Bitcoin, its main purpose is to be used as a decentralized domain name system (DNS), rather than as a monetary currency.
 
 With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com} or \emph{.se}) can exist without being controlled by any central authority \cite{CryptoCoinInsider:2014:Online}. Also, the DNS lookup tables where domain names and their IP addresses are stored are shared in a peer-to-peer manner. The only necessary condition for these domains to be accessible is that there are participants willing to run the DNS server software. Although mainly intended to be used as a DNS, it contains several namespaces where arbitrary strings such as public cryptographic keys can be stored.
