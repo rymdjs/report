@@ -174,20 +174,40 @@
 \begin{document}
 %\selectlanguage{swedish} % Use this if you are writing your thesis in swedish.
 %\makecoverpage
-\maketitle
+%\maketitle
 % If you need to do any modifications, you can redefine each page respectively, or just call them manually as;
-%\makecoverpage
-%\maketitlepage
-\makeabstractpage
-\makesecondabstractpage
-\clearpage
-\tableofcontents
+ \setcounter{page}{-100} % Necessary to give the first pages a unique identifier using hyperref.
+   \makecoverpage
+
+  \maketitlepage
+
+  \makeprintinfopage
+
+ \newpage
+ \pagenumbering{roman}
+ \makeabstractpage\pagestyle{plain}
+
+  \makesecondabstractpage
+
+  %\makeacknowledgementspage
+
+
+  \cleardoublepage
+
+  \presectiontitle{Terminology}
+  \input{sections/terminology.tex}
+
+  \cleardoublepage
+ \tableofcontents
+
+ % Sets up page numbering for the rest of the document.
+  \cleardoublepage
+ \pagenumbering{arabic}
 %\makeprintinfopage
 %\makededicationpage
 %\makeprefacepage
 %\makeacknowledgementspage
 % \maketableofpaperspage
-% \pagenumbering{arabic} % Sets up page numbering for the rest of the document.
 
 % Main layout
 \subfile{Layout}
