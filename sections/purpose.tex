@@ -1,26 +1,23 @@
 \section{Purpose}
-Rymd aims to be a distributed peer-to-peer encrypted system for storage and communication of resources, with a web browser as the only client-side dependency. In this report, the current state of modern web standards will be laid out as well as to what extent they can and have been utilized to realize a developer-targeted library for dealing with communication and data transfer between clients.
 
-This library, Rymd, is the main outcome and end goal of the project. It will solve authentication and data transfer between nodes, as well as providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client side code, such as a regular front-end web application, browser extension, or widget. Shuttle, a proof-of-concept prototype using the library to show its functionality has also been developed and will be discussed.
+This project aims to build a distributed peer-to-peer encrypted system for storage and communication of resources packaged in a library, with a web browser as the only client-side dependency. In this report, the results are presented, along with the state of modern web standards as these technologies are researched analyzed in terms of what they provide to build such as system.
 
-Below are the important goals and requirements of the library:
-\begin{itemize}
-  \item Only users that are given explicit access to a resource should be able to deduce anything useful about its content
-  
-  \item Encryption in all layers, from resource storage to data transfer.
-  
-  \item If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
-  
-  \item No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client.
-  
-  \item  A web client with support for open web technologies shall be the only system requirements for users.
-  
-  \item Modularization: The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
+\begin{description}
+\item[Rymd] is the main outcome and end goal of the project. It will solve authentication and data transfer between nodes, as well as providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client side code, such as a regular front-end web application, browser extension, or widget.
+\item[Shuttle] is a proof-of-concept prototype using Rymd to show its functionality is also briefly discussed in this report.
+\end{description}
 
-\item Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
+Below are the important goals and requirements of Rymd:
 
-\item The system should be possible to implement with a user-friendly user interface.
+\begin{description}
+  \item[Privacy]. Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
 
-\end{itemize}
+\item[Security]. Encryption in all layers, from resource storage to data transfer.
+
+\item[Reliability]. If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
+
+\item[Modularization and agnosticism]. The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
+
+\end{description}
 
 Shuttle should be a working example of a file-sharing application that leverages Rymd to provide all these features.
