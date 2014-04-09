@@ -52,3 +52,9 @@ The conclusion was to use IndexedDB for persisted resource storage. It was chose
 \subsection{Prototyping}
 
 The aim for the prototyping area was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Thus was a rough prototype of Rymd and Shuttle created, which implemented two basic test cases: storing a file in the chosen data storage implementation, and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the choice of those special technologies.
+
+\section{Implementation}
+
+During the implementation phase, which stretched from the end of the evaluation to the end of the project, the product was implemented according to the requirements. It was early decided that the implementation process would lightly apply agile methodologies. For this project, this included having a Product Backlog with User Stories, working in sprints, and having bi-weekly Scrum-meetings where current state and eventual problems were brought up. For managing the stories in the backlog, the online management tool Pivotal Tracker was used.
+
+All source code was managed by the distributed source versioning system git\footnote{http://git-scm.com/} and with the online tool GitHub\footnote{https://github.com/rymdjs}. It was decided to split up the Rymd library into several smaller code repositories (“modules”), which all resided on GitHub. See section~\ref{sec:system} for details regarding the technical implementation.
