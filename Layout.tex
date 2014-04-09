@@ -46,8 +46,12 @@
 \clearpage
 \printbibliography% This command is new in biblatex. Do not attempt to use style files as with old latex.
 \clearpage
-\chapter*{Appendix I: Communication flow}
-\addcontentsline{toc}{chapter}{Appendix I}
+
+% Appendices
+\begin{appendices}
+\pagenumbering{Roman}
+\chapter{Communication flow}
 \subfile{sections/flow.tex}
+\end{appendices}
 
 \end{document}
