@@ -29,7 +29,7 @@ Due to IndexedDB's object-oriented nature, a database includes a set of \emph{ob
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. The Javascript code snippets below show the difference in synchronous and asynchronous calls.
+The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. Using asynchronous passing of callbacks prevents the program execution to block at a line when a potentially heavy operation is called. The Javascript code snippets below show the difference in synchronous and asynchronous calls.
 
 \begin{Code}
 \begin{lstlisting}[caption=Synchronous call]
@@ -38,7 +38,10 @@ var result = DB.find(10);
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Asynchronous call]
-// Fetch a record with id 10 from a database and handle result in callback
+/*
+  Request a record with id 10 from a database, continue execute other code,
+  and handle result of the database operation in callback when it has finished
+*/
 var request = DB.find(10);
 
 request.onsuccess = function(evt) {
