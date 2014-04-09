@@ -53,6 +53,7 @@
 %\usepackage{algorithms} % For algorithms.
 \usepackage{listings} % For source code.
 \usepackage{color}  % Custom colors
+\usepackage{float}
 %\usepackage{booktabs} % High quality tables.
 %\usepackage{siunitx} % For all your numerical values and units.
 %\usepackage{pgfplots} % Make plots directly in latex. Also tables. Excellent package.
@@ -70,6 +71,10 @@
 \division{Division of Software Engineering}
 \reportno{2014:01}
 \copyrightyear{2014}
+
+% Use floats to prevent page breaks in code
+\floatstyle{plain} % optionally change the style of the new float
+\newfloat{Code}{H}{myc}
 
 % Colors
 \definecolor{lightblue}{rgb}{0.21,0.57,0.82}
