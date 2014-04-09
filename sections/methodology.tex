@@ -41,17 +41,17 @@ The FileSystem API is a collection of methods for reading and writing to a sandb
 All of the mentioned technologies are sandboxed: the data is tied to a single origin (\emph{http://test.domain.com} for instance). All future access to the data must come from that domain (this includes the protocol and port number as well). The browsers also limits the maximum allowed storage size – the quota. The quota is different for each storage mechanism, and the browser typically asks the user with a dialog if they want to let the app exceed the quota.
 
 \begin{table}
-    \begin{tabular}[b]{|l|l|l|l|}
+    \begin{tabular}{|l|l|l|l|l|}
     \hline
-                       & IndexedDB & WebSQL & Web Storage (localStorage) \\ \hline
-    Google Chrome               & Yes       & Yes    & Yes                        \\ \hline
-    Mozilla Firefox             & Yes       & \cellcolor{red}No     & Yes                        \\ \hline
-    Apple Safari                & \cellcolor{red}No        & Yes    & Yes                        \\ \hline
-    Opera                       & Yes       & Yes    & Yes                        \\ \hline
-    Microsoft Internet Explorer & Yes       & \cellcolor{red}No     & Yes                        \\ \hline
+                       & IndexedDB & WebSQL & File System & LocalStorage \\ \hline
+    Google Chrome               & Yes       & Yes    & Yes  & Yes                      \\ \hline
+    Mozilla Firefox             & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
+    Apple Safari                & \cellcolor{red}No        & Yes  & \cellcolor{red}No    & Yes                        \\ \hline
+    Opera                       & Yes       & Yes    & Yes  & Yes                      \\ \hline
+    Microsoft Internet Explorer & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
     \end{tabular}
-    \caption {Browser support for client side storage APIs}
-\end{table}
+    \caption {Browser support for selected HTML5 APIs}
+\end{table}}
 
 The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
 
