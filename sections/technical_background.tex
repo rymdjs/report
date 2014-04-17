@@ -52,7 +52,7 @@ This document defines APIs for a database of records holding simple values and h
 
 \subsection{Basic structure}
 % Cursors, Object Stores, Indexes
-Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act like tables in relational database management systems. An object store can hold \emph{objects} of different types, including binary data and Javascript primitives and objects. Each object has a \emph{key} (either specified by the developer from the object's properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
+Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similar to tables in relational database management systems. An object store can hold \emph{objects} of different types, including binary data and Javascript primitives and objects. Each object has a \emph{key} (either specified by the developer from the object's properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
 
 % Async API
 % -----------
