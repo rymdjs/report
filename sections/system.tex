@@ -1,3 +1,5 @@
+This chapter describes the technical foundations of the system and  how the technologies described in section~\ref{sec:tech} was used and implemented in Rymd.
+
 \section{Peer-to-Peer Communication}
 
 % Niklas
@@ -18,8 +20,34 @@
 % Johannes
 
 \section{Data Storage}
+The storage of data was a crucial area to implement for a file sharing system. Since the data store was to be used by several parts of the application the demands for the module's interface had to be as general as possible, adhering to a standard CRUD\footnote{Create–Read–Update–Delete} interface, including methods for creating, fetching, updating and deleting records in the store.
 
-% Johan
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section ~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simpler to manage.
+
+\begin{Code}
+\begin{lstlisting}[caption=Common database operations]
+var Store = new IndexedDbStore("myStore")
+
+// Fetch all records as an array
+Store.all().then(function(records) { ... })
+
+// Create a record
+Store.create("A record").then(function(record){ ... })
+
+// Insert a record
+Store.save("A record").then(function(guid){ ... })
+
+// Fetch a record by GUID
+Store.get(guid).then(function(record) { ... })
+
+// Delete a record by GUID
+Store.destroy(guid).then(function(record) { ... })
+\end{lstlisting}
+\end{Code}
+
+The largest challenge came to the edge cases when storing files, or as they are called in web browser: \emph{Blobs}. Since only Firefox can as of now store blobs directly in IndexedDB, an alternate route had to be taken for other browsers. Initially the module used conditionals and converted incoming data to and from \emph{ArrayBuffers} (the browser construct for raw byte streams). But since ArrayBuffers are just the raw data, all metadata for the blobs (such as filename, timestamps, size) would be lost when saving as an ArrayBuffer. In early versions of the data storage module this metadata would be stored in a separate store in the database, but this was too tight coupled and was removed. The final implementation is storing data as-is – any metadata must be saved explicitly in a separate operation. 
+
+The data storage module is a separate repository and the source is available at https://github.com/rymdjs/data-storage.
 
 \section{Modularity}
 
