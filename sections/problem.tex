@@ -2,21 +2,21 @@
 There are several sub-problems in a system of this nature that the project needs to address.
 
 \begin{itemize}
-\item Can system logic live outside of the server?
-\item How can users verify the identities of their peers?
-\item How are resources stored?
-\item How are resources identified?
-\item How to store and distribute cryptographic keys?
-\item How are transfers initiated?
+\item Decentralized system logic
+\item Peer identity verification
+\item Resource storage
+\item Resource identification
+\item Distribution and storage of cryptographic keys
+\item Communication flow and transfer initiation
 \item Trust issues
 \end{itemize}
 
 Below, the main points affecting the architecture are presented.
 
-\subsection{Can system logic live outside of the server?}
+\subsection{Decentrlized system logic}
 In a truly distributed system, it is necessary to avoid having crucial system logic and data on a server. If any server participating in the protocol goes down, will the system still be functional, given that another similar server is used instead?
 
-\subsection{How can users verify the identities of their peers?}
+\subsection{Peer identity verification}
 Each user of the system will be associated with a self-generated private-public pair of cryptographic RSA keys. With knowledge of the public keys of their peers, there are standardized identity verification protocols used on a session-to-session basis. In Rymd, the well-known Needham-Schroder protocol with Lowe's suggested modification to avoid MITM-attacks was chosen. There is still, however, a chicken-and-egg problem with the distribution of these public keys and how to tie them to identities. Traditionally, there are two types of Public Key Infrastructures (PKIs) with different ways to address this:
 
 \begin{itemize}
@@ -34,17 +34,17 @@ For a truly decentralized system, it is not acceptable to adapt a CA-entered app
 \label{fig:zooko}
 \end{figure}
 
-\subsection{How are resources stored?}
+\subsection{Resource storage}
 Usability, security and adherence to public web standards are three priorities that make the question of how to locally store resources on clients a difficult one. There are proprietary technologies for mapping resources to files on the local filesystem, which could be very useful – but without cross-platform support, it is considered out of the question.
 
-\subsection{How are resources identified?}
+\subsection{Resource identification}
 It is desirable for resources to have identifiers that are both memorable, secure, and unique - Zooko’s triangle is a concern here as well. However, there are practical limitations on using any current cryptocurrency blockchain here. There is a monetary cost associated with the insertion of a new value, and updates can take a significant amount of time to propagate over the network. These practical issues would make such a system practically unusable. File names are not even close to unique and disclose unnecessary information, should an adversary without the corresponding secret key get hold of an encrypted resource. Since resources are communicated peer-to-peer, the issue of malicious resource identifier collision attacks becomes negligible since users would have first-hand contact with peers that they trust and can verifiy the identity of. Resource checksums will have to be communicated and verified by peers before accepting a transfer of resource data.
 
-\subsection{How to store and distribute cryptographic keys?}
+\subsection{Distribution and storage of cryptographic keys}
 Assuming that the system can utilize a DHT such as a cryptocurrency blockchain for storage of the public part of RSA key pairs, the issue of how to interface a web application with the blockchain in a way that allows for verification of identities without putting too much trust in the HTTP/cryptocurrency gateway also needs to be addressed. Additionallyl, as previously stated, the initial insertion of the key requires monetary resources, and is perhaps something that should be solved outside of Rymd.
 While the public key can be stored in a DHT, private keys need to be stored securely on each client, preferably without giving client code any direct access to the raw keys. How the initial generation of keys are performed also needs consideration. Finally, a secure way to store the encryption keys for encrypted resources needs to be addressed. The question of how these resource-associated secret keys are distributed is deemed an implementation-specific question and will be out of scope for Rymd, but handled in Shuttle.
 
-\subsection{How are transfers initiated?}
+\subsection{Communication flow and transfer initiation}
 Once peers have verified each other’s identities, the question of how two peers start the transfer of a shared resource arises. This is also an implementation detail in applications using the library and depends on what problems that particular application is intending to solve.
 
 \subsection{Trust issues}
