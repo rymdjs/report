@@ -2,6 +2,7 @@ This chapter describes the technical foundations of the system and how the probl
 
 \section{Overall system design}
 %TODO
+\subsection{Resources}
 
 \section{Peer identity verification}
 \label{sec:authorization}
@@ -28,16 +29,6 @@ While the public key can be stored in a DHT, private keys need to be stored secu
 % "Centralized control – Distributed Data Architectures"
 % http://highscalability.com/blog/2014/4/7/google-finds-centralized-control-distributed-data-architectu.html
 
-\section{Encryption}
-\label{sec:cryptography}
-
-% Johannes
-
-\section{Data Storage}
-\label{sec:datastorage}
-The storage of data was a crucial area to implement for a file sharing system. Since the data store was to be used by several parts of the application the demands for the module's interface had to be as general as possible, adhering to a standard CRUD\footnote{Create–Read–Update–Delete} interface, including methods for creating, fetching, updating and deleting records in the store.
-
-
 \section{Modularity}
 
 The system was designed from the ground up to use interchangeble parts. This was achieved by identifying key features and separating them into individual modules. These were then used and intertwined in a central hub.
@@ -46,7 +37,3 @@ Advantages
 
 Dependency injection
 
-\section{Testing}
-\label{sec:testing}
-Automatic unit tests have been implemented where possible. No integration or functional tests have been written for testing larger parts of the system, due to the fast iteration of the library's interface and constant change in the implementation. 
-% TODO: more here?

@@ -1,7 +1,9 @@
 \input{sections/relatedwork.tex}
 
 \section{Data storage}
+\label{sec:datastorage}
 
+Storage of data is, obviously, crucial for any file sharing system. Since the data store was to be used by several parts of the application the demands for the module's interface had to be as general as possible, adhering to a standard CRUD\footnote{Create–Read–Update–Delete} interface, including methods for creating, fetching, updating and deleting records in the store.
 There are essentially four alternatives for persisting data on the client:
 
 \begin{itemize}
@@ -198,3 +200,8 @@ With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com
 \section{Encryption}
 
 % TODO
+
+\section{Testing}
+\label{sec:testing}
+Automatic unit tests have been implemented where possible. No integration or functional tests have been written for testing larger parts of the system, due to the fast iteration of the library's interface and constant change in the implementation. 
+% TODO: more here?
