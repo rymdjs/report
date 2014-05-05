@@ -21,63 +21,8 @@ A set of areas were created, where each area connected with one or several core 
 \item[Prototyping]. Rapidly produced a rough test case for sending a file from one node to another.
 \end{description}
 
-\subsection{Data storage}
 
-There are essentially four alternatives for persisting data on the client:
-
-\begin{itemize}
-\item LocalStorage
-\item IndexedDB
-\item WebSQL
-\item FileSystem API
-\end{itemize}
-
-LocalStorage is included in the HTML5 WebStorage specification \cite{WebStorage:Online}, and is a basic key-value store with a simplistic API. It is supported across all major browsers and has a maximum storage limit of 5 megabytes. The latter was a deal-breaker, since the product would have to support larger files than could possibly fit into that space. LocalStorage further does not support complex structures and indexing, and storing different data types is complex and needs manual serialization and deserialization. Thus this solution was rejected at once.
-
-IndexedDB and WebSQL are both client side databases and more sophisticated storage solutions than LocalStorage. WebSQL is supported by Google Chrome, Apple Safari (desktop and iOS), Opera and Android. The specification is not longer maintained by W3C \cite{WebSQL:Online}, and will probably be deprecated on all browsers in the future. IndexedDB is supported by all major browsers except for Safari (desktop and iOS), and is a Candidate Recommendation by W3C \cite{IndexedDB:Online}. Arbitrary types of data can be stored in the database, such as strings, numbers, Javascript objects, and raw binary data.
-
-The FileSystem API is a collection of methods for reading and writing to a sandboxed filesystem from a browser with client Javascript code. It is a very early standard, and is currently only supported by Google Chrome and Opera, and has the status of Working Draft by W3C \cite{FileSystem:Online}. While FileSystem has good performance for larger files and a well-performing asynchronous API, it lacks support for indexing and search. Mozilla seems to have no plans on implementing FileSystem in Firefox \cite{MozillaFileSystem:Online}.
-
-All of the mentioned technologies are sandboxed: the data is tied to a single origin (\emph{http://test.domain.com} for instance). All future access to the data must come from that domain (this includes the protocol and port number as well). The browsers also limits the maximum allowed storage size – the quota. The quota is different for each storage mechanism, and the browser typically asks the user with a dialog if they want to let the app exceed the quota.
-
-\begin{table}
-    \begin{tabular}{|l|l|l|l|l|}
-    \hline
-                       & IndexedDB & WebSQL & File System & LocalStorage \\ \hline
-    Google Chrome               & Yes       & Yes    & Yes  & Yes                      \\ \hline
-    Mozilla Firefox             & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
-    Apple Safari                & \cellcolor{red}No        & Yes  & \cellcolor{red}No    & Yes                        \\ \hline
-    Opera                       & Yes       & Yes    & Yes  & Yes                      \\ \hline
-    Microsoft Internet Explorer & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
-    \end{tabular}
-    \caption {Browser support for selected HTML5 APIs}
-\end{table}
-
-The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
-
-\subsection{Communication}
-
-In order for nodes to be able to share data, they need a way to connect to each other. They also need to to this in a secure manner in order to prevent potential vicious third parties listening on a connection from making any sense of retrieved data. I.e. critical parts should not be sent in raw form but rather be encrypted. When considering security aspects there are essentially three questions that need to be answered regarding the issue of connecting nodes:
-
-\begin{itemize}
-\item how can a node find another node to begin with (peer discovery)?
-\item when a node has been found, how can a connection be established?
-\item what data needs to be encrypted in order to ensure the system's integrity?
-\end{itemize}
-
-Answering these questions and finding the corresponding best technology was the focus of this research area. There are a bunch of different emerging trends on the web today and some of them enable peer-to-peer communication.
-
-WebRTC seeks to be a common standard for browsers with W3C drafting client side APIs and IETF developing the protocols and peer-to-peer communication\cite{WebRTCWorkingGroupCharter:2013:Online}. There are also security aspects built into WebRTC. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft actually supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google’s (or nowdays, W3C’s and IETF) version of it\cite{WebRTCAndMicrosoft:2012:Online}.
-
-Microsoft warns about supporting the new technology until it has actually has become a standard and also doesn’t fully agree on some constraints put on the technology\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft explains that one of their issues with the current WebRTC version is that it has predetermined paths of choosing codecs and ways of sending media over the network – sort of similar to a black box. This hinders application developers wanting to optimize to suit their own needs. Microsoft’s answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which tries to addresses these issues.
-
-All in all Microsoft remains optimistic that a common standard will eventually be established\cite{WebRTCAndMicrosoft:2012:Online}. They do however stress that more participants need to get involved besides Google and Mozilla. Since all major browser vendors (except Microsoft) support WebRTC at this time we chose this technology for the project.
-
-\subsection{Authentication and Permissions}
-
-% TODO
-
-\subsection{Prototyping}
+\section{Prototyping}
 
 The aim for the prototyping area was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Thus was a rough prototype of Rymd and Shuttle created, which implemented two basic test cases: storing a file in the chosen data storage implementation, and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the choice of those special technologies.
 
