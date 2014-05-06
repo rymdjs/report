@@ -1,4 +1,10 @@
-\input{sections/relatedwork.tex}
+Standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application is being continously pushed by browser vendors and standards groups. Of relevance to Rymd, the Web Real-Time Communications (WebRTC) protocol \cite{WebRTC:Online} has become usable for arbitrary data streams in major browsers in 2014. Also of relevance, the still unfinalized Web Crypto API \cite{WebCrypto:Online} is currently available in an experimental stage in recent months at the time of this writing. The goals of Rymd has thus become technically viable in a web environment as of very recently.
+
+Furthermore, there is currently a lot of work underway in the field of distributed secret communication. Notable projects that share similar ideas or have inspired Rymd are mentioned under section~\ref{sec:similar}. Also worth noting is the new field of cryptocurrencies, which work by distributing a cryptographically based ledger over an entire network. The first and most well-known is Bitcoin \cite{Bitcoin:Online}, but there are also subsequent currencies that extend the original idea beyond that of a traditional currency to a system that can be used for a wide range of applications. The first worth noting is Namecoin \cite{Namecoin:Online}, which adds a global and secure key-value store. Another interesting initiative is Ethereum \cite{Ethereum:Online}, a cryptocurrency with contracts that not only allow storage of arbitrary data in the blockchain, but can also be scripted with a Turing complete programming language and can therefore be used to implement arbitrary systems. A system like Ethereum could be very interesting to explore for a project like Rymd, but it is still in such an early stage that it is deemed too unstable to be useful at this point. Namecoin is currently considered a good candidate for key distribution.
+
+Keybase \cite{Keybase:Online} is another recent initiative that intends to solve the distribution of public keys. It is essentially a HTTP-interface that maps keys to identities. While commandable, it again raises the issue of centralized storage. Systems relying on Keybase put a lot of trust on the availability and integrity of their service.
+
+% TODO Johan Data Storage
 
 \section{Data storage}
 \label{sec:datastorage}
@@ -186,7 +192,7 @@ If STUN doesn't work, probably because of firewalls and more advanced NAT system
 % Niklas
 
 % - built on top of peerjs
-Rymd leverages the open source project PeerJS, which simplifies sending peer-to-peer data between clients. PeerJS makes use of WebRTC and is essentially split into two components: A server that acts as the signaling channel and a client side API which interacts with the server as well as other peers. The server just handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through that point. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate. 
+Rymd leverages the open source project PeerJS, which simplifies sending peer-to-peer data between clients. PeerJS makes use of WebRTC and is essentially split into two components: A server that acts as the signaling channel and a client side API which interacts with the server as well as other peers. The server just handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through that point. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
 
 % - elaborate
 Behind the scenes Peer.js handles the communication between clients and the server with the help of Websockets, but falls back to other protocols if a browser lacks support.
