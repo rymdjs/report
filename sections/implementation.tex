@@ -59,15 +59,15 @@ Due to IndexedDB's object-oriented nature, a database includes a set of \emph{ob
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. Using asynchronous passing of callbacks prevents the program execution to block at a line when a potentially heavy operation is called. The Javascript code snippets below show the difference in synchronous and asynchronous calls.
+The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. Using asynchronous passing of callbacks prevents the program execution to block at a line when a potentially heavy operation is called. The Javascript code snippets in listings ~\ref{lst:syncCall} and \ref{lst:asyncCall} show the difference in synchronous and asynchronous calls.
 
 \begin{Code}
-\begin{lstlisting}[caption=Synchronous call]
+\begin{lstlisting}[caption={Synchronous call}, label={lst:syncCall}]
 // Fetch a record with id 10 from a database and store in variable
 var result = DB.find(10);
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Asynchronous call]
+\begin{lstlisting}[caption={Asynchronous call}, label={lst:asyncCall}]
 /*
   Request a record with id 10 from a database, continue execute other code,
   and handle result of the database operation in callback when it has finished
@@ -100,10 +100,10 @@ The \emph{Same Origin Policy} is used in IndexedDB. An origin is the transfer pr
 Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be insterted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can according to \cite{IndexedDBSecurity:2012:Online} be done by checking the call from the web application to the database and on success, the database operation can be performed.
 
 \subsection{Implementation}
-The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage.
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}
 
 \begin{Code}
-\begin{lstlisting}[caption=Common database operations]
+\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
 var Store = new IndexedDbStore("myStore")
 
 // Fetch all records as an array
