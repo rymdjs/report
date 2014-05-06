@@ -4,7 +4,21 @@ This project has resulted in a modular peer-to-peer developer library for sendin
 
 For demonstrating the capabilities of Rymd, a sample prototype web application has been created, named \emph{Shuttle}. This front facing client provides a user interface for showing local files, sending files to other users registered in the blockchain, and encryption key management. In Shuttle, the user is capable of adding, listing, viewing and deleting files in their local data store, where the files are encrypted and stored along with their metadata. By knowing a recipient's username, the user is able to share a file with the recipient over an encrypted P2P connection. When sharing a file, the receiving end will instantly show a notification with a remark that the sender wants to share a file. If the recipient choses to accept the sharing request, the file will download to their local data store.
 
-% TODO Descriptive screenshots here?
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
+]{figures/shuttle-login}
+\caption{The Shuttle login view}
+\label{fig:shuttle-login}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
+]{figures/shuttle-files}
+\caption{Files listing in Shuttle}
+\label{fig:shuttle-files}
+\end{figure}
 
 \section{Source code}
 
