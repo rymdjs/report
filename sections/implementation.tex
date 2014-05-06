@@ -1,10 +1,12 @@
-Standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application is being continously pushed by browser vendors and standards groups. Of relevance to Rymd, the Web Real-Time Communications (WebRTC) protocol \cite{WebRTC:Online} has become usable for arbitrary data streams in major browsers in 2014. Also of relevance, the still unfinalized Web Crypto API \cite{WebCrypto:Online} is currently available in an experimental stage in recent months at the time of this writing. The goals of Rymd has thus become technically viable in a web environment as of very recently.
+Standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application is being continously pushed by browser vendors and standards groups. Web based applications are today a viable alternative, unless the application is for mobile and is in need for heavy graphics performance, like for photo/video editing and games, or basically everywhere where sophisticated memory management is required. In "Why Mobile Web Apps Are Slow"\cite{MobileApps:Online} it is argumented how Javascript is not yet suitable for heavy performing applications, but this is not an issue for this project, as it is not included in the product's nature or scope at all.
+
+Of relevance to Rymd, the Web Real-Time Communications (WebRTC) protocol \cite{WebRTC:Online} has become usable for arbitrary data streams in major browsers in 2014. Also of relevance, the still unfinalized Web Crypto API \cite{WebCrypto:Online} is currently available in an experimental stage in recent months at the time of this writing. The goals of Rymd has thus become technically viable in a web environment as of very recently. The development of client side storage in HTML5 is also an area that has become more stable and supported across browsers and vendors. 
+
+% TODO Johan Data Storage
 
 Furthermore, there is currently a lot of work underway in the field of distributed secret communication. Notable projects that share similar ideas or have inspired Rymd are mentioned under section~\ref{sec:similar}. Also worth noting is the new field of cryptocurrencies, which work by distributing a cryptographically based ledger over an entire network. The first and most well-known is Bitcoin \cite{Bitcoin:Online}, but there are also subsequent currencies that extend the original idea beyond that of a traditional currency to a system that can be used for a wide range of applications. The first worth noting is Namecoin \cite{Namecoin:Online}, which adds a global and secure key-value store. Another interesting initiative is Ethereum \cite{Ethereum:Online}, a cryptocurrency with contracts that not only allow storage of arbitrary data in the blockchain, but can also be scripted with a Turing complete programming language and can therefore be used to implement arbitrary systems. A system like Ethereum could be very interesting to explore for a project like Rymd, but it is still in such an early stage that it is deemed too unstable to be useful at this point. Namecoin is currently considered a good candidate for key distribution.
 
 Keybase \cite{Keybase:Online} is another recent initiative that intends to solve the distribution of public keys. It is essentially a HTTP-interface that maps keys to identities. While commandable, it again raises the issue of centralized storage. Systems relying on Keybase put a lot of trust on the availability and integrity of their service.
-
-% TODO Johan Data Storage
 
 \section{Data storage}
 \label{sec:datastorage}
@@ -59,15 +61,15 @@ Due to IndexedDB's object-oriented nature, a database includes a set of \emph{ob
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. Using asynchronous passing of callbacks prevents the program execution to block at a line when a potentially heavy operation is called. The Javascript code snippets below show the difference in synchronous and asynchronous calls.
+The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. Using asynchronous passing of callbacks prevents the program execution to block at a line when a potentially heavy operation is called. The Javascript code snippets in listings ~\ref{lst:syncCall} and \ref{lst:asyncCall} show the difference in synchronous and asynchronous calls.
 
 \begin{Code}
-\begin{lstlisting}[caption=Synchronous call]
+\begin{lstlisting}[caption={Synchronous call}, label={lst:syncCall}]
 // Fetch a record with id 10 from a database and store in variable
 var result = DB.find(10);
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Asynchronous call]
+\begin{lstlisting}[caption={Asynchronous call}, label={lst:asyncCall}]
 /*
   Request a record with id 10 from a database, continue execute other code,
   and handle result of the database operation in callback when it has finished
@@ -100,10 +102,10 @@ The \emph{Same Origin Policy} is used in IndexedDB. An origin is the transfer pr
 Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be insterted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can according to \cite{IndexedDBSecurity:2012:Online} be done by checking the call from the web application to the database and on success, the database operation can be performed.
 
 \subsection{Implementation}
-The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage.
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}
 
 \begin{Code}
-\begin{lstlisting}[caption=Common database operations]
+\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
 var Store = new IndexedDbStore("myStore")
 
 // Fetch all records as an array
@@ -157,7 +159,9 @@ The RTCDataChannel demonstrated the capabilities that Rymd desired. Data transfe
 Before a connection can be initiated between peers, one of two parts must extend an offer which contains data describing the connection to the other part - this is often referred to as the signaling phase. The signaling phase requires a channel where the offer can be negotiated - it is usual for the channel to be a dedicated signaling server, but examples of a more serverless approach can be found\cite{webrtcsignalserver}. The standard does not provide any recommendations regarding the choice of signaling channel and protocol - this is for developers to decide. The connection phase is then handled by RTCPeerConnection which manages the ICE (Interactive Connectivity Establishment) workflow.
 
 \subsubsection{ICE}
-ICE is a framework with the objective of connecting peers\cite{WebRTCBasics:2012:Online}. Since computers today are usually behind NAT gateways they are using different IP-addresses in their private network and the same IP-adress publicly to the access the Internet. This poses difficulties when trying to achieve a peer-to-peer connection.
+Since computers today are usually behind NAT gateways they are using the same public IP-address to access the Internet but different IP-addresses in their private network \cite{WebRTCBasics:2012:Online}. Since the public IP-address is usually not know to the computers in the network, this poses difficulties when trying to achieve a peer-to-peer connection. A technology that solves this problem is ICE – a framework with the objective of connecting peers.
+
+ICE decides between different ways of achieving a connection and chooses the one with the lowest latency\cite{WebRTCBasics:2012:Online} (See figure ~\ref{fig:ICE}). At first ICE tries to connect peers cleanly through UDP and STUN (Session Traversal Utilities for NAT). STUN servers are simple, cheap to run and enables a peer behind a NAT to discover its public address and port (See figure ~\ref{fig:WebRTC - STUN}). When the IP-addresses are known data doesn't need to go througn the server but instead flows directly between the peers. However, if it is not possible to establish a connection ICE attempts to use TCP instead of UDP: first HTTP and then HTTPS.
 
 \begin{figure}[htp]
 \centering
@@ -167,17 +171,15 @@ ICE is a framework with the objective of connecting peers\cite{WebRTCBasics:2012
 \label{fig:ICE}
 \end{figure}
 
-ICE decides between different ways of achieving a connection and chooses the one with the lowest latency\cite{WebRTCBasics:2012:Online}. At first ICE tries to connect peers cleanly through UDP and STUN (Session Traversal Utilities for NAT). STUN servers are simple, cheap to run and enables a peer behind a NAT to discover its public adress and port. When the IP-addresses are known data doesn't need to go througn the server but instead flows directly between the peers. However, if it is not possible to establish a connection ICE attempts to use TCP instead of UDP: first HTTP and then HTTPS.
-
 \begin{figure}[htp]
 \centering
 \includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
 ]{figures/webrtc-stun}
-\caption{STUN servers lets peers in a private network behind firewalls discover their public IP-adresses\cite{WebRTCArchitecture:2014:Online}.}
+\caption{STUN servers lets peers in a private network behind firewalls discover their public IP-addresses\cite{WebRTCArchitecture:2014:Online}.}
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-If STUN doesn't work, probably because of firewalls and more advanced NAT systems, ICE uses cloud fallback in the form of a TURN (Traversal Using Relay NAT) server. This connection isn't peer-to-peer since the data needs to go through the server and because of this it is also slower than the previous alternatives. But it allows a connection to be made under almost any condition.
+If STUN doesn't work, probably because of firewalls and more advanced NAT systems, ICE uses cloud fallback in the form of a TURN (Traversal Using Relay NAT) server (See figure ~\ref{fig:WebRTC - TURN}). This connection isn't peer-to-peer since the data needs to go through the server and because of this it is also slower than the previous alternatives. But it allows a connection to be made under almost any condition.
 
 \begin{figure}[htp]
 \centering
@@ -192,13 +194,15 @@ If STUN doesn't work, probably because of firewalls and more advanced NAT system
 % Niklas
 
 % - built on top of peerjs, TODO (not sure how to reference to github)
-Rymd leverages the open source project PeerJS, which simplifies sending peer-to-peer data between clients. PeerJS utilize WebRTC and is essentially split into two components: A server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, Peer.js utilize both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
+Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. PeerJS utilize WebRTC and is essentially split into two components: A server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, Peer.js utilize both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
 
 % modularity and such 
-In line with the project guidelines regarding modularity, Peer.js specific code is separated into a module of its own. If the requirements are to change, those changes are contained to a single module 
+In line with the project guidelines regarding modularity, Peer.js specific code is separated into a module of its own. If the requirements are to change, then those changes are contained to a single module.
 
 
 \section{Authentication}
+
+% TODO Robert
 
 \subsection{Namecoin}
 A phenomenon that has been on the rise during recent years is that of cryptocurrencies such as Bitcoin \cite{CryptoCoinInsider:2014:Online}. Each participant in the Bitcoin network keeps a ledger of all transactions throughout the history of the network. In order for a transaction to be deemed valid, it needs to be included in a cryptographically signed block together with a salt by one of the nodes, with a hash that has a special format. It is this brute-force search for salts that generate these hashes that are called \emph{mining} and constitute the work done by \emph{miners} to keep the network running. As an incentive, each verified block also includes a reward to the miner that first finds it and submits it to the blockchain\cite{InternetForBeginners:2014:Online}. In effect, all transactions ever made are publicly available and tracked so that anyone can confirm their validity. This prevents forgery and double-spending of bitcoins.
@@ -208,8 +212,11 @@ Another cryptocurrency is Namecoin\cite{CryptoCoinInsider:2014:Online}. Namecoin
 With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com} or \emph{.se}) can exist without being controlled by any central authority \cite{CryptoCoinInsider:2014:Online}. Also, the DNS lookup tables where domain names and their IP addresses are stored are shared in a peer-to-peer manner. The only necessary condition for these domains to be accessible is that there are participants willing to run the DNS server software. Although mainly intended to be used as a DNS, it contains several namespaces where arbitrary strings such as public cryptographic keys can be stored.
 
 \section{Encryption}
+\label{sec:cryptography}
+Rymd aims to emphasizes security, cryptography, public key infrastructure and secure authentication.
+Security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
 
-% TODO
+% TODO Johannes
 
 \section{Testing}
 \label{sec:testing}
