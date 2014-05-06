@@ -1,0 +1,13 @@
+parent : JavaScript Instrumentation for Browser Security
+// http://delivery.acm.org/10.1145/1200000/1190252/p237-yu.pdf?ip=129.16.188.85&id=1190252&acc=ACTIVE%20SERVICE&key=74F7687761D7AE37%2E3C5D6C4574200C81%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=314656538&CFTOKEN=83575944&__acm__=1396861074_eedbebe57f0c92605723f46e1c646a2a
+
+
+parent : SECURITY MODELS FOR WEB-BASED APPLICATIONS
+// http://delivery.acm.org/10.1145/360000/359224/p38-joshi.pdf?ip=129.16.188.85&id=359224&acc=ACTIVE%20SERVICE&key=74F7687761D7AE37%2E3C5D6C4574200C81%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=314656538&CFTOKEN=83575944&__acm__=1396861353_05c6c8e0dd6ed43ebb64636983d27bf4
+Garfinkel, S. and Spafford, E.H. Web Security and Commerce. O’Reilly
+and Associates, Sebastopol, CA, 1997.
+
+
+ Many good sources of low-level security issues and techniques are available. The
+International Cryptographic Software Web Pages [ICSP] and Applied Cryptography [Schneier 95] are
+very good references for more details on these issues.
