@@ -157,7 +157,9 @@ The RTCDataChannel demonstrated the capabilities that Rymd desired. Data transfe
 Before a connection can be initiated between peers, one of two parts must extend an offer which contains data describing the connection to the other part - this is often referred to as the signaling phase. The signaling phase requires a channel where the offer can be negotiated - it is usual for the channel to be a dedicated signaling server, but examples of a more serverless approach can be found\cite{webrtcsignalserver}. The standard does not provide any recommendations regarding the choice of signaling channel and protocol - this is for developers to decide. The connection phase is then handled by RTCPeerConnection which manages the ICE (Interactive Connectivity Establishment) workflow.
 
 \subsubsection{ICE}
-ICE is a framework with the objective of connecting peers\cite{WebRTCBasics:2012:Online}. Since computers today are usually behind NAT gateways they are using different IP-addresses in their private network and the same IP-adress publicly to the access the Internet. This poses difficulties when trying to achieve a peer-to-peer connection.
+Since computers today are usually behind NAT gateways they are using the same public IP-address to access the Internet but different IP-addresses in their private network \cite{WebRTCBasics:2012:Online}. Since the public IP-address is usually not know to the computers in the network, this poses difficulties when trying to achieve a peer-to-peer connection. A technology that solves this problem is ICE – a framework with the objective of connecting peers.
+
+ICE decides between different ways of achieving a connection and chooses the one with the lowest latency\cite{WebRTCBasics:2012:Online} (See figure ~\ref{fig:ICE}). At first ICE tries to connect peers cleanly through UDP and STUN (Session Traversal Utilities for NAT). STUN servers are simple, cheap to run and enables a peer behind a NAT to discover its public address and port (See figure ~\ref{fig:WebRTC - STUN}). When the IP-addresses are known data doesn't need to go througn the server but instead flows directly between the peers. However, if it is not possible to establish a connection ICE attempts to use TCP instead of UDP: first HTTP and then HTTPS.
 
 \begin{figure}[htp]
 \centering
@@ -167,17 +169,15 @@ ICE is a framework with the objective of connecting peers\cite{WebRTCBasics:2012
 \label{fig:ICE}
 \end{figure}
 
-ICE decides between different ways of achieving a connection and chooses the one with the lowest latency\cite{WebRTCBasics:2012:Online}. At first ICE tries to connect peers cleanly through UDP and STUN (Session Traversal Utilities for NAT). STUN servers are simple, cheap to run and enables a peer behind a NAT to discover its public adress and port. When the IP-addresses are known data doesn't need to go througn the server but instead flows directly between the peers. However, if it is not possible to establish a connection ICE attempts to use TCP instead of UDP: first HTTP and then HTTPS.
-
 \begin{figure}[htp]
 \centering
 \includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
 ]{figures/webrtc-stun}
-\caption{STUN servers lets peers in a private network behind firewalls discover their public IP-adresses\cite{WebRTCArchitecture:2014:Online}.}
+\caption{STUN servers lets peers in a private network behind firewalls discover their public IP-addresses\cite{WebRTCArchitecture:2014:Online}.}
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-If STUN doesn't work, probably because of firewalls and more advanced NAT systems, ICE uses cloud fallback in the form of a TURN (Traversal Using Relay NAT) server. This connection isn't peer-to-peer since the data needs to go through the server and because of this it is also slower than the previous alternatives. But it allows a connection to be made under almost any condition.
+If STUN doesn't work, probably because of firewalls and more advanced NAT systems, ICE uses cloud fallback in the form of a TURN (Traversal Using Relay NAT) server (See figure ~\ref{fig:WebRTC - TURN}). This connection isn't peer-to-peer since the data needs to go through the server and because of this it is also slower than the previous alternatives. But it allows a connection to be made under almost any condition.
 
 \begin{figure}[htp]
 \centering
