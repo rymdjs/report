@@ -9,6 +9,12 @@ Since Namecoin (or any other currently existing cryptocurrency for that matter) 
 
 Something that would both solve these issues and be very interesting in many other areas is a blockchain where nodes can communicate through open web protocols. This would mean that web clients could interact directly with the blockchain without interacting through gateways like these, at the same time allowing them to contribute to the network. Given the premises stated in the introduction and the rapid development of emerging blockchains and cryptocurrencies, we think it is only a matter of time before this happens.
 
+\section{Is all data truly cryptographically secured?}
+%TODO: Reference
+In the data transport layer, all communicaion over WebRTC is DTLS encrypted. As stated in section XX, for local storage and sending of resources, every resource is also AES encrypted with a resource-specific key. The only web browser that has a working implementation of the Web Crypto API is Google Chrome. Since the implementation is still experimental and there is not yet support for secure storage of cryptographic keys, the keys are stored alongside their encrypted data in IndexedDB. As long as the keys are not passphrase protected, this effectively means that at the level of the local client, the encryption adds no extra protection and can be considered reduntant. This is most likely only during a transitional period and as the Web Crypto API becomes stable and fully implemented across browsers, separate key storage options will become available and this can be resolved.
+
+Despite this problem, the AES encryption still serves a purpose. Consider an application utilizing Rymd where users communicate through each other in a "darknet" fashion. In these cases it is imperative that resources can be transmitted separately from their keys and metadata so that intermediate peers can facilitate the transfer of resource data without gaining knowledge of the contents.
+
 \section{Quality of the resulting product}
 
 
