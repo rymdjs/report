@@ -19,10 +19,8 @@ Despite this problem, the AES encryption still serves a purpose. Consider an app
 Also, systems with updateable resources can and should regenerate keys for each version and backward secrecy - the property that access to the key for one version of the resource will not allow decryption of older versions of that resource - will be achieved.
 
 
-\section{Is the reliability of the system depending on the availability of certain services?}
-As stated above, there 
 \section{Is the system modular and implementation agnostic?}
-%TODO
+As much as Rymd uses and relies some of the latest web technologies, great care was taken during the development to not make it rely on any of these implementations, should they be superceded or complemented by other, more fitting alternativces. The main Rymd library itself handles only the business logic of the system and gets the modules implementing data storage, cryptography, peer-to-peer communication and DHT interaction supplied at runtime via dependencu injection. Developers who have their own idea of how these needs should be served in their projects could write their own implementation modules. The one area where work needs to be done is that currently, storage of keys, metadata and resource data are tied together. Before Rymd can go stable, this should be addressed by treating these as separate data stores alltogether even if the current implementation puts all three side by side in IndexedDB.
 
 \section{Quality of the resulting product}
 
