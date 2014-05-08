@@ -1,10 +1,22 @@
 This chapter describes the technical foundations of the system and how the problems described in section~\ref{sec:problem} have been addressed in Rymd.
 
-% TODO
+% TODO: Why encrypt-then-MAC? Refer to http://cseweb.ucsd.edu/~mihir/papers/oem.html, explained here: http://crypto.stackexchange.com/questions/202/should-we-mac-then-encrypt-or-encrypt-then-mac
+%TODO: Motivate choice of AES-CBC-256 (in implementation?)
 
 \subsection{Resources}
+Full access to a resource implies possession of three things: The encrypted resource data, they cryptographic key used to encrypt said data and the metadata describing the resource. The creation of a new resource goes like this:
+\begin{enumerate}
+  \item Metadata is generated. Metadata consists of resource name, author identity, MIME type, a randomly generated GUID, incrementing file version (always $1$ in the case of new resource) and a timestamp.
+  \item A resource-specific symmetric cryptographic key is generated. In the default implementation, a 256 bit AES-CBC key is used.
+  \item The resource data is encrypted using the resource key.
+  \item A resource hash is calculated based on the metadata and encrypted data. 
+  \item Add the hash to the metadata.
+  \item Combine the metadata and the encrypted data to form the internal representation of the resource.
+  \item Save the key in a local key store.
+\end{enumerate}
 
-% TODO
+To save a resource locally, a user-specific symmetric \emph{master key}, generated at the time of first access, is used to encrypt the metadata before saving it and the encrypted resource data to a local resource store.
+
 
 \section{Peer identity verification}
 \label{sec:authorization}
