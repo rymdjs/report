@@ -196,6 +196,13 @@ If STUN doesn't work, probably because of firewalls and more advanced NAT system
 % - built on top of peerjs, TODO (not sure how to reference to github)
 Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. PeerJS utilize WebRTC and is essentially split into two components: A server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, Peer.js utilize both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
 
+% - explain how peer.js works.
+The following steps explain how PeerJS broker connections:
+\begin{enumerate}
+\item Two clients connects to the PeerJS server, using the client side API.
+\item The server returns unique IDs for each of the clients.
+\item One of the clients connect to the other using the client side API, where the unique ID for the other one is provided. The PeerJS server then forwards the information needed to set up a peer-to-peer connection to the other client.
+\end{enumerate}
 % modularity and such
 In line with the project guidelines regarding modularity, Peer.js specific code is separated into a module of its own. If the requirements are to change, then those changes are contained to a single module.
 
