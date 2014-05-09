@@ -1,5 +1,7 @@
 % TODO DRAFT
 
+% TODO Surprising results - WebRTC och WebCrypto evolved during our project
+
 This project has resulted in a modular peer-to-peer developer library for sending data, encrypted with public key encryption, over a secure connection to another client. The library, \emph{Rymd}, has composed several modules for specific areas such as data storage (section~\ref{sec:datastorage}), cryptography (section~\ref{sec:cryptography}) and communication (section~\ref{sec:p2p}) in order to create a foundation for sending files without central file storage.
 
 For demonstrating the capabilities of Rymd, a sample prototype web application has been created, named \emph{Shuttle}. This front facing client provides a user interface for showing local files, sending files to other users registered in the blockchain, and managing encryption keys. In Shuttle, the user is capable of adding, listing, viewing and deleting files in their local data store, where the files are encrypted and stored along with their metadata. By knowing a recipient's identity, the user is able to share a file with the recipient over an encrypted P2P connection. When sharing a file, the receiving end will instantly show a notification with a remark that the sender wants to share a file. If the recipient chooses to accept the sharing request, the file will download to their local data store.
