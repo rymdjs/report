@@ -1,6 +1,37 @@
 This chapter describes the technical foundations of the system and how the problems described in section~\ref{sec:problem} have been addressed in Rymd.
 
 %TODO: Motivate choice of AES-CBC-256 (in implementation?)
+%Why RSA and not diffie hellman?
+
+\section{Peer identity verification}
+\label{sec:authorization}
+For a truly decentralized system, it is not acceptable to adapt a CA-entered approach. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time. This conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distrubuted hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice by the cost of a small amount of the Namecoin currency (at the time of this writing 0.01 NMC \cite{Namecoin:2014:Online}, which equals roughly 0.03 USD \cite{CryptoCoinCharts:2014:Online}).
+
+Rymd therefore utilizes a DHT for storage of keys to achieve all of these goals: The distributed nature of cryptocurrencies makes it decentralized; peers can choose their own names (identities), giving meaningful names; the small monetary fee required to register a name makes it both secure and prevents massive name-squatting by malicious third parties.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
+]{figures/Zooko_s_Triangle}
+\caption{Zooko's Triangle, with the edges representing the achievable combinations of features \cite{Zooko:2001:Online}}
+\label{fig:zooko}
+\end{figure}
+
+%TODO: Draft, references
+Once a key distribution scheme has been established, an authentication scheme needs to be determined. There are several schemes for authentication using public-key cryptography. Among these are Otway Rees (not mutual, MITM attack exists), Wide Mouth Frog (depends on timestamps), and Needham-Schroeder. Of the ones surveyed, Needham-Schroeder stood out as simple to implement since it does not utilize symmetric keys or timestamps, while it provides mutual authentication.
+%describe needham schroeder
+
+In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where an adversary that can initiate a session with one party can then pose as that party when communicating with a third party. Schroeder also proposed a fix to this vulnerability, and this amended \emph{Needham-Schroeder-Lowe protocol} presented below is what Rymd utilizes for authentication.
+
+%describe needham schroeder lowe
+
+\section{Decentralization}
+Assuming that the system can utilize a DHT such as a cryptocurrency blockchain for storage of the public part of RSA key pairs, the issue of how to interface a web application with the blockchain in a way that allows for verification of identities without putting too much trust in the HTTP/cryptocurrency gateway also needs to be addressed. Additionally, as previously stated, the initial insertion of the key requires monetary resources, and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice.
+While the public key can be stored in a DHT, private keys need to be stored securely on each client, preferably without giving client code any direct access to the raw keys. Finally, a secure way to store the encryption keys for encrypted resources needs to be addressed. 
+
+% "Centralized control – Distributed Data Architectures"
+% http://highscalability.com/blog/2014/4/7/google-finds-centralized-control-distributed-data-architectu.html
+
 
 \section{Creation and transfers of resources}
 Full access to a resource implies possession of three things: The encrypted resource data, they cryptographic key used to encrypt said data and the metadata describing the resource. The creation of a new resource goes like this:
@@ -31,30 +62,6 @@ The metadata and resource data are handled separately in Rymd and the communicat
 \end{enumerate}
 
 
-\section{Peer identity verification}
-\label{sec:authorization}
-% Robert
-
-For a truly decentralized system, it is not acceptable to adapt a CA-entered approach. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time. This conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distrubuted hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice by the cost of a small amount of the Namecoin currency (at the time of this writing 0.01 NMC \cite{Namecoin:2014:Online}, which equals roughly 0.03 USD \cite{CryptoCoinCharts:2014:Online}).
-
-Rymd therefore utilizes a DHT for storage of keys to achieve all of these goals: The distributed nature of cryptocurrencies makes it decentralized; peers can choose their own names (identities), giving meaningful names; the small monetary fee required to register a name makes it both secure and prevents massive name-squatting by malicious third parties.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
-]{figures/Zooko_s_Triangle}
-\caption{Zooko's Triangle, with the edges representing the achievable combinations of features \cite{Zooko:2001:Online}}
-\label{fig:zooko}
-\end{figure}
-
-\section{Decentralization}
-% Robert
-
-Assuming that the system can utilize a DHT such as a cryptocurrency blockchain for storage of the public part of RSA key pairs, the issue of how to interface a web application with the blockchain in a way that allows for verification of identities without putting too much trust in the HTTP/cryptocurrency gateway also needs to be addressed. Additionally, as previously stated, the initial insertion of the key requires monetary resources, and is perhaps something that should be solved outside of Rymd.
-While the public key can be stored in a DHT, private keys need to be stored securely on each client, preferably without giving client code any direct access to the raw keys. How the initial generation of keys are performed also needs consideration. Finally, a secure way to store the encryption keys for encrypted resources needs to be addressed. The question of how these resource-associated secret keys are distributed is deemed an implementation-specific question and will be out of scope for Rymd, but handled in Shuttle.
-
-% "Centralized control – Distributed Data Architectures"
-% http://highscalability.com/blog/2014/4/7/google-finds-centralized-control-distributed-data-architectu.html
 
 \section{Modularity}
 
