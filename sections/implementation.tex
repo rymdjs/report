@@ -236,29 +236,15 @@ With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com
 
 \section{Encryption}
 \label{sec:cryptography}
-Rymd aims to emphasizes security, cryptography, public key infrastructure and secure authentication.
-Security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
-\\DRAFT: \\
+I Rymd, security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
 
+Until quite recently, the practice of performing cryptographic operations in the web browser ha been considered bad practice by security professionals. One reason is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API, an open standard for implementation of cryptographic primitives in web clients accessible for client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. It is, however, yet not finished and at the time of this writing only Google Chrome out of the major browsers have implemented more than a basic PRG.
 
-In Rymd the encryption functionallty is all contained within a own module.
-this structure was chosen for it's high modularity and
-also since allot of functionallity is 3rd part is in a experimental stage.
-inwokeing experimental 3rdpart code might render the Rymd library completly
-useless within a short time.
+At this stage Rymd therefore only runs in very recent versions of Google Chrome or Chromium. % uses the webcrypto api for encryption (3AES - 1024) ,decryption key import and export ,
+Even if this implementation provides generation of keys, there is no support for persisting keys between sessions or export private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own - something that is bad practice and only done for the sake of making a running prototype possible. 
 
-Rymd handles this by wrapping all the code inside a module, that could easily be replaced when the final 3rd-part programs.
-Each module contains several functions. Each function contains the code neccessary to provide its functinallity.
-
-Among the yet experimental librarys, Rymd uses the latest version of the Web Cryptography library yet only implemented as a experimental feature in Chrome.
-The Web crypto Api provides detailed implementaion guildlines, everything yet only experimental.
-
-Among many Features WCA provides Encryption, Decryption,Singning,
-Verifing and diffrent kinds of Keygeneration, All functionallity is provided without exposure the keys everything is handled in the source code browser.
-At this stage Rymd uses the webcrypto api for encryption (3AES - 1024) ,decryption key import and export ,
-Rymd can not benfit form the Asymmetric Encryption key-generation functionallity since the api cannot provide any key storage.
-For further information of wedcrypto api
-
+%TODO: Rewrite below this line
+%TODO: Loads of references!
 The Encryption uses two algorithms the $RSAES-PKCS1-v1.5$ and the $AES-CBC$, both algorithms is included in the webcrypto API and will therefore be provided by the browser.
 For Shuttle all encryption/decryption is handled by the browser, and it relies on the presence of a working Webcrypto\cite{WebCrypto:Online} implementation.
 About the keys, the asymmetric keys are wraped in pkcs8 and pki cetificates, while the symmetric key is in raw format.
