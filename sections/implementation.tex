@@ -238,15 +238,38 @@ With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com
 \label{sec:cryptography}
 Rymd aims to emphasizes security, cryptography, public key infrastructure and secure authentication.
 Security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
-DRAFT: \\
-Encryption uses two algorithms the $RSAES-PKCS1-v1.5$ and the $AES-CBC$, both algorithms is included in the webcrypto APi and will therfore be provided by the browser.
-For Shuttle all encryption/decryption is handled by the browser, and it relies (is bound to) on the presence of a working Webcrypto\cite{WebCrypto:Online} implementation.
-The asymmetric keys are wraped in pkcs8 and pki cetificates, and the symmetric key is in raw format.
-All have static size of $1024bits$ for Assymetric($RSAES-PKCS1-v1.5$) and $128bits$ for symmetric($AES-CBC$) and is not explicitly generated via the API.
+\\DRAFT: \\
+
+
+In Rymd the encryption functionallty is all contained within a own module.
+this structure was chosen for it's high modularity and
+also since allot of functionallity is 3rd part is in a experimental stage.
+inwokeing experimental 3rdpart code might render the Rymd library completly
+useless within a short time.
+
+Rymd handles this by wrapping all the code inside a module, that could easily be replaced when the final 3rd-part programs.
+Each module contains several functions. Each function contains the code neccessary to provide its functinallity.
+
+Among the yet experimental librarys, Rymd uses the latest version of the Web Cryptography library yet only implemented as a experimental feature in Chrome.
+The Web crypto Api provides detailed implementaion guildlines, everything yet only experimental.
+
+Among many Features WCA provides Encryption, Decryption,Singning,
+Verifing and diffrent kinds of Keygeneration, All functionallity is provided without exposure the keys everything is handled in the source code browser.
+At this stage Rymd uses the webcrypto api for encryption (3AES - 1024) ,decryption key import and export ,
+Rymd can not benfit form the Asymmetric Encryption key-generation functionallity since the api cannot provide any key storage.
+For further information of wedcrypto api
+
+The Encryption uses two algorithms the $RSAES-PKCS1-v1.5$ and the $AES-CBC$, both algorithms is included in the webcrypto API and will therefore be provided by the browser.
+For Shuttle all encryption/decryption is handled by the browser, and it relies on the presence of a working Webcrypto\cite{WebCrypto:Online} implementation.
+About the keys, the asymmetric keys are wraped in pkcs8 and pki cetificates, while the symmetric key is in raw format.
+All have static size, assymetric of $1024bits$ and $128bits$ for symmetric($AES-CBC$); none explicitly generated via the API.
 
 In order to support key storage between sessions, the key generating is moved out if the api and handeled by a library 'bignumber-jt'[24]; The key is then parsed to a certifacte of Asn structure, before its imported into its low-level interface.
 Moving the key generation is also making it possible to sign and encrypt with the same key, something the native generating does not allow.
 
+Rymd 1.1 instead generates its own keys and stores them localy as certificates. The cerficats then is imported every time a new session starts.
+W3C The organisation behind the WCAPI, Have announced intetion to implement A Secure Keystore,
+The Modular Approach used by Rymd will then allow A new more secure implemntation.
 % TODO Johannes
 
 \section{Testing}
