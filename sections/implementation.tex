@@ -158,18 +158,24 @@ The RTCDataChannel API demonstrated the capabilities that Rymd desired. Data tra
 
 Before a connection can be initiated between peers, one of two parts must extend an offer which contains data describing the connection to the other part - this is often referred to as the signaling phase. The signaling phase requires a channel where the offer can be negotiated - it is usual for the channel to be a dedicated signaling server, but examples of a more serverless approach can be found\cite{webrtcsignalserver}. The standard does not provide any recommendations regarding the choice of signaling channel and protocol - this is for developers to decide. The connection phase is then handled by RTCPeerConnection which manages the ICE (Interactive Connectivity Establishment) workflow.
 
-\subsubsection{ICE}
-Since computers today are usually behind NAT gateways they are using the same public IP-address to access the Internet but different IP-addresses in their private network \cite{WebRTCBasics:2012:Online}. Since the public IP-address is usually not know to the computers in the network, this poses difficulties when trying to achieve a peer-to-peer connection. A technology that solves this problem is ICE – a framework with the objective of connecting peers.
+\subsubsection{NAT, STUN, TURN and ICE}
+A problem with the construction of peer-to-peer applications using WebRTC, is the presence of NATs (Network Address Translation). NATs were first introduced in RFC 1631 as a short term solution to the problems regarding IP address depletion in IPv4. The idea was that by utilizing NATs, several hosts in a private network could together share a single public IP address \cite{RFC1631:Online}.
 
-ICE decides between different ways of achieving a connection and chooses the one with the lowest latency\cite{WebRTCBasics:2012:Online} (See figure ~\ref{fig:ICE}). At first ICE tries to connect peers cleanly through UDP and STUN (Session Traversal Utilities for NAT). STUN servers are simple, cheap to run and enables a peer behind a NAT to discover its public address and port (See figure ~\ref{fig:WebRTC - STUN}). When the IP-addresses are known data doesn't need to go througn the server but instead flows directly between the peers. However, if it is not possible to establish a connection ICE attempts to use TCP instead of UDP: first HTTP and then HTTPS.
+A NAT is responsible for maintaining a table with entries that maps an internal IP address and port, to a public IP address and port; and dropping these entries when they are no longer of relevance. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table, which can then be used to route the response back to the internal host.
 
 \begin{figure}[htp]
 \centering
-\includegraphics[width=\textwidth,height=0.25\paperheight,keepaspectratio
-]{figures/ICE}
-\caption{The different ways for ICE to find network interfaces and ports \cite{WebRTCBasics:2012:Online}}
-\label{fig:ICE}
+\includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
+]{figures/nat}
+\caption{A NAT maintains a table mapping internal IP and port, to a public IP and port. \cite{NATIllustration:Online}.}
+\label{fig:NAT}
 \end{figure}
+
+The reason to why the presence of NATs can pose a problem for peer-to-peer communication in the browser, is that WebRTC mainly leverage the UDP protocol for transportation of data. The underlying issue with the UDP protocol is the absense of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes is difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped, as they can’t reach the source. In the case of TCP, which got a well defined state, it is inherently simple to determine when an entry should be dropped.
+
+A technique commonly used to solve the problem regarding UDP entries getting expired and dropped, is to utilize keepalives at regular intervals, which is commonly referred to as \emph{UDP hole punching} \cite{UDPHolePunching:Online}.
+
+An additional problem is that internal hosts know their internal IP, but not the public one. If a host runs an application, which communicates the IP as a part of the payload to hosts oustide of the private network, there would obviously be a missmatch if the internal IP is chosen. Therefore it is common to utilize a protocol called STUN (Session Traversal Utilities for NAT), which was introduced in RFC 5389. The protocol enables hosts to obtain its public IP address, with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}) \cite{RFC5389:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -179,7 +185,7 @@ ICE decides between different ways of achieving a connection and chooses the one
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-If STUN doesn't work, probably because of firewalls and more advanced NAT systems, ICE uses cloud fallback in the form of a TURN (Traversal Using Relay NAT) server (See figure ~\ref{fig:WebRTC - TURN}). This connection isn't peer-to-peer since the data needs to go through the server and because of this it is also slower than the previous alternatives. But it allows a connection to be made under almost any condition.
+These techniques are not always enough though, which is caused by the fact that STUN does not work with all types of NATs, and in some cases UDP traffic might be blocked by a firewall. In these cases the TURN (Traversal Using Relays around NAT) protocol, specified in RFC 5766, can be leveraged.  TURN establish a TCP connection with a relay server in those cases where UDP fails. The relay server is used to tunnel data to the other host, which means that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}) \cite{RFC5766:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -188,6 +194,16 @@ If STUN doesn't work, probably because of firewalls and more advanced NAT system
 \caption{If a peer-to-peer connection cannot be made, a relay through a TURN server could be used instead. All peers then send their packets through the relay which is more costly but makes the system work\cite{WebRTCArchitecture:2014:Online}.}
 \label{fig:WebRTC - TURN}
 \end{figure}
+
+In the case of WebRTC, the techniques desribed above are leveraged through the ICE (Interactive Connection Establishment) protocol which is used by the RTCPeerConnection API. The ICE protocol is specified by RFC 5245 and has the objective of connecting peers in the most efficient way, it makes use of STUN and fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) \cite{RFC5245:Online}. 
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=\textwidth,height=0.25\paperheight,keepaspectratio
+]{figures/ICE}
+\caption{The different ways for ICE to find network interfaces and ports \cite{WebRTCBasics:2012:Online}}
+\label{fig:ICE}
+\end{figure} 
 
 \subsection{Implementation}
 \label{sec:p2p}
