@@ -236,26 +236,25 @@ With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com
 
 \section{Encryption}
 \label{sec:cryptography}
-I Rymd, security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
+%TODO: Rewrite, explain "secure primitives"
+In Rymd, security is achieved through secure primitives, user restrictions and by the use of cryptographic communication libraries.
 
-Until quite recently, the practice of performing cryptographic operations in the web browser ha been considered bad practice by security professionals. One reason is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API, an open standard for implementation of cryptographic primitives in web clients accessible for client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. It is, however, yet not finished and at the time of this writing only Google Chrome out of the major browsers have implemented more than a basic PRG.
+Until recently, the practice of performing cryptographic operations in a web browser has been considered a bad practice by security professionals. A reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API, an open standard for implementation of cryptographic primitives in web clients accessible through client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. It is however not yet finished and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic PRG.
 
-At this stage Rymd therefore only runs in very recent versions of Google Chrome or Chromium. % uses the webcrypto api for encryption (3AES - 1024) ,decryption key import and export ,
-Even if this implementation provides generation of keys, there is no support for persisting keys between sessions or export private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own - something that is bad practice and only done for the sake of making a running prototype possible. 
+At this stage Rymd therefore only runs in the latest versions of Google Chrome or Chromium. % uses the webcrypto api for encryption (3AES - 1024) ,decryption key import and export ,
+The implementation provided by these browsers supply key generation but there is no support for persisting keys between sessions or even exporting private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own; Doing this is bad practice and is only performed in order to get a prototype running. Shuttle lets all encryption and decryption be handled by the browser, relying on the presence of a working webcrypto\cite{WebCrypto:Online} implementation. %TODO: Not all encryption/decryption. WebRTC handles communication encryption
 
-%TODO: Rewrite below this line
 %TODO: Loads of references!
-The Encryption uses two algorithms the $RSAES-PKCS1-v1.5$ and the $AES-CBC$, both algorithms is included in the webcrypto API and will therefore be provided by the browser.
-For Shuttle all encryption/decryption is handled by the browser, and it relies on the presence of a working Webcrypto\cite{WebCrypto:Online} implementation.
-About the keys, the asymmetric keys are wraped in pkcs8 and pki cetificates, while the symmetric key is in raw format.
-All have static size, assymetric of $1024bits$ and $128bits$ for symmetric($AES-CBC$); none explicitly generated via the API.
+The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. Both algorithms are included in the webcrypto API and are therefore provided by the browser. %TODO Introduce the subject and expand, why these algorithms? Advantages/Disadvantages and alternatives
+Furthermore, the asymmetric keys are wraped in pkcs8 and pki cetificates while the symmetric key exist in raw format.
+All have static size where assymetric keys are of $1024bits$ and symmetric($AES-CBC$) are of $128bits$; none are explicitly generated via the API.
 
-In order to support key storage between sessions, the key generating is moved out if the api and handeled by a library 'bignumber-jt'[24]; The key is then parsed to a certifacte of Asn structure, before its imported into its low-level interface.
-Moving the key generation is also making it possible to sign and encrypt with the same key, something the native generating does not allow.
+In order to support key storage between sessions, the key generation is moved out of the api and handeled by a library 'bignumber-jt'[24]; The key is then parsed to a certifacte of Asn structure, % before it's imported into its low-level interface.
+Moving the key generation also makes it possible to sign and encrypt using the same key, something the native generation does not allow.
 
-Rymd 1.1 instead generates its own keys and stores them localy as certificates. The cerficats then is imported every time a new session starts.
-W3C The organisation behind the WCAPI, Have announced intetion to implement A Secure Keystore,
-The Modular Approach used by Rymd will then allow A new more secure implemntation.
+% Rymd instead generates its own keys and stores them localy as certificates. The certificates are then imported every time a new session starts.
+
+W3C The organisation behind the webcrypto API, Have announced their intention to implement A Secure Keystore which would allow Rymd to use a more secure implementation.
 % TODO Johannes
 
 \section{Testing}
