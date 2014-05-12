@@ -195,7 +195,7 @@ These techniques are not always enough though, which is caused by the fact that 
 \label{fig:WebRTC - TURN}
 \end{figure}
 
-In the case of WebRTC, the techniques desribed above are leveraged through the ICE (Interactive Connection Establishment) protocol which is used by the RTCPeerConnection API. The ICE protocol is specified by RFC 5245 and has the objective of connecting peers in the most efficient way, it makes use of STUN and fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) \cite{RFC5245:Online}. 
+In the case of WebRTC, the techniques desribed above are leveraged through the ICE (Interactive Connection Establishment) protocol which is used by the RTCPeerConnection API. The ICE protocol is specified by RFC 5245 and has the objective of connecting peers in the most efficient way, it makes use of STUN and fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) \cite{RFC5245:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -203,7 +203,7 @@ In the case of WebRTC, the techniques desribed above are leveraged through the I
 ]{figures/ICE}
 \caption{The different ways for ICE to find network interfaces and ports \cite{WebRTCBasics:2012:Online}}
 \label{fig:ICE}
-\end{figure} 
+\end{figure}
 
 \subsection{Implementation}
 \label{sec:p2p}
@@ -236,9 +236,26 @@ With a decentralized DNS such as Namecoin, top level domains (such as \emph{.com
 
 \section{Encryption}
 \label{sec:cryptography}
-Rymd aims to emphasizes security, cryptography, public key infrastructure and secure authentication.
-Security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
+I Rymd, security is obtained through secure primitives, user restrictions and by the use of cryptographic communication libraries.
 
+Until quite recently, the practice of performing cryptographic operations in the web browser ha been considered bad practice by security professionals. One reason is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API, an open standard for implementation of cryptographic primitives in web clients accessible for client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. It is, however, yet not finished and at the time of this writing only Google Chrome out of the major browsers have implemented more than a basic PRG.
+
+At this stage Rymd therefore only runs in very recent versions of Google Chrome or Chromium. % uses the webcrypto api for encryption (3AES - 1024) ,decryption key import and export ,
+Even if this implementation provides generation of keys, there is no support for persisting keys between sessions or export private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own - something that is bad practice and only done for the sake of making a running prototype possible. 
+
+%TODO: Rewrite below this line
+%TODO: Loads of references!
+The Encryption uses two algorithms the $RSAES-PKCS1-v1.5$ and the $AES-CBC$, both algorithms is included in the webcrypto API and will therefore be provided by the browser.
+For Shuttle all encryption/decryption is handled by the browser, and it relies on the presence of a working Webcrypto\cite{WebCrypto:Online} implementation.
+About the keys, the asymmetric keys are wraped in pkcs8 and pki cetificates, while the symmetric key is in raw format.
+All have static size, assymetric of $1024bits$ and $128bits$ for symmetric($AES-CBC$); none explicitly generated via the API.
+
+In order to support key storage between sessions, the key generating is moved out if the api and handeled by a library 'bignumber-jt'[24]; The key is then parsed to a certifacte of Asn structure, before its imported into its low-level interface.
+Moving the key generation is also making it possible to sign and encrypt with the same key, something the native generating does not allow.
+
+Rymd 1.1 instead generates its own keys and stores them localy as certificates. The cerficats then is imported every time a new session starts.
+W3C The organisation behind the WCAPI, Have announced intetion to implement A Secure Keystore,
+The Modular Approach used by Rymd will then allow A new more secure implemntation.
 % TODO Johannes
 
 \section{Testing}
