@@ -11,3 +11,7 @@ and Associates, Sebastopol, CA, 1997.
  Many good sources of low-level security issues and techniques are available. The
 International Cryptographic Software Web Pages [ICSP] and Applied Cryptography [Schneier 95] are
 very good references for more details on these issues.
+
+Hardware background.
+parent : motivates that AES is fast in hardware.
+https://www.schneier.com/paper-twofish-final.pdf
