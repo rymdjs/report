@@ -52,23 +52,125 @@ In line with the project guidelines regarding modularity, Peer.js specific code 
 
 % TODO Robert
 
-\section{Encryption}
+\section{Cryptography}
+\label{sec:cryptography}
 \label{sec:cryptography}
 %TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
 %In Rymd, security is achieved through secure primitives, user restrictions and by the use of cryptographic communication libraries.
-
-Therefore, at this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium.
 % uses the Web Crypto Api for encryption (3AES - 1024) ,decryption key import and export ,
+At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium.
 Even if the implementations provided by these browsers supply key generation, there is no support for persisting keys between sessions or even exporting private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own; doing this is bad practice and is only performed in order to get a prototype running.
-%TODO: Loads of references!
 
-The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a symmetric key AES based using cipher block chaining; it is the only symmetric algorithm implemented at the time of writing, besides it is fast and simple to use. $RSAES-PKCS1-v1.5$ - an AES implementation based on the RSA algorithm. The fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption. Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption with % TODO
-Regarding accessibility, both algorithms are included in the Web Crypto API and are therefore provided by the browser as black boxes. In commercial terms as for our project, RSA is clearly the winner; commercial RSA certificates are much more widely deployed than DSA certificates.
-% source
-As previously mentioned, the Web Crypto API lacks functionality for storing keys between sessions or even exporting private keys. In order to support key storage between sessions, the key generation is moved out of the API and handled by a library \emph{bignumber-jt} \cite{Bignumber:Online}; The key is then parsed to a certificate. All certificate have a static key size where asymmetric keys are of $1024bits$ and symmetric ($AES-CBC$) are of $128bits$; none are explicitly generated via the API.
+\subsection{Dependecies}
+The Crypto module is based around the use of cryptographic communication libraries; the module is strutured in a way such that cryptoback.js handles key generation and parsing while the rest is handled by the crypto.js module.
+As previously mentioned, the Web Crypto API lacks functionality for storing keys between sessions or even exporting private keys. In order to support key storage between sessions, the key generation is moved out of the API and handled by a library \emph{bignumber-jt} \cite{Bignumber:Online}; The key is then parsed to a certificate.
+All certificate have a static key size where asymmetric keys are of $1024bits$ and symmetric ($AES-CBC$) are of $128bits$; none are explicitly generated via the API.
+\begin{Code}
+\begin{lstlisting}[caption={Included database operations}, label={lst:api}]
+ //dependecies cryptoback.js
+  var rsa = require('bignumber-jt'),
+      Q = require('q');
+
+ //dependecies crypto.js
+  var root = this,
+    Q = require('q'),
+    cryptojs = require('crypto-js'),
+    utils = require("./cryptoback");
+\end{lstlisting}
+\end{Code}
+\subsection{Interface}
 % before it's imported into its low-level interface. %TODO: Proper reference
+The interface reminds allot about the interface used by the porn industr, you can inject your package in any function and it will allways result in a promise no matter if it worked or not.
+\begin{Code}
+\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
+generateKeyPair: function() -> Promise({Uint8array,Uint8array})
+exportKey: function(WebCrypto::Key) -> Promise({Uint8array})
+importKey: function(String,Uint8array) -> Promise(WebCrypto::Key)
+signKey: function(WebCrypto::Key,Uint8Array) -> Promise
+verifyKey: function(WebCrypto::Key,Uint8Array,Uint8Array) -> Promise
+encrypt**: function(WebCrypto::Key,Uint8Array??) -> Promise(Arraybuffer)
+decrypt**: function(WebCrypto::Key,Uint8Array??) -> Promise(Arraybuffer)
+hash**: function(blob)  -> Promise(blob)
+generateSymmetricKey: function() -> Promise(WebCrypto::Key)
+\end{lstlisting}
+\end{Code}
 
-Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. The Private-Key Information Syntax Standard (PKCS\#8) -  defines a way to store the private key and the Simple public key infrastructure (SPKI) - defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}. W3C - the organization behind the Web Crypto API, have announced their intention to implement the Web Crypto Key Discovery API \cite{WebCryptoKeyDiscovery:Online} a secure key store which would allow Rymd to persist keys between sessions in a secure manner. Web Crypto Key Discovery API was originally thought as a part of the Web Crypto API was extracted in favor overall of decreased implementation complexity.
+\subsection{Algorithms}
+The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$.
+AES-CBC is a symmetric key AES based using cipher block chaining; it is the only symmetric algorithm implemented at the time of writing, besides it is fast and simple to use.
+$RSAES-PKCS1-v1.5$ - an AES implementation based on the RSA algorithm.
+\begin{Code}
+\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
+  var generationAlgorithmSign =  {
+    name: "RSASSA-PKCS1-v1_5",
+    modulusLength: 2048,
+    publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+    hash: {
+      name: "SHA-256"
+    }
+  },
+
+  generationAlgorithmEncrypt =  {
+    name: "RSAES-PKCS1-v1_5",
+    modulusLength: 2048,
+    publicExponent: new Uint8Array([0x01, 0x00, 0x01])
+  },
+
+  aesAlgorithmKeyGen = {
+    name: "AES-CBC",
+    length: 256
+  },
+
+ specFormats ={
+    public: 'spki',
+    private: 'pkcs8',
+    secret: 'raw'
+  }
+\end{lstlisting}
+\end{Code}
+The fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption.
+Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption with
+Regarding accessibility, both algorithms are included in the Web Crypto API and are therefore provided by the browser as black boxes.
+% add text about hashing
+% why is the hashing in
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccccc}
+Algorithm name & Type & Encrypt & Decrypt & Sign & Verify & ImportKey \\
+RSAES-PKCS1-v1\_5 & ASYM & x & x &  &  & x \\
+RSASSA-PKCS1-v1\_5 & ASYM &  &  & x & x & x \\
+RSA-PSS & ASYM &  &  & x & x & x \\
+RSA-OAEP & ASYM & x & x &  &  & x \\
+ECDSA & ASYM &  &  & x & x & x \\
+AES-CTR & SYM & x & x &  &  & x \\
+AES-CBC & SYM & x & x &  &  & x \\
+AES-CMAC & SYM &  &  & x & x & x \\
+AES-GCM & SYM & x & x &  &  & x \\
+AES-CFB & SYM & x & x &  &  & x
+\end{tabular}
+\end{table}
+In commercial terms as for our project, RSA is clearly the winner; commercial RSA certificates are much more widely deployed than DSA certificates.
+
+
+
+
+
+\subsection{generateKeyPair}
+\begin{Code}
+\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
+var root = this,
+  Q = require('q'),
+  cryptojs = require('crypto-js'),
+  utils = require("./cryptoback");
+\end{lstlisting}
+\end{Code}
+
+\subsection{encrypt}
+Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format.
+The Private-Key Information Syntax Standard (PKCS\#8) -  defines a way to store the private key and the Simple public key infrastructure (SPKI) - defines a way to store the public key.
+All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}.
+W3C - the organization behind the Web Crypto API, have announced their intention to implement the Web Crypto Key Discovery API \cite{WebCryptoKeyDiscovery:Online} a secure key store which would allow Rymd to persist keys between sessions in a secure manner.
+Web Crypto Key Discovery API was originally thought as a part of the Web Crypto API was extracted in favor overall of decreased implementation complexity.
 
 % TODO Johannes
 

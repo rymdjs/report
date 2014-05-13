@@ -149,8 +149,19 @@ In the case of WebRTC, the techniques desribed above are leveraged through the I
 \end{figure}
 
 \section{Cryptography}
-
-% Talk about theoretical cryptography, certificates, etc.
 % TODO Johannes & Robert
-
 Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API\cite{WebCrypto:Online}, an open standard for implementation of cryptographic primitives in web clients accessible through client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. However, it is not yet finished and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator.
+\subsection{Cerificates and ASN.1} % wikipedia
+In cryptography, a public key certificate (also known as a digital certificate or identity certificate) is an electronic document that uses a digital signature to bind a public key with an identity — information such as the name of a person or an organization, the address, and the email address. The certificate can be used to verify that a public key belongs to an individual. For example an analogy of a digital certificate would be ones driver licence. The issuer would be the DMV, the validity would consist of the expiration date, and the user would be the name of the person to whom the licence was issued.
+\subsection{Private-Key Information Syntax Standard}
+referd to as (PKCS\#8) Used to carry private certificate keypairs.
+\subsection{Simple public key infrastructure}
+ was born out of a joint effort to overcome the overcomplication and scalability problems of traditional X.509 public key infrastructure.
+\subsection{Web crypto API}
+The Web Cryptography API defines a low-level interface to interacting with cryptographic key material that is managed or exposed by user agents. The API itself is agnostic of the underlying implementation of key storage, but provides a common set of interfaces that allow rich web applications to perform operations such as signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw keying material.
+\subsection{Bignumber-js}
+The jsbn library is a fast, portable implementation of large-number math in pure JavaScript, enabling public-key crypto and other applications on desktop and mobile browsers.
+\subsection{Crypto-js}
+CryptoJS is a project that I enjoy and work on in my spare time, but unfortunately my 9-to-5 hasn't left me with as much free time as it used to. I'd still like to continue improving it in the future, but I can't say when that will be. If you find that CryptoJS doesn't meet your needs, then I'd recommend you try
+\subsection{Hashing}
+A hash function is any function that maps data of arbitrary length to data of a fixed length. The values returned by a hash function are called hash values, hash codes, hash sums, checksums or simply hashes. Recent development of internet payment networks also uses a form of 'hashing' for checksums, and has brought additional attention to the term.
