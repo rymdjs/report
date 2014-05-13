@@ -103,15 +103,7 @@ The metadata and resource data are handled separately in Rymd and the communicat
   \item When Alice wants to access the resource, she decrypts it.
 \end{enumerate}
 
-\section{Modularity}
+\section{Modules in Rymd}
 
 % TODO Robin: Describe our concrete modules better here. This section *has* to describe how
 % *we* used modularity in our project.
-
-As stated in section ~\ref{sec:purpose}, developers should be able to easily incorporate their own preferred implementations of the system's core functionality. Accomplishing this would allow developers to not only supply more fitting modules to their end products, but also exchanging existing ones if better alternatives were to be released. This has been particularily important in Rymd since it utilizes technologies at the web's furthest frontier, meaning unfinished drafts in constant change. While these technologies caused a lot of problems, e.g. certain features suddenly breaking because of an update, they supplied the neccessary functionalty required for Rymd's key features to work.
-
-For modularity to be properly fulfilled, these features had to be identified and separated into individual modules; Currently, keys, metadata and resource data need more work to be completely separated. However, data storage, cryptography, communication and DHT usage are provided dynamically through dependency injection.
-
-% TODO Dependency injection
-
-Furthermore, a system with separate interchangeable parts allowed for both advantages and disatvantages. Easier testing was one of the former, where instead of a suite covering the whole system, tests could be limited to each module. Something that proved to be more difficult was debugging flow of events covering multiple modules. Data would travel through connecting end points between modules and then be sent far down call hierarchies (perhaps triggering new events or having more information appended to itself) before bubbling back up in the call chain. Any error occuring in such a flow were hard to pinpoint.
