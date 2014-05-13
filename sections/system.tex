@@ -5,6 +5,42 @@ This chapter describes the technical foundations of the system and how the probl
 %TODO: Motivate choice of AES-CBC-256 (in implementation?)
 %Why RSA and not diffie hellman?
 
+\section{Data storage}
+
+Storage of data is, suffice to say, crucial for any file sharing system. Since the data store was to be used by several parts of the application the demands for the module's interface had to be as general as possible, adhering to a standard CRUD\footnote{Create–Read–Update–Delete} interface, including methods for creating, fetching, updating and deleting records in the store.
+
+There are essentially four alternatives for persisting data on the client:
+
+\begin{itemize}
+\item LocalStorage
+\item IndexedDB
+\item WebSQL
+\item FileSystem API
+\end{itemize}
+
+LocalStorage is included in the HTML5 WebStorage specification \cite{WebStorage:Online}, and is a basic key-value store with a simplistic API. It is supported across all major browsers and has a maximum storage limit of 5 megabytes. The latter was a deal-breaker, since the product would have to support larger files than could possibly fit into that space. LocalStorage further does not support complex structures and indexing, and storing different data types is complex and needs manual serialization and deserialization. Thus this solution was rejected at once.
+
+IndexedDB and WebSQL are both client side databases and more sophisticated storage solutions than LocalStorage. WebSQL is supported by Google Chrome, Apple Safari (desktop and iOS), Opera and Android. The specification is not longer maintained by W3C \cite{WebSQL:Online}, and will probably be deprecated on all browsers in the future. IndexedDB is supported by all major browsers except for Safari (desktop and iOS), and is a Candidate Recommendation by W3C \cite{IndexedDB:Online}. Arbitrary types of data can be stored in the database, such as strings, numbers, Javascript objects, and raw binary data.
+
+The FileSystem API is a collection of methods for reading and writing to a sandboxed filesystem from a browser with client Javascript code. It is a very early standard, and is currently only supported by Google Chrome and Opera, and has the status of Working Draft by W3C \cite{FileSystem:Online}. While FileSystem has good performance for larger files and a well-performing asynchronous API, it lacks support for indexing and search. Mozilla seems to have no plans on implementing FileSystem in Firefox \cite{MozillaFileSystem:Online}.
+
+All of the mentioned technologies are sandboxed: the data is tied to a single origin (\emph{http://test.domain.com} for instance). All future access to the data must come from that domain (this includes the protocol and port number as well). The browsers also limits the maximum allowed storage size – the quota. The quota is different for each storage mechanism, and the browser typically asks the user with a dialog if they want to let the app exceed the quota.
+
+\begin{table}
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+                       & IndexedDB & WebSQL & File System & LocalStorage \\ \hline
+    Google Chrome 34               & Yes       & Yes    & Yes  & Yes                      \\ \hline
+    Mozilla Firefox 29             & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
+    Apple Safari 7                & \cellcolor{red}No        & Yes  & \cellcolor{red}No    & Yes                        \\ \hline
+    Opera 20                       & Yes       & Yes    & Yes  & Yes                      \\ \hline
+    Microsoft Internet Explorer 11 & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
+    \end{tabular}
+    \caption {Browser support for selected HTML5 APIs at the time of writing}
+\end{table}
+
+The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
+
 \section{Peer identity verification}
 \label{sec:authorization}
 For a truly decentralized system, it is not acceptable to adapt a CA-entered approach. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time. This conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distrubuted hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice by the cost of a small amount of the Namecoin currency (at the time of this writing 0.01 NMC \cite{Namecoin:2014:Online}, which equals roughly 0.03 USD \cite{CryptoCoinCharts:2014:Online}).
@@ -36,7 +72,11 @@ While the public key can be stored in a DHT, private keys need to be stored secu
 
 
 \section{Creation and transfers of resources}
+
 Full access to a resource implies possession of three things: The encrypted resource data, they cryptographic key used to encrypt said data and the metadata describing the resource. The creation of a new resource goes like this:
+
+% TODO Needs descriptive figure here.
+
 \begin{enumerate}
   \item Metadata is generated. Metadata consists of resource name, author identity, MIME type, a randomly generated GUID, incrementing file version (always $1$ in the case of new resource) and a timestamp.
   \item A resource-specific symmetric cryptographic key is generated. In the default implementation, a 256 bit AES-CBC key is used.
@@ -65,7 +105,8 @@ The metadata and resource data are handled separately in Rymd and the communicat
 
 \section{Modularity}
 
-% TODO Robin
+% TODO Robin: Describe our concrete modules better here. This section *has* to describe how
+% *we* used modularity in our project.
 
 As stated in section ~\ref{sec:purpose}, developers should be able to easily incorporate their own preferred implementations of the system's core functionality. Accomplishing this would allow developers to not only supply more fitting modules to their end products, but also exchanging existing ones if better alternatives were to be released. This has been particularily important in Rymd since it utilizes technologies at the web's furthest frontier, meaning unfinished drafts in constant change. While these technologies caused a lot of problems, e.g. certain features suddenly breaking because of an update, they supplied the neccessary functionalty required for Rymd's key features to work.
 

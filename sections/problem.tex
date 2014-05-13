@@ -34,7 +34,14 @@ Usability, security and adherence to public web standards are three priorities t
 \subsection{Resource identification}
 It is desirable for resources to have identifiers that are both memorable, secure, and unique - Zooko’s triangle is a concern here as well. However, there are practical limitations on using any current cryptocurrency blockchain here. There is a monetary cost associated with the insertion of a new value, and updates can take a significant amount of time to propagate over the network. These practical issues would make such a system practically unusable. File names are not even close to unique and disclose unnecessary information, should an adversary without the corresponding secret key get hold of an encrypted resource. Since resources are communicated peer-to-peer, the issue of malicious resource identifier collision attacks becomes negligible since users would have first-hand contact with peers that they trust and can verifiy the identity of. Resource checksums will have to be communicated and verified by peers before accepting a transfer of resource data.
 
-
 \subsection{Communication flow and transfer initiation}
-Once peers have verified each other’s identities, the question of how two peers start the transfer of a shared resource arises. This is also an implementation detail in applications using the library and depends on what problems that particular application is intending to solve.
 
+In order for nodes to be able to share data, they need a way to connect to each other. They also need to to this in a secure manner in order to prevent potential vicious third parties listening on a connection from making any sense of retrieved data. I.e. critical parts should not be sent in raw form but rather be encrypted. When considering security aspects there are essentially three questions that need to be answered regarding the issue of connecting nodes:
+
+\begin{itemize}
+\item How can a node find another node to begin with (peer discovery)?
+\item When a node has been found, how can a connection be established?
+\item What data needs to be encrypted in order to ensure the integrity of the system?
+\end{itemize}
+
+Answering these questions and finding the corresponding best technology was the focus of this research area. In recent years there has been a trend driving more and more of tools and services on the web towards user collaboration. A natural step in this trend is initiatives such as WebRTC and CU-RT-Web which enables direct peer-to-peer communication.
