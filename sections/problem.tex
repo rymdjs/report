@@ -15,7 +15,7 @@ There are several sub-problems in a system of this nature that the project needs
 Below, these main points affecting the architecture are presented.
 
 \subsection{Decentralization of system logic}
-In a truly distributed system, it is necessary to avoid having crucial system logic and data on a server. The functionality of the system should not rely on availability any central server. Temporary downtime can be accepted as long as servers do not store crucial data and can be replaced with new servers running the same software. Since clients can not know what application their peers are running, all information from other peers must be verified and considered as untrusted.
+In a truly distributed system, it is necessary to avoid having crucial system logic and data on a server. The functionality of the system should not rely on availability any central server. Temporary downtime can be accepted as long as servers do not store crucial data and can be replaced with new servers running the same software. Since clients can not know what application their peers are running, all information from other peers must be verified and considered as untrusted. Finally, a secure way to store the encryption keys for encrypted resources needs to be addressed.
 
 \subsection{Source code integrity}
 Since the system logic is run in a web browser, how can one trust the fact that the client code is not altered between executions? This issue is one of the reasons why a large part of the online community is considering client-side JavaScript encryption to be a generally bad practice. At the time of this writing, major web browsers have no way to verify client-side code or resources the way that native binaries or Java applets can be cryptographically signature checked.
