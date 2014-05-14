@@ -1,19 +1,19 @@
 \section{Purpose}\label{sec:purpose}
 
-% TODO Rework. Make shorter. More purpose-oriented wording.
+% TODO Johan: Rework. Make shorter. More purpose-oriented wording.
 
 A distributed peer-to-peer encrypted system for storage and communication of resources bundled in a library, with a web browser as the only client-side dependency is developed. In this report, the results are presented along with the state of modern web standards, as these technologies are researched and analyzed in terms of how they can facilitate realization of such as system. This should be realized in the form of a developer-oriented library.
 
 Below are the main goals and requirements of this library:
 
 \begin{description}
-  \item[Privacy]. Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
+  \item[Privacy] Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
 
-\item[Security]. Encryption in each step, from resource storage to data transfer.
+\item[Security] Encryption in each step, from resource storage to data transfer.
 
-\item[Reliability]. If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
+\item[Reliability] If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
 
-\item[Modularization and agnosticism]. The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
+\item[Modularization and agnosticism] The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
 
 \end{description}
 
@@ -24,4 +24,3 @@ In order to solve this, two subprojects have been devised:
 \item[Rymd] is the main outcome and end goal of the project. It should solve authentication and data transfer between nodes, while also providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client side code, such as a regular front-end web application, browser extension, or widget.
 \item[Shuttle] is a proof-of-concept prototype using Rymd to show its functionality. It can be seen as an executable evaluation of Rymd and will be briefly discussed in this report. Shuttle should be a working example of a file-sharing application that leverages Rymd to provide all these features.
 \end{description}
-
