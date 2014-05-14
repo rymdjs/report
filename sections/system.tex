@@ -1,6 +1,6 @@
 This chapter describes the technical foundations of the system and how the problems described in section~\ref{sec:problem} have been addressed in Rymd.
 
-% TODO: MUST do concrete descriptions of each module in Rymd here!
+% TODO Robert: Introduction to the overall system design?
 
 %TODO: Motivate choice of AES-CBC-256 (in implementation?)
 %Why RSA and not diffie hellman?
@@ -34,19 +34,21 @@ All of the mentioned technologies are sandboxed: the data is tied to a single or
     Mozilla Firefox 29             & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
     Apple Safari 7                & \cellcolor{red}No        & Yes  & \cellcolor{red}No    & Yes                        \\ \hline
     Opera 20                       & Yes       & Yes    & Yes  & Yes                      \\ \hline
-    Microsoft internet Explorer 11 & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
+    Microsoft Internet Explorer 11 & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
     \end{tabular}
     \caption {Browser support for selected HTML5 APIs at the time of writing}
 \end{table}
 
-The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
+The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
 
 \section{Peer-to-peer communication}
 Even though a Microsoft is drafting their own standard for peer-to-peer communcatition, at this time being the only viable alternative is WebRTC.
 Since the alternatives for peer-to-peer communication in the browser are quite limited, we chose to go with the WebRTC API.
 
 Among the three primary APIs in WebRTC, the one that turned up to be the most relevant was. .
-The API in 
+The API in
+
+% TODO Niklas: ^^
 
 \section{Peer identity verification}
 \label{sec:authorization}
@@ -102,6 +104,7 @@ To save a resource locally, a user-specific symmetric \emph{master key}, generat
 Generally, the metadata and the encrypted data are transferred separately - maybe even from separate peers. Therefore the hash is important to verify the integrity of the encrypted data. Resource IDs and hashes could also be communicated via trusted channels outside of Rymd, for example on web pages or via e-mail. Once again, verification of resource integrity and authenticity can be achieved by verifying the hash. It is vital that a sufficiently secure hashing algorithm is used; MD5, which used to be the de-facto standard for generating file checksums, has been proven to be weak and contain vulnerabilities to the extent where checksum collisions are too easy to generate. SHA-1 has for some time been recommended for verification of data integrity, but due to theoretical collision attacks and advances in computational capabilities, the U.S. government currently recommends against the use of SHA-1 for applications that require collision resistance\cite{NIST:2012}. In the default Rymd implementation, the superceding SHA-256 algorithm is used. This gives a strong protection while avoiding the computational overhead of e.g. SHA-512. Note that hashing provides message integrity, but not authentication (establishment of author). This could be established by letting the author of the resource sign the hash with their private key. Peers on the receiving end could then verify the signature using the author's public key. Establishing resource authentication has not been considered a main goal of Rymd and this functionality is therefore not (yet) implemented.
 
 The metadata and resource data are handled separately in Rymd and the communication flow will differ depending on the implementing application. Generally, the metadata will be shared with trusted peers to allow them to decrypt the resource. The encrypted resource can be shared freely since possession of the key is required to make anything useful from it. In this way untrusted peers could help facilitate transfers of resources in distributed systems. In the example implementation Shuttle, file sharing is initiated from the sharing end. Consider the case where Bob wishes to share a resource with Alice (assuming both Alice and Bob are already connected to the network):
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
@@ -123,8 +126,9 @@ The metadata and resource data are handled separately in Rymd and the communicat
 
 \section{Modules in Rymd}
 
-% TODO Robin: Describe our concrete modules better here. This section *has* to describe how
+% TODO Robert: Describe our concrete modules better here. This section *has* to describe how
 % *we* used modularity in our project.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
