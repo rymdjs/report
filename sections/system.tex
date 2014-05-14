@@ -55,13 +55,21 @@ Rymd therefore utilizes a DHT for storage of keys to achieve all of these goals:
 \label{fig:zooko}
 \end{figure}
 
-%TODO: Draft, references
-Once a key distribution scheme has been established, an authentication scheme needs to be determined. There are several schemes for authentication using public-key cryptography. Among these are Otway Rees (not mutual, MITM attack exists), Wide Mouth Frog (depends on timestamps), and Needham-Schroeder. Of the ones surveyed, Needham-Schroeder stood out as simple to implement since it does not utilize symmetric keys or timestamps, while it provides mutual authentication.
-%describe needham schroeder
+Once a key distribution scheme has been established, an authentication scheme needs to be determined. There are several schemes for authentication using public-key cryptography. Among these are Otway Rees (not mutual, attacks exist\cite{Wang:2000}), Wide Mouth Frog\cite{Burrows:1990} (depends on timestamps), and Needham-Schroeder\cite{Needham:1978}. Of the ones surveyed, Needham-Schroeder stood out as simple to implement since it does not utilize symmetric keys or timestamps, while it provides mutual authentication. Consider the scenario where $A$ wants to authenticate to $B$, assuming that they have already exchanged public keys $K_{PA}$ and $K_{PB}$. Then the Needham-Schroeder protocol flows like below:
 
-In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where an adversary that can initiate a session with one party can then pose as that party when communicating with a third party. Schroeder also proposed a fix to this vulnerability, and this amended \emph{Needham-Schroeder-Lowe protocol} presented below is what Rymd utilizes for authentication.
+\begin{description}
+  \item[$A \rightarrow B: \{N_A, A\}_{K_{PB}}$] $A$ generates a random nonce $N_A$, encrypts it together with their identity and sends it to $B$.
+  \item[$B \rightarrow A: \{N_A, N_B\}_{K_{PA}}$] $B$ responds by generating their own nonce $N_B$, encrypts it together with $N_A$ and sends it back to $A$. By replying with $N_A$, they prove that they possess the private key corresponding to $KP_B$.
+  \item[$A \rightarrow B: \{N_B\}_{K_{PB}}$] $A$ replies with $N_B$. The proof works in the same manner as for $B$. $A$ and $B$ are now mutually authenticated.
+\end{description}
 
-%describe needham schroeder lowe
+In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where an adversary that can initiate a session with one party can then pose as that party when communicating with a third party\cite{Lowe:1995}. Lowe also proposed a fix to this vulnerability, and this amended \emph{Needham-Schroeder-Lowe protocol} presented below is what Rymd utilizes for authentication.
+
+\begin{description}
+  \item[$A \rightarrow B: \{N_A, A\}_{K_{PB}}$]
+  \item[$B \rightarrow A: \{N_A, N_B, B\}_{K_{PA}}$] $B$ also includes their identity to make sure that this message can not be reused by other parties posing as someone else.
+  \item[$A \rightarrow B: \{N_B\}_{K_{PB}}$]
+\end{description}
 
 \section{Decentralization}
 Assuming that the system can utilize a DHT such as a cryptocurrency blockchain for storage of the public part of RSA key pairs, the issue of how to interface a web application with the blockchain in a way that allows for verification of identities without putting too much trust in the HTTP/cryptocurrency gateway also needs to be addressed. Additionally, as previously stated, the initial insertion of the key requires monetary resources, and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice.
