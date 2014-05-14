@@ -41,6 +41,13 @@ All of the mentioned technologies are sandboxed: the data is tied to a single or
 
 The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
 
+\section{Peer-to-peer communication}
+Even though a Microsoft is drafting their own standard for peer-to-peer communcatition, at this time being the only viable alternative is WebRTC.
+Since the alternatives for peer-to-peer communication in the browser are quite limited, we chose to go with the WebRTC API.
+
+Among the three primary APIs in WebRTC, the one that turned up to be the most relevant was. .
+The API in 
+
 \section{Peer identity verification}
 \label{sec:authorization}
 One of the main issues to be resolved in a project of this nature is that of distribution of cryptographic keys. For a truly decentralized system, it is not acceptable to adapt a CA-entered approach. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time. This conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distributed hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice at the cost of a small amount of the Namecoin currency (currently 0.01 NMC \cite{Namecoin:2014:Online}, which is roughly equivalent to 0.03 USD \cite{CryptoCoinCharts:2014:Online}). Ethereum, which was announced just a couple of weeks before the start of this project, extends this by their scripting language which not only allows storage of arbitrary data in the blockchain, but can also be scripted with a Turing-complete programming language and can therefore be used to implement arbitrary systems. A system like Ethereum could be very interesting to explore for a project like Rymd, but it is still in such an early stage that it is deemed too unstable to be useful at this point. Namecoin is currently considered a good candidate for key distribution.
