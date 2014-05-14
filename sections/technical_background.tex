@@ -8,26 +8,24 @@ The development of client side data storage in HTML5 is also an area that has be
 
 \section{Client-side storage}
 
-% Mention WebSQL, IndexedDB, etc.
-% TODO Johan
+Client-side storage is how arbitrary data can be persisted on disk by a web browser, accessible over an API. This is a general term for several separate but related APIs:
 
-\subsection{IndexedDB}
-\label{sec:indexeddb}
-% More stuff here: http://www.cms.livjm.ac.uk/pgnet2012/Proceedings/Papers/1569607913.pdf
-The IndexedDB is a transactional, indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera: its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}:
+\begin{description}
+  \item[Web Storage]\cite{WebStorage:Online} is a simple key-value store in the HTML5 specification.
+  \item[WebSQL Database]\cite{WebSQL:Online} is an embedded SQL relational database.
+  \item[FileSystem]\cite{FileSystem:Online} is an API providing direct file system access.
+  \item[Indexed Database]\cite{IndexedDB:Online} is a NoSQL asynchronous data store.
+\end{description}
 
-\begin{quote}
-This document defines APIs for a database of records holding simple values and hierarchical objects. Each record consists of a key and some value. Moreover, the database maintains indexes over records it stores. An application developer directly uses an API to locate records either by their key or by using an index. A query language can be layered on this API. An indexed database can be implemented using a persistent B-tree data structure.
-\end{quote}
+All of these technologies offers ways of storing data on the user's hard drive instead of on a remote server. There are two main reasons for this: to make the application available offline, and to improve performance (fewer requests to a server). Older storage techniques include cookies, plugin based storage (Java, Flash, Google Gears), or browser-specific features.
 
-\subsubsection{Basic structure}
-% Cursors, Object Stores, Indexes
-Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similar to tables in relational database management systems. An object store can hold \emph{objects} of different types, including binary data and Javascript primitives and objects. Each object has a \emph{key} (either specified by the developer from the object's properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
+All four APIs tie data to a single \emph{origin}, which is called \emph{Same Origin Policy}. An origin is the transfer protocol, the domain, and the port number. Thus every data store is associated with an origin, which implicates certain security aspects: an application in \emph{http://domain.com/subdir} may retrieve data from \emph{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \emph{https://domain.com:3000} due to the different protocol and port number. This is a layer of protection against Cross Site Scripting (XSS) attacks, even though there is no prevention against XSS holes in the other parts of the application (the database might be compromised due to malicious scripts injected elsewhere).
 
-% Async API
-% -----------
-% Requests, Callbacks, Events, NoSQL
-The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a \emph{callback} can be passed to handle the scenario and use the data. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. Using asynchronous passing of callbacks prevents the program execution to block at a line when a potentially heavy operation is called. The Javascript code snippets in listings ~\ref{lst:syncCall} and \ref{lst:asyncCall} show the difference in synchronous and asynchronous calls.
+In order to prevent malicious flooding of users' hard drives, browsers impose limits on storage capacity. If the application exceeds that limit the browser typically show a dialog in the interface to let the user increase the the limit. This quota is separated for each origin and storage mechanism. For instance, "sub.domain.com" may be allowed to store 5MB of Web Storage and 25MB of IndexedDB data, while "sub2.domain.com" may have other restrictions.
+
+Both the database mechanisms, IndexedDB and WebSQL, supports \emph{transactions}. This ensures the integrity of the database due to the prevention of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy.
+
+Most of the storage formats supports synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking and performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided, and is triggered on completion. This goes well with the asynchronous nature of Javascript, where events and callbacks are used heavily. The Javascript code snippets in listings~\ref{lst:syncCall} and \ref{lst:asyncCall} show the difference in synchronous and asynchronous calls.
 
 \begin{Code}
 \begin{lstlisting}[caption={Synchronous call}, label={lst:syncCall}]
@@ -48,6 +46,150 @@ request.onsuccess = function(evt) {
 \end{lstlisting}
 \end{Code}
 
+% Mention WebSQL, IndexedDB, etc.
+% TODO Johan
+
+\subsection{Web Storage}
+
+Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in figure~\ref{lst:localStorage}. The \texttt{localStorage} is persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
+
+\begin{Code}
+\begin{lstlisting}[caption={Use of Web Storage}, label={lst:localStorage}]
+// Save an item in the local store
+localStorage.foo = "bar";
+// or
+localStorage.setItem("foo", "bar");
+
+// Retrieve item
+var val = localStorage.foo;
+// or
+var val = localStorage.getItem("foo");
+
+// Delete item
+localStorage.removeItem("foo");
+\end{lstlisting}
+\end{Code}
+
+\subsection{WebSQL}
+\label{sec:websql}
+WebSQL is the only client-side storage technology mentioned who tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is very performant thanks to indexing, and many database developers can start using it as-is. However, by the use of SQL the database is vulnarable to SQL injection attacks, unless this is taken into account by the developer.
+
+\begin{Code}
+\begin{lstlisting}[caption={Use of WebSQL}, label={lst:websql}]
+// Create or open database with name, version, description and size of 2MB
+var db = openDatabase('testdb', '1.0', 'Test database', 2 * 1024 * 1024);
+
+// Create table and insert data
+db.transaction(function(tx) {
+  tx.executeSql('CREATE TABLE IF NOT EXISTS NAMES (id unique, first, second)');
+  tx.executeSql('INSERT INTO LOGS (id, first, second) VALUES (1, "Johan", "Brook")');
+});
+
+// Retrieve all names and print them
+db.transaction(function(tx) {
+   tx.executeSql('SELECT * FROM NAMES', [], function(tx, results) {
+     var len = results.rows.length, item;
+
+     for (var i = 0; i < len; i++){
+       item = results.rows.item(i);
+       console.log("Name: " + item.first + " " + item.second);
+     }
+  }, null);
+});
+\end{lstlisting}
+\end{Code}
+
+\subsection{FileSystem}
+\label{sec:filesystem}
+The FileSystem API allows for creation and reading of files and folders on the user's hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system.
+
+\begin{Code}
+\begin{lstlisting}[caption={Use of FileSystem}, label={lst:filesystem}]
+// Requesting a sandboxed, persistent file system with a size of 2MB and success callback
+window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
+  console.log("Opened filesystem: " + fs.name);
+
+  // Create a text file
+  fs.root.getFile("test.txt", { create: true, exclusive: true }, function(fileEntry) {
+    console.log("Created " + fileEntry.name + " in " + fileEntry.fullPath);
+    // => "Created test.txt in /test.txt"
+  });
+
+  // Reading a file
+  fs.root.getFile("test.txt", {}, function(fileEntry) {
+
+    // Get a File object and read its contents with FileReader.
+    fileEntry.file(function(file) {
+      var reader = new FileReader();
+
+      reader.onloadend = function() {
+        var contents = this.result;
+
+        console.log(contents);
+      };
+
+      reader.readAsText(file);
+    });
+  });
+
+  // Other methods of FileEntry:
+  fileEntry.getMetadata(successCallback, opt_errorCallback);
+  fileEntry.remove(successCallback, opt_errorCallback);
+  fileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);
+  fileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);
+  fileEntry.getParent(successCallback, opt_errorCallback);
+  fileEntry.toURL(opt_mimeType);
+
+  fileEntry.createWriter(successCallback, opt_errorCallback);
+});
+\end{lstlisting}
+\end{Code}
+
+\subsection{IndexedDB}
+\label{sec:indexeddb}
+The IndexedDB is a transactional, indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera: its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
+
+\subsubsection{Basic structure}
+% Cursors, Object Stores, Indexes
+Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similar to tables in relational database management systems. An object store can hold \emph{objects} of different types, including binary data and Javascript primitives and objects. Each object has a \emph{key} (either specified by the developer from the object's properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
+
+% Async API
+% -----------
+% Requests, Callbacks, Events, NoSQL
+The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL, and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive facet of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but with the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data.
+
+\begin{Code}
+\begin{lstlisting}[caption={Use of IndexedDB}]
+var request = indexedDB.open("testdatabase");
+
+// On database version migrations
+request.onupgradeneeded = function(event) {
+  var db = event.target.result;
+
+  // Create an objectStore for this database
+  var objectStore = db.createObjectStore("store");
+};
+
+// When the database is ready to use
+request.onsuccess = function(event) {
+  var db = request.result;
+
+  // Insert "foo" in the store
+  var insertTransaction = db.transaction(["store"], "readwrite").objectStore("store").put("Foo");
+
+  insertTransaction.onsuccess = function(evt) {
+    console.log("Inserted 'foo'");
+  };
+
+  // Read value with key "key" from the store
+  var readTransaction = db.transaction(["store"], "read").objectStore("store").get("key");
+  readTransaction.onsuccess = function(evt) {
+    console.log("Found " + evt.target.result);
+  };
+};
+\end{lstlisting}
+\end{Code}
+
 \subsubsection{Security and reliability}
 \label{subsec:security}
 IndexedDB is built on a transactional model, which implicates that all commands runs inside a transaction context. Transactions have a certain lifetime, and cannot be used after its expiration. This transactional model is especially useful for when several instances of a client application is using the same database and issuing commands: without transactions, concurrency problems and other collisions might occur with data loss as a result. Transactions are able to abort and be rolled back to the state of the database before the transaction was started.
@@ -63,15 +205,13 @@ Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB
 
 The database in IndexedDB does not include any kind of bundled encryption or validation, which means it is the developer's responsibility to sanitize and encrypt sensitive data before inserting into the store. Encryption is vital for the scenario where the contents of the database is compromised: the attacker must have access to the encryption key in order to read the information in plain text. Validation is needed if malicious content, such as Javascript, is inserted as the data fields in the store and then will be executed at a later stage.
 
-The \emph{Same Origin Policy} is used in IndexedDB. An origin is the transfer protocol, the domain, and the port number. Thus every database is associated with an origin, which implicates certain security aspects: an application in \emph{http://domain.com/subdir} may retrieve data from \emph{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \emph{https://domain.com:3000} due to the different protocol and port number. This is a layer of protection against Cross Site Scripting (XSS) attacks, even though there is no prevention against XSS holes in the other parts of the application (the database might be compromised due to malicious scripts injected elsewhere).
-
 Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be insterted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can according to \cite{IndexedDBSecurity:2012:Online} be done by checking the call from the web application to the database and on success, the database operation can be performed.
 
 \section{Distributed storage}
 With the inherent problems of trust in CAs in a PKI, several approaches to publicly available distribution of cryptographic keys have emerged in recent years. Some use a blockchain-based approach derived from Bitcoin. This implies distributing a cryptographically based ledger over an entire network and taking it beyond that of a monetary currency to systems that can be used for a wider range of applications. There are also other ideas on how to solve the trust issue.
 
 \subsection{Namecoin}
-A phenomenon that has been on the rise during recent years is that of cryptocurrencies such as Bitcoin \cite{CryptoCoinInsider:2014:Online}. Each participant in the Bitcoin network keeps a ledger of all transactions throughout the history of the network. In order for a transaction to be deemed valid, it needs to be included in a cryptographically signed block together with a salt by one of the nodes, with a hash that has a special format. It is this brute-force search for salts that generate these hashes that are called \emph{mining} and constitute the work done by \emph{miners} to keep the network running. As an incentive, each verified block also includes a reward to the miner that first finds it and submits it to the blockchain\cite{InternetForBeginners:2014:Online}. In effect, all transactions ever made are publicly available and tracked so that anyone can confirm their validity. This prevents forgery and double-spending of bitcoins.
+A phenomenon that has been on the rise during recent years is that of cryptocurrencies such as Bitcoin \cite{CryptoCoinInsider:2014:Online}. Each participant in the Bitcoin network keeps a ledger of all transactions throughout the history of the network. In order for a transaction to be deemed valid, it needs to be included in a cryptographically signed block together with a salt by one of the nodes, with a hash that has a special format. It is this brute-force search for salts that generate these hashes that are called \emph{mining} and constitute the work done by \emph{miners} to keep the network running. As an incentive, each verified block also includes a reward to the miner that first finds it and submits it to the blockchain\cite{internetForBeginners:2014:Online}. In effect, all transactions ever made are publicly available and tracked so that anyone can confirm their validity. This prevents forgery and double-spending of bitcoins.
 
 Namecoin\cite{CryptoCoinInsider:2014:Online}, another cryptocurrency, is essentially a fork of Bitcoin with new transaction types that allows its blockchain to be utilized as a distributed key-value store. Although similar in nature to Bitcoin, its main purpose is to be used as a decentralized domain name system (DNS), rather than as a monetary currency.
 
@@ -154,22 +294,27 @@ In the case of WebRTC, the techniques desribed above are leveraged through the I
 \end{figure}
 
 \section{Cryptography}
-% TODO Johannes & Robert
+\section{Cryptography}
 Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API\cite{WebCrypto:Online}, an open standard for implementation of cryptographic primitives in web clients accessible through client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. However, it is not yet finished and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator.
-\subsection{Web crypto API}
-The Web Cryptography API defines a low-level interface to interacting with cryptographic key material that is managed or exposed by user agents. The API itself is agnostic of the underlying implementation of key storage, but provides a common set of interfaces that allow rich web applications to perform operations such as signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw keying material.
-\subsection{Cerificates} % wikipedia
-In eccence a certificate contains a public key plus aditional information about the user,
-Usually the whole block is signed by a (CA) or another third party, this helps to profs the identity. One commonly used schema for certificates is the X.509 standard.
-In the X.509 system, a (CA) issues a certificate binding a public key to a name such as an e-mail address or a DNS entry.
+
+\subsection{Web Crypto API}
+The Web Crypto API provides a common set of interfaces that allow rich web applications to preform signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw material. The Web Crypto Api is still in an early implementation stage and the exact implementation of the different functionalities may come to change many times over time.
+
+
+
+\subsection{Certificates} % wikipedia
+In essence, a certificate contains a public key plus additional information about the user and: Usually the whole block is signed by a Central Authority) or another third party, the signing helps to prof the identity.
+One commonly used schema for certificates is the X.509 standard. In the X.509 system, a (CA) issues a certificate, binding a public key to a name such as an e-mail address or a DNS entry.
 
 \subsection{Private-Key Information Syntax Standard}
-Private-Key Information syntax standard or PKCS\#8, is a standard devoloped by RSA Security Inc: it does provide a way to construct private key certificates in the same way as public.
+Private-Key Information syntax standard or PKCS\#8, is a standard developed by RSA Security Inc: it does provide a way to construct private key certificates in the same way as public.
 PKCS\#8 stores the key in it's RSA components.
 The structure is expressed in ASN.1.
+
 \subsection{Simple public key infrastructure}
-Simple public key infrastructure abriviated SPKI is a successor to X.509:
+Simple public key infrastructure abbreviated SPKI is a successor to X.509:
 It was designed with the goal to eliminate overcomplication and scalability problems.
+
 \subsection{Advanced Encryption Standard}
-AES is based on a design principle known as a substitution-permutation network, and is fast in both software and hardware.[8] Unlike its predecessor DES, AES does not use a Feistel network. AES is a variant of Rijndael which has a fixed block size of 128 bits, and a key size of 128, 192, or 256 bits. By contrast, the Rijndael specification per se is specified with block and key sizes that may be any multiple of 32 bits, both with a minimum of 128 and a maximum of 256 bits.
-\cite{AESISFAST:Online}
+AES is based on the idea of substitution-permutation\cite{AESISFAST:Online}, this supports that
+diffusion and confusions together will complicate statistics attacks and hides local patterns in the language. Unlike DES who uses a Fiestel network, AES is using a structure  similar to Rijndael – with a fixed block size. Encryption is done with the same key but inversed. The algorithm described by AES is a symmetric-key algorithm, meaning the same key is used for both encrypting and decrypting the data.
