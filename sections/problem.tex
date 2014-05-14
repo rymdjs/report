@@ -1,7 +1,7 @@
 \section{Problem}
 \label{sec:problem}
 
-There are several sub-problems in a system of this type that the project needs to address.
+There are several sub-problems in a system of this type that the project needs to address:
 
 \begin{itemize}
 \item Decentralization of system logic
@@ -12,7 +12,7 @@ There are several sub-problems in a system of this type that the project needs t
 \item Communication flow and transfer initiation
 \end{itemize}
 
-Below, these main points affecting the architecture are presented.
+These points affect the architecture as presented in the following sections.
 
 \subsection{Decentralization of system logic}
 In a truly distributed system, it is necessary to avoid having crucial system logic and data on a server. The functionality of the system should not rely on the availability any central server. Temporary downtime can be accepted as long as servers do not store crucial data and can be replaced with new servers running the same software. Since clients can not know what application their peers are running, all information from other peers must be verified and considered as untrusted.
