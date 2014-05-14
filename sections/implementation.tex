@@ -1,7 +1,16 @@
 This chapter details the underlying implementation of the modules of Rymd and Shuttle (Data Storage, Communication, Authentication, Encryption), as well as documenting and motivating the different choices of required technologies. The latter is a crucial part in the development of web application systems: composing appropriate technologies and tools for the goal based on given criterias.
 
 \section{Authentication}
-Since the default authentication implementation utilizes Namecoin, which can not be accessed directly from a web application, a gateway service needs to be used. Therefore, the domain of authentication spans over several modules in separate systems.
+Since the default authentication implementation utilizes Namecoin, which can not be accessed directly from a web application, a gateway service needs to be used. Therefore, the domain of authentication spans over several parts in separate systems:
+\begin{description}
+  \item[DHT] A Node.js\footnote{http://nodejs.org} based server that looks up entries in the Namecoin blockchain. It is also used to keep track of session-based IDs, as described under~\ref{sec:communication}. This is the only module that runs outside of the Rymd library.
+  \item[DHT-Client] Client-side interface module to the DHT.
+  \item[ConnectionHandler] Submodule in the Rymd library. Implements the Needham-Schroeder-Lowe authentication business logic.
+\end{description}
+
+The idea with this separation is that the authentication algorithm is part of the core library, while derivative projects should be able to replace $DHT$ and $DHT-client$ with implementations using other stores like Ethereum or Keybase without having to consider writing a secure authentication protocol, should they so desire.
+
+
 
 
 

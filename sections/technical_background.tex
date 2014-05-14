@@ -156,8 +156,8 @@ In the case of WebRTC, the techniques desribed above are leveraged through the I
 \section{Cryptography}
 Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API\cite{WebCrypto:Online}, an open standard for implementation of cryptographic primitives in web clients accessible through client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. However, it is not yet finished and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator.
 
-\subsection{Web crypto API}
-The web Crypto API provides a common set of interfaces that allow rich web applications to preform signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw material. The Web Crypto Api is still in an early implementation stage and the exact implementation of the different functionalities may come to change many times over time.
+\subsection{Web Crypto API}
+The Web Crypto API provides a common set of interfaces that allow rich web applications to preform signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw material. The Web Crypto Api is still in an early implementation stage and the exact implementation of the different functionalities may come to change many times over time.
 
 
 
