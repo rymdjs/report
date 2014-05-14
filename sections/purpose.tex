@@ -7,13 +7,13 @@ A distributed peer-to-peer encrypted system for storage and communication of res
 Below are the main goals and requirements of this library:
 
 \begin{description}
-  \item[Privacy]. Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
+  \item[Privacy] Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
 
-\item[Security]. Encryption in each step, from resource storage to data transfer.
+\item[Security] Encryption in each step, from resource storage to data transfer.
 
-\item[Reliability]. If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
+\item[Reliability] If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
 
-\item[Modularization and agnosticism]. The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
+\item[Modularization and agnosticism] The system as a whole should not depend on particular implementations for resource storage, key storage or which protocol to use for data transfer. If a developer wants to, they should be able to easily plug in their own alternative implementation module.
 
 \end{description}
 
