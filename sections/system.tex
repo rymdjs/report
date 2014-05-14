@@ -34,18 +34,18 @@ All of the mentioned technologies are sandboxed: the data is tied to a single or
     Mozilla Firefox 29             & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
     Apple Safari 7                & \cellcolor{red}No        & Yes  & \cellcolor{red}No    & Yes                        \\ \hline
     Opera 20                       & Yes       & Yes    & Yes  & Yes                      \\ \hline
-    Microsoft Internet Explorer 11 & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
+    Microsoft internet Explorer 11 & Yes       & \cellcolor{red}No  & \cellcolor{red}No   & Yes                        \\ \hline
     \end{tabular}
     \caption {Browser support for selected HTML5 APIs at the time of writing}
 \end{table}
 
-The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
+The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, internet Explorer and Firefox, and due to the fact that its actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but in respect to the project's overall direction in regards to experimental technologies, this is negligible.
 
 \section{Peer identity verification}
 \label{sec:authorization}
 One of the main issues to be resolved in a project of this nature is that of distribution of cryptographic keys. For a truly decentralized system, it is not acceptable to adapt a CA-entered approach. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time. This conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distributed hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice at the cost of a small amount of the Namecoin currency (currently 0.01 NMC \cite{Namecoin:2014:Online}, which is roughly equivalent to 0.03 USD \cite{CryptoCoinCharts:2014:Online}). Ethereum, which was announced just a couple of weeks before the start of this project, extends this by their scripting language which not only allows storage of arbitrary data in the blockchain, but can also be scripted with a Turing-complete programming language and can therefore be used to implement arbitrary systems. A system like Ethereum could be very interesting to explore for a project like Rymd, but it is still in such an early stage that it is deemed too unstable to be useful at this point. Namecoin is currently considered a good candidate for key distribution.
 
-Rymd therefore utilizes a DHT for storage of keys to achieve all of these goals: The distributed nature of cryptocurrencies makes it decentralized; peers can choose their own names (identities), giving meaningful names; the small monetary fee required to register a name makes it both secure and prevents massive name-squatting by malicious third parties.
+Rymd therefore utilizes Namecoin for storage of keys to achieve all of these goals: The distributed nature of cryptocurrencies makes it decentralized; peers can choose their own names (identities), giving meaningful names; the blockchain-based approach makes it secure. Additionally, the small monetary fee required to register a name prevents massive name-squatting.
 
 \begin{figure}[h]
 \centering
@@ -55,13 +55,21 @@ Rymd therefore utilizes a DHT for storage of keys to achieve all of these goals:
 \label{fig:zooko}
 \end{figure}
 
-%TODO: Draft, references
-Once a key distribution scheme has been established, an authentication scheme needs to be determined. There are several schemes for authentication using public-key cryptography. Among these are Otway Rees (not mutual, MITM attack exists), Wide Mouth Frog (depends on timestamps), and Needham-Schroeder. Of the ones examined, Needham-Schroeder stood out as simple to implement since it does not utilize symmetric keys or timestamps, while it provides mutual authentication.
-%describe needham schroeder
+Once a key distribution scheme has been established, an authentication scheme needs to be determined. There are several schemes for authentication using public-key cryptography. Among these are Otway Rees (not mutual, attacks exist\cite{Wang:2000}), Wide Mouth Frog\cite{Burrows:1990} (depends on timestamps), and Needham-Schroeder\cite{Needham:1978}. Of the ones examined, Needham-Schroeder stood out as simple to implement since it does not utilize symmetric keys or timestamps, while it provides mutual authentication. Consider the scenario where $A$ wants to authenticate to $B$, assuming that they have already exchanged public keys $K_{PA}$ and $K_{PB}$. Then the Needham-Schroeder protocol flows like below:
 
-In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where an adversary that can initiate a session with one party can then pose as that party when communicating with a third party. Schroeder also proposed a fix to this vulnerability, and this amended \emph{Needham-Schroeder-Lowe protocol} presented below is what Rymd utilizes for authentication.
+\begin{description}
+  \item[$A \rightarrow B: \{N_A, A\}_{K_{PB}}$] $A$ generates a random nonce $N_A$, encrypts it together with their identity and sends it to $B$.
+  \item[$B \rightarrow A: \{N_A, N_B\}_{K_{PA}}$] $B$ responds by generating their own nonce $N_B$, encrypts it together with $N_A$ and sends it back to $A$. By replying with $N_A$, they prove that they possess the private key corresponding to $KP_B$.
+  \item[$A \rightarrow B: \{N_B\}_{K_{PB}}$] $A$ replies with $N_B$. The proof works in the same manner as for $B$. $A$ and $B$ are now mutually authenticated.
+\end{description}
 
-%describe needham schroeder lowe
+In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where an adversary that can initiate a session with one party can then pose as that party when communicating with a third party\cite{Lowe:1995}. Lowe also proposed a fix to this vulnerability, and this amended \emph{Needham-Schroeder-Lowe protocol} presented below is what Rymd utilizes for authentication.
+
+\begin{description}
+  \item[$A \rightarrow B: \{N_A, A\}_{K_{PB}}$]
+  \item[$B \rightarrow A: \{N_A, N_B, B\}_{K_{PA}}$] $B$ also includes their identity to make sure that this message can not be reused by other parties posing as someone else.
+  \item[$A \rightarrow B: \{N_B\}_{K_{PB}}$]
+\end{description}
 
 \section{Decentralization}
 Assuming that the system can utilize a DHT such as a cryptocurrency blockchain for storage of the public part of RSA key pairs, the issue of how to interface a web application with the blockchain in a way that allows for verification of identities without putting too much trust in the HTTP/cryptocurrency gateway also needs to be addressed. Additionally, as previously stated, the initial insertion of the key requires monetary resources, and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice.
@@ -71,7 +79,6 @@ While the public key can be stored in a DHT, private keys need to be stored secu
 
 Full access to a resource implies possession of three things: the encrypted resource data, the cryptographic key used to encrypt said data and the metadata describing the resource. The creation of a new resource is done as follows:
 
-% TODO Needs descriptive figure here.
 
 \begin{enumerate}
   \item Metadata is generated. Metadata consists of resource name, author identity, MIME type, a randomly generated GUID, incrementing file version (always $1$ in the case of new resource) and a timestamp.
@@ -88,6 +95,13 @@ To save a resource locally, a user-specific symmetric \emph{master key}, generat
 Generally, the metadata and the encrypted data are transferred separately - maybe even from separate peers. Therefore the hash is important to verify the integrity of the encrypted data. Resource IDs and hashes could also be communicated via trusted channels outside of Rymd, for example on web pages or via e-mail. Once again, verification of resource integrity and authenticity can be achieved by verifying the hash. It is vital that a sufficiently secure hashing algorithm is used; MD5, which used to be the de-facto standard for generating file checksums, has been proven to be weak and contain vulnerabilities to the extent where checksum collisions are too easy to generate. SHA-1 has for some time been recommended for verification of data integrity, but due to theoretical collision attacks and advances in computational capabilities, the U.S. government currently recommends against the use of SHA-1 for applications that require collision resistance\cite{NIST:2012}. In the default Rymd implementation, the superceding SHA-256 algorithm is used. This gives a strong protection while avoiding the computational overhead of e.g. SHA-512. Note that hashing provides message integrity, but not authentication (establishment of author). This could be established by letting the author of the resource sign the hash with their private key. Peers on the receiving end could then verify the signature using the author's public key. Establishing resource authentication has not been considered a main goal of Rymd and this functionality is therefore not (yet) implemented.
 
 The metadata and resource data are handled separately in Rymd and the communication flow will differ depending on the implementing application. Generally, the metadata will be shared with trusted peers to allow them to decrypt the resource. The encrypted resource can be shared freely since possession of the key is required to make anything useful from it. In this way untrusted peers could help facilitate transfers of resources in distributed systems. In the example implementation Shuttle, file sharing is initiated from the sharing end. Consider the case where Bob wishes to share a resource with Alice (assuming both Alice and Bob are already connected to the network):
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
+]{figures/flow}
+\caption{The flow involved in Bob sharing a resource with Alice}
+\label{fig:flow}
+\end{figure}
 \begin{enumerate}
   \item Bob requests Alice's public key and endpoint ID's from the DHT.
   \item Bob initiates a connection with Alice and they are mutually authenticated. This process is described in~\ref{sec:authorization}.
@@ -99,7 +113,15 @@ The metadata and resource data are handled separately in Rymd and the communicat
   \item When Alice wants to access the resource, she decrypts it.
 \end{enumerate}
 
+
 \section{Modules in Rymd}
 
 % TODO Robin: Describe our concrete modules better here. This section *has* to describe how
 % *we* used modularity in our project.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
+]{figures/architecture}
+\caption{The modules and external APIs utilized in Rymd and Shuttle}
+\label{fig:architecture}
+\end{figure}

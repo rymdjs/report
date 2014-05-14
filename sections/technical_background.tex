@@ -128,7 +128,6 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-% More stuff here: http://www.cms.livjm.ac.uk/pgnet2012/Proceedings/Papers/1569607913.pdf
 The IndexedDB is a transactional, indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera: its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
@@ -212,7 +211,7 @@ Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static 
 With the inherent problems of trust in CAs in a PKI, several approaches to publicly available distribution of cryptographic keys have emerged in recent years. Some use a blockchain-based approach derived from Bitcoin. This implies distributing a cryptographically based ledger over an entire network and taking it beyond that of a monetary currency to systems that can be used for a wider range of applications. There are also other ideas on how to solve the trust issue.
 
 \subsection{Namecoin}
-A phenomenon that has been on the rise during recent years is that of cryptocurrencies such as Bitcoin \cite{CryptoCoinInsider:2014:Online}. Each participant in the Bitcoin network keeps a ledger of all transactions throughout the history of the network. In order for a transaction to be deemed valid, it needs to be included in a cryptographically signed block together with a salt by one of the nodes, with a hash that has a special format. It is this brute-force search for salts that generate these hashes that are called \emph{mining} and constitute the work done by \emph{miners} to keep the network running. As an incentive, each verified block also includes a reward to the miner that first finds it and submits it to the blockchain\cite{InternetForBeginners:2014:Online}. In effect, all transactions ever made are publicly available and tracked so that anyone can confirm their validity. This prevents forgery and double-spending of bitcoins.
+A phenomenon that has been on the rise during recent years is that of cryptocurrencies such as Bitcoin \cite{CryptoCoinInsider:2014:Online}. Each participant in the Bitcoin network keeps a ledger of all transactions throughout the history of the network. In order for a transaction to be deemed valid, it needs to be included in a cryptographically signed block together with a salt by one of the nodes, with a hash that has a special format. It is this brute-force search for salts that generate these hashes that are called \emph{mining} and constitute the work done by \emph{miners} to keep the network running. As an incentive, each verified block also includes a reward to the miner that first finds it and submits it to the blockchain\cite{internetForBeginners:2014:Online}. In effect, all transactions ever made are publicly available and tracked so that anyone can confirm their validity. This prevents forgery and double-spending of bitcoins.
 
 Namecoin\cite{CryptoCoinInsider:2014:Online}, another cryptocurrency, is essentially a fork of Bitcoin with new transaction types that allows its blockchain to be utilized as a distributed key-value store. Although similar in nature to Bitcoin, its main purpose is to be used as a decentralized domain name system (DNS), rather than as a monetary currency.
 
@@ -294,22 +293,27 @@ In the case of WebRTC, the techniques desribed above are leveraged through the I
 \end{figure}
 
 \section{Cryptography}
-% TODO Johannes & Robert
+\section{Cryptography}
 Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API\cite{WebCrypto:Online}, an open standard for implementation of cryptographic primitives in web clients accessible through client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. However, it is not yet finished and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator.
-\subsection{Web crypto API}
-The Web Cryptography API defines a low-level interface to interacting with cryptographic key material that is managed or exposed by user agents. The API itself is agnostic of the underlying implementation of key storage, but provides a common set of interfaces that allow rich web applications to perform operations such as signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw keying material.
-\subsection{Cerificates} % wikipedia
-In eccence a certificate contains a public key plus aditional information about the user,
-Usually the whole block is signed by a (CA) or another third party, this helps to profs the identity. One commonly used schema for certificates is the X.509 standard.
-In the X.509 system, a (CA) issues a certificate binding a public key to a name such as an e-mail address or a DNS entry.
+
+\subsection{Web Crypto API}
+The Web Crypto API provides a common set of interfaces that allow rich web applications to preform signature generation and verification, hashing and verification, encryption and decryption, without requiring access to the raw material. The Web Crypto Api is still in an early implementation stage and the exact implementation of the different functionalities may come to change many times over time.
+
+
+
+\subsection{Certificates} % wikipedia
+In essence, a certificate contains a public key plus additional information about the user and: Usually the whole block is signed by a Central Authority) or another third party, the signing helps to prof the identity.
+One commonly used schema for certificates is the X.509 standard. In the X.509 system, a (CA) issues a certificate, binding a public key to a name such as an e-mail address or a DNS entry.
 
 \subsection{Private-Key Information Syntax Standard}
-Private-Key Information syntax standard or PKCS\#8, is a standard devoloped by RSA Security Inc: it does provide a way to construct private key certificates in the same way as public.
+Private-Key Information syntax standard or PKCS\#8, is a standard developed by RSA Security Inc: it does provide a way to construct private key certificates in the same way as public.
 PKCS\#8 stores the key in it's RSA components.
 The structure is expressed in ASN.1.
+
 \subsection{Simple public key infrastructure}
-Simple public key infrastructure abriviated SPKI is a successor to X.509:
+Simple public key infrastructure abbreviated SPKI is a successor to X.509:
 It was designed with the goal to eliminate overcomplication and scalability problems.
-\subsection{Andvanced Encryption Standard}
-AES is based on a design principle known as a substitution-permutation network, and is fast in both software and hardware.[8] Unlike its predecessor DES, AES does not use a Feistel network. AES is a variant of Rijndael which has a fixed block size of 128 bits, and a key size of 128, 192, or 256 bits. By contrast, the Rijndael specification per se is specified with block and key sizes that may be any multiple of 32 bits, both with a minimum of 128 and a maximum of 256 bits.
-\cite{AESISFAST:Online}
+
+\subsection{Advanced Encryption Standard}
+AES is based on the idea of substitution-permutation\cite{AESISFAST:Online}, this supports that
+diffusion and confusions together will complicate statistics attacks and hides local patterns in the language. Unlike DES who uses a Fiestel network, AES is using a structure  similar to Rijndael – with a fixed block size. Encryption is done with the same key but inversed. The algorithm described by AES is a symmetric-key algorithm, meaning the same key is used for both encrypting and decrypting the data.
