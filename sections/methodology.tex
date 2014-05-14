@@ -5,9 +5,9 @@ Initially the project was split into two parts: an evaluation phase and an imple
 The goal of the evaluation phase was to map out the landscape of relevant technologies. Different options were compared  with each other in order to analyze strengths and weaknesses in regards to a set of given parameters:
 
 \begin{description}
-  \item[Suitability]. How well does the technology suit the needs and demands of the job? Are there any technical limitations?
-  \item[Maintenance]. Is the technology actively maintained? If not, does it pose an issue? What are the future scenarios?
-  \item[Industry support]. Are some unsupported browsers neglible? What are the industry's current opinions?
+  \item[Suitability] How well does the technology suit the needs and demands of the job? Are there any technical limitations?
+  \item[Maintenance] Is the technology actively maintained? If not, does it pose an issue? What are the future scenarios?
+  \item[Industry support] Are some unsupported browsers neglible? What are the industry's current opinions?
 \end{description}
 
 Research was done concerning open web technologies, mainly those belonging to the HTML5 standard. The usage of open web technologies was a requirement of the project's end product, Rymd, which meant that no native code could be written as part of the system and that the quality of the product would be completely dependent on the state of existing APIs and tools for web development. Thus research was done in order to survey the landscape of existing technologies in order to determine which, if any, fulfilled the requirements so that the end product actually could be developed using them.
@@ -15,10 +15,10 @@ Research was done concerning open web technologies, mainly those belonging to th
 A set of areas was created, where each area connected with one or several core problems stated within the project. In each area, evaluation and comparisons were made, which included researching APIs and prototyping actual test cases implementing isolated forms of future system features. The research areas were divided as follows:
 
 \begin{description}
-\item[Data storage]. Investigated how to store data locally for each node. This was crucial in order to meet with the overall requirement of building a decentralized system.
-\item[Communication]. Reviewed the possibilities for communicating and sending data with peer-to-peer technology between two nodes.
-\item[Authentication and Permissions]. How to solve authentication for nodes.
-\item[Prototyping]. Rapidly produced a rough test case for sending a file from one node to another.
+\item[Data storage] Investigated how to store data locally for each node. This was crucial in order to meet with the overall requirement of building a decentralized system.
+\item[Communication] Reviewed the possibilities for communicating and sending data with peer-to-peer technology between two nodes.
+\item[Authentication and Permissions] How to solve authentication for nodes.
+\item[Prototyping] Rapidly produced a rough test case for sending a file from one node to another.
 \end{description}
 
 
@@ -34,7 +34,7 @@ All source code was managed by the distributed source versioning system git\foot
 
 \subsection{Modularity}
 
-As stated in section ~\ref{sec:purpose}, developers should be able to easily incorporate their own preferred implementations of the system's core functionality. Accomplishing this would allow developers to not only supply more fitting modules to their end products, but also exchanging existing ones if better alternatives were to be released. This has been particularily important in Rymd since it utilizes technologies at the web's furthest frontier, meaning unfinished drafts in constant change. While these technologies caused a lot of problems, e.g. certain features suddenly breaking because of an update, they supplied the neccessary functionalty required for Rymd's key features to work.
+As stated in section~\ref{sec:purpose}, developers should be able to easily incorporate their own preferred implementations of the system's core functionality. Accomplishing this would allow developers to not only supply more fitting modules to their end products, but also exchanging existing ones if better alternatives were to be released. This has been particularily important in Rymd since it utilizes technologies at the web's furthest frontier, meaning unfinished drafts in constant change. While these technologies caused a lot of problems, e.g. certain features suddenly breaking because of an update, they supplied the neccessary functionalty required for Rymd's key features to work.
 
 For modularity to be properly fulfilled, these features had to be identified and separated into individual modules.
 

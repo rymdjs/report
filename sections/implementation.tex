@@ -1,59 +1,16 @@
 This chapter details the underlying implementation of the modules of Rymd and Shuttle (Data Storage, Communication, Authentication, Encryption), as well as documenting and motivating the different choices of required technologies. The latter is a crucial part in the development of web application systems: composing appropriate technologies and tools for the goal based on given criterias.
 
-\section{Data storage}
-\label{sec:datastorage}
-
-The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}
-
-\begin{Code}
-\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
-var Store = new IndexedDbStore("myStore")
-
-// Fetch all records as an array
-Store.all().then(function(records) { ... })
-
-// Create a record
-Store.create("A record").then(function(record){ ... })
-
-// Insert a record
-Store.save("A record").then(function(guid){ ... })
-
-// Fetch a record by GUID
-Store.get(guid).then(function(record) { ... })
-
-// Delete a record by GUID
-Store.destroy(guid).then(function(record) { ... })
-\end{lstlisting}
-\end{Code}
-
-The largest challenge came to the edge cases when storing files, or as they are called in web browser: \emph{Blobs}. Since only Firefox can as of now store blobs directly in IndexedDB, an alternate route had to be taken for other browsers. Initially the module used conditionals and converted incoming data to and from \emph{ArrayBuffers} (the browser construct for raw byte streams). But since ArrayBuffers are just the raw data, all metadata for the blobs (such as filename, timestamps, size) would be lost when saving as an ArrayBuffer. In early versions of the data storage module this metadata would be stored in a separate store in the database, but this was too tight coupled and was removed. The final implementation is storing data as-is – any metadata must be saved explicitly in a separate operation.
-
-The data storage module is a separate repository and the source is available at https://github.com/rymdjs/data-storage.
-
-\section{Communication}
-\label{sec:p2p}
-% Niklas
-
-% - built on top of peerjs, TODO (not sure how to reference to github)
-Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. PeerJS utilize WebRTC and is essentially split into two components: A server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, Peer.js utilize both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
-
-% - explain how peer.js works.
-The following steps explain how PeerJS broker connections:
-\begin{enumerate}
-\item Two clients connects to the PeerJS server, using the client side API.
-\item The server returns unique IDs for each of the clients.
-\item One of the clients connect to the other using the client side API, where the unique ID for the other one is provided. The PeerJS server then forwards the information needed to set up a peer-to-peer connection to the other client.
-\end{enumerate}
-% modularity and such
-In line with the project guidelines regarding modularity, Peer.js specific code is separated into a module of its own. If the requirements are to change, then those changes are contained to a single module.
-
-
 \section{Authentication}
+Since the default authentication implementation utilizes Namecoin, which can not be accessed directly from a web application, a gateway service needs to be used. Therefore, the domain of authentication spans over several parts in separate systems:
+\begin{description}
+  \item[DHT] A Node.js\footnote{http://nodejs.org} based server that looks up entries in the Namecoin blockchain. It is also used to keep track of session-based IDs, as described under~\ref{sec:communication}. This is the only module that runs outside of the Rymd library.
+  \item[DHT-Client] Client-side interface module to the DHT.
+  \item[ConnectionHandler] Submodule in the Rymd library. Implements the Needham-Schroeder-Lowe authentication business logic.
+\end{description}
 
-% TODO Robert
+The idea with this separation is that the authentication algorithm is part of the core library, while derivative projects should be able to replace $DHT$ and $DHT-client$ with implementations using other stores like Ethereum or Keybase without having to consider writing a secure authentication protocol, should they so desire.
 
 \section{Cryptography}
-\label{sec:cryptography}
 \label{sec:cryptography}
 %TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
 %In Rymd, security is achieved through secure primitives, user restrictions and by the use of cryptographic communication libraries.
@@ -158,7 +115,58 @@ Web Crypto Key Discovery API was originally thought as a part of the Web Crypto 
 
 % TODO Johannes
 
+\section{Data storage}
+\label{sec:datastorage}
+
+% TODO Johan: Oversee this.
+
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}
+
+\begin{Code}
+\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
+var Store = new IndexedDbStore("myStore")
+
+// Fetch all records as an array
+Store.all().then(function(records) { ... })
+
+// Create a record
+Store.create("A record").then(function(record){ ... })
+
+// Insert a record
+Store.save("A record").then(function(guid){ ... })
+
+// Fetch a record by GUID
+Store.get(guid).then(function(record) { ... })
+
+// Delete a record by GUID
+Store.destroy(guid).then(function(record) { ... })
+\end{lstlisting}
+\end{Code}
+
+The largest challenge came to the edge cases when storing files, or as they are called in web browser: \emph{Blobs}. Since only Firefox can as of now store blobs directly in IndexedDB, an alternate route had to be taken for other browsers. Initially the module used conditionals and converted incoming data to and from \emph{ArrayBuffers} (the browser construct for raw byte streams). But since ArrayBuffers are just the raw data, all metadata for the blobs (such as filename, timestamps, size) would be lost when saving as an ArrayBuffer. In early versions of the data storage module this metadata would be stored in a separate store in the database, but this was too tight coupled and was removed. The final implementation is storing data as-is – any metadata must be saved explicitly in a separate operation.
+
+The data storage module is a separate repository and the source is available at https://github.com/rymdjs/data-storage.
+
+\section{Communication}
+\label{sec:p2p}
+% TODO: Niklas
+
+% - built on top of peerjs, TODO (not sure how to reference to github)
+Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. PeerJS utilize WebRTC and is essentially split into two components: A server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, Peer.js utilize both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
+
+% - explain how peer.js works.
+The following steps explain how PeerJS broker connections:
+\begin{enumerate}
+\item Two clients connects to the PeerJS server, using the client side API.
+\item The server returns unique IDs for each of the clients.
+\item One of the clients connect to the other using the client side API, where the unique ID for the other one is provided. The PeerJS server then forwards the information needed to set up a peer-to-peer connection to the other client.
+\end{enumerate}
+% modularity and such
+In line with the project guidelines regarding modularity, Peer.js specific code is separated into a module of its own. If the requirements are to change, then those changes are contained to a single module.
+
+
+
 \section{Testing}
 \label{sec:testing}
 Automatic unit tests have been implemented where possible. No integration or functional tests have been written for testing larger parts of the system. This is due to the fast iteration of the library's interface and constant change in implementation.
-% TODO: more here?
+% TODO Johan: more here?
