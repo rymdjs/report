@@ -117,12 +117,12 @@ Web Crypto Key Discovery API was originally thought as a part of the Web Crypto 
 
 % TODO Johannes
 
-\section{Data storage}
+\section{IndexedDBStorage}
 \label{sec:datastorage}
 
 % TODO Johan: Oversee this.
 
-The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}. The module supports use of multiple object stores and auto-generation of GUID keys.
 
 \begin{Code}
 \begin{lstlisting}[caption={Common database operations}, label={lst:api}]
@@ -147,6 +147,9 @@ Store.destroy(guid).then(function(record) { ... })
 
 The largest challenge came to the edge cases when storing files, or as they are called in web browser: \emph{Blobs}. Since at present only Firefox can store blobs directly in IndexedDB, an alternate route had to be taken for other browsers. Initially the module used conditionals and converted incoming data to and from \emph{ArrayBuffers} (the browser construct for raw byte streams). But since ArrayBuffers are just the raw data, all metadata for the blobs (such as filename, timestamps, size) would be lost when saving as an ArrayBuffer. In early versions of the data storage module this metadata would be stored in a separate store in the database, but this was too tightly coupled and was removed. The final implementation is storing data as-is – any metadata must be saved explicitly in a separate operation.
 
+%The asynchronous API of IndexedDB is relatively verbose and complex. It makes heavy use of event driven programming and thus the developer communicates with the database with callbacks.
+% TODO Johan: More here.
+
 The data storage module is a separate repository and the source is available at https://github.com/rymdjs/data-storage.
 
 \section{Communication}
@@ -170,5 +173,42 @@ In line with the project guidelines regarding modularity, PeerJS-specific code i
 
 \section{Testing}
 \label{sec:testing}
-Automatic unit tests have been implemented where possible. No integration or functional tests have been written for testing larger parts of the system. This is due to the fast iteration of the library's interface and constant change in implementation.
-% TODO Johan: more here?
+Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{sec:libraries} for links to external libraries used).
+
+\begin{Code}
+\begin{lstlisting}[caption={Sample test suite}, label={lst:testsuite}]
+describe("IndexedDBStore", function() {
+
+  var db;
+
+  beforeEach(function() {
+		db = new IndexedDBStore({
+			dbName: "test"
+		});
+	});
+
+  it("should have a database name", function() {
+		db.name.should.equal("test");
+	});
+
+  it("should save a record and return an id", function() {
+		return db.save({foo: "bar"})
+		.then(function(id) {
+			id.should.be.a("String");
+		});
+	});
+
+  it("should retrieve a given record", function() {
+		return db.save({foo: "bar"})
+      .then(db.get.bind(db))
+      .then(function(record) {
+
+			record.should.be.an("Object");
+			record.data.foo.should.equal("bar");
+		});
+	});
+});
+\end{lstlisting}
+\end{Code}
+
+No integration or functional tests have been written for testing larger parts of the system. This is due to the fast iteration of the library's interface and constant change in implementation.
