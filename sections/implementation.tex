@@ -20,7 +20,7 @@ The idea with this separation is that the authentication algorithm is part of th
 At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium.
 Even if the implementations provided by these browsers supply key generation, there is no support for persisting keys between sessions or even exporting private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own; doing this is bad practice and is only performed in order to get a prototype running.
 
-\subsection{Dependecies}
+\subsection{Dependencies}
 The Crypto module is based around the use of cryptographic communication libraries; the module is strutured in a way such that cryptoback.js handles key generation and parsing while the rest is handled by the crypto.js module.
 \begin{Code}
 \begin{lstlisting}[caption={Included database operations}, label={lst:api}]
@@ -54,12 +54,13 @@ All certificate have a static key size where asymmetric keys are of $1024bits$ a
 % \end{lstlisting}
 %\end{Code}
 
+% TODO Johan: Oversee this.
 \subsection{Algorithms}
 The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$.
 AES-CBC is a symmetric key AES based using cipher block chaining; it is the only symmetric algorithm implemented at the time of writing, besides it is fast\cite{AESISFAST:Online} and simple to use.
 $RSAES-PKCS1-v1.5$ - an AES implementation based on the RSA algorithm.
-The Signing uses $RSASSA-PKCS1-v1_5$, this choice is motivated by the lack of alternatives and the fact the the web crypto api recommends the use of this algorithm on their webpage. Finally, there are no other RSA signing algorithms included in the Web Crypto API.
-A motivation for the use of sha -256 could be found in the Decentralization section.
+The signing uses $RSASSA-PKCS1-v1_5$. This choice is motivated by the lack of alternatives and the fact the the Web Crypto API recommends the use of this algorithm on their web page. Finally, there are no other RSA signing algorithms included in the Web Crypto API.
+A motivation for the use of SHA-256 could be found in the Decentralization section.
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
   var generationAlgorithmSign =  {
@@ -89,8 +90,8 @@ A motivation for the use of sha -256 could be found in the Decentralization sect
   }
 \end{lstlisting}
 \end{Code}
-Regarding $RSAES-PKCS1-v1.5$, the fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption (se table \ref{table:webcryptoapi})..
-Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption with
+Regarding $RSAES-PKCS1-v1.5$, the fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption (se table \ref{table:webcrypoapi})..
+Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption.
 Regarding accessibility, both algorithms are included in the Web Crypto API and are therefore provided by the browser as black boxes.
 % add text about hashing
 % why is the hashing in
@@ -109,15 +110,15 @@ AES-CMAC & SYM &  &  & x & x & x \\
 AES-GCM & SYM & x & x &  &  & x \\
 AES-CFB & SYM & x & x &  &  & x
 \end{tabular}
-\caption{W3C Draft Table}
+\caption{Some Web Cryptp Api Algorithms}
 \label{table:webcrypoapi}
 \end{table}
 In commercial terms as for our project, RSA is clearly the winner; commercial RSA certificates are much more widely deployed than DSA certificates.
 Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format.
 The Private-Key Information Syntax Standard (PKCS\#8) -  defines a way to store the private key and the Simple public key infrastructure (SPKI) - defines a way to store the public key.
 All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}.
-W3C - the organization behind the Web Crypto API, have announced their intention to implement the Web Crypto Key Discovery API \cite{WebCryptoKeyDiscovery:Online} a secure key store which would allow Rymd to persist keys between sessions in a secure manner.
-Web Crypto Key Discovery API was originally thought as a part of the Web Crypto API was extracted in favor overall of decreased implementation complexity.
+
+W3C - the organization behind the Web Crypto API, have announced also their intention to handle the problem with a secure key storage option, that would work between sessions, namely the Web Crypto Key Discovery API \cite{WebCryptoKeyDiscovery:Online}, the Api would allow Rymd to persist keys between sessions in a secure manner yet not possible since there is no intention from Google Chrome to implent this before the completion of the Web Crypto Api. Web Crypto Key Discovery API was originally thought as a part of the Web Crypto API was extracted in favor overall of decreased implementation complexity.
 
 % TODO Johannes
 
@@ -175,6 +176,7 @@ In line with the project guidelines regarding modularity, PeerJS-specific code i
 
 
 
+% TODO Johan: Oversee this.
 \section{Testing}
 \label{sec:testing}
 Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{sec:libraries} for links to external libraries used).
