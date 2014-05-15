@@ -227,7 +227,7 @@ Keybase \cite{Keybase:Online} is another recent initiative that intends to solve
 % Mention WebSockets, others?
 % TODO Niklas & Robin
 
-Up until recently browsers has lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}.
+Up until recently browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}.
 
 Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standarizing protocols, and drafing APIs. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft actually supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google’s (or nowdays, W3C’s and IETF) version of it\cite{WebRTCAndMicrosoft:2012:Online}.
 
@@ -238,7 +238,7 @@ All in all, Microsoft remains optimistic that a common standard will eventually 
 \subsection{NAT, STUN, TURN and ICE}
 A problem with the construction of peer-to-peer applications using WebRTC, is the presence of NATs (Network Address Translation). NATs were first introduced in RFC 1631 as a short term solution to the problems regarding IP address depletion in IPv4. The idea was that by utilizing NATs, several hosts in a private network could together share a single public IP address \cite{RFC1631:Online}.
 
-A NAT is responsible for maintaining a table with entries that map an internal IP address and port, to a public IP address and port and dropping these entries when they are no longer of relevance. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table, which can then be used to route the response back to the internal host(See figure ~\ref{fig:NAT}) \cite{RFC5245:Online}.
+A NAT is responsible for maintaining a table with entries that map an internal IP address and port to a public IP address and port and dropping these entries when they are no longer of relevance. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table which can then be used to route the response back to the internal host(See figure ~\ref{fig:NAT}) \cite{RFC5245:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -248,11 +248,11 @@ A NAT is responsible for maintaining a table with entries that map an internal I
 \label{fig:NAT}
 \end{figure}
 
-The reason why the presence of NATs can pose a problem for peer-to-peer communication in the browser is that WebRTC mainly leverage the UDP protocol for transportation of data. The underlying issue with the UDP protocol is the absense of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes is difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped, as they can not reach the source. In the case of TCP, which got a well defined state, it is inherently simple to determine when an entry should be dropped.
+The reason why the presence of NATs can pose a problem for peer-to-peer communication in the browser is that WebRTC mainly leverage the UDP protocol for transportation of data. The underlying issue with the UDP protocol is the absense of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
 
-A technique commonly used to solve the problem regarding UDP entries expiring and being dropped, is to utilize keepalives at regular intervals, which is commonly referred to as \emph{UDP hole punching} \cite{UDPHolePunching:Online}.
+A technique commonly used to solve the problem with UDP entries expiring and being dropped is to utilize keepalives at regular intervals. This is is commonly referred to as \emph{UDP hole punching} \cite{UDPHolePunching:Online}.
 
-An additional problem is that internal hosts know their internal IP, but not the public one. If a host runs an application, which communicates the IP as a part of the payload to hosts oustide of the private network, there would obviously be a missmatch if the internal IP is chosen. Therefore it is common to utilize a protocol called STUN (Session Traversal Utilities for NAT), which was introduced in RFC 5389. The protocol enables hosts to obtain its public IP address, with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}) \cite{RFC5389:Online}.
+Another problem is that internal hosts know their internal IP but not their public one. If a host runs an application, which communicates the IP as a part of the payload to hosts oustide of the private network, there would obviously be a missmatch if the internal IP is chosen. Therefore it is common to utilize a protocol called STUN (Session Traversal Utilities for NAT), which was introduced in RFC 5389. The protocol enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}) \cite{RFC5389:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -262,7 +262,7 @@ An additional problem is that internal hosts know their internal IP, but not the
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-These techniques are not always adequate, which is caused by the fact that STUN does not work with all types of NATs, and in some cases UDP traffic might be blocked by a firewall. In these cases the TURN (Traversal Using Relays around NAT) protocol, specified in RFC 5766, can be leveraged.  TURN establish a TCP connection with a relay server in those cases where UDP fails. The relay server is used to tunnel data to the other host, which means that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}) \cite{RFC5766:Online}.
+These techniques are not always adequate which is caused by the fact that STUN does not work with all types of NATs. In some cases, UDP traffic might be blocked by a firewall. This is where the TURN (Traversal Using Relays around NAT) protocol, specified in RFC 5766, can be leveraged.  TURN establish a TCP connection with a relay server when UDP has failed. The relay server is used to tunnel data to the other host, which means that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}) \cite{RFC5766:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -272,7 +272,7 @@ These techniques are not always adequate, which is caused by the fact that STUN 
 \label{fig:WebRTC - TURN}
 \end{figure}
 
-In the case of WebRTC, the techniques desribed above are leveraged through the ICE (Interactive Connection Establishment) protocol which is used by the RTCPeerConnection API. The ICE protocol is specified by RFC 5245 and has the objective of connecting peers in the most efficient way and it makes use of STUN and fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) \cite{RFC5245:Online}.
+In the case of WebRTC, the techniques desribed above are leveraged through the ICE (Interactive Connection Establishment) protocol which is used by the RTCPeerConnection API. The ICE protocol is specified by RFC 5245 and has the objective of connecting peers in the most efficient way. It makes use of STUN and the fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) \cite{RFC5245:Online}.
 
 \begin{figure}[htp]
 \centering
@@ -315,12 +315,14 @@ Until recently, the practice of performing cryptographic operations in a web bro
 The Web Crypto API provides a common set of interfaces that allow web applications to preform signature, generation, verification, hashing, encryption and decryption, without requiring access to the underlying keys and algorithms: referd to as the raw material. The Web Crypto Api is still in an early stage and the exact implementation of the different functionalities may come to change many times over time.
 
 \subsection{Certificates}
+% TODO: Roberto Carlos, this paragraph needs some love
 In essence, a certificate contains a public key plus additional information about the user and: Usually the whole block is signed by a Central Authority) or another third party, the signing helps to prof the identity. One commonly used schema for certificates is the X.509 standard. In the X.509 system, a (CA) issues a certificate, binding a public key to a name such as an e-mail address or a DNS entry.
 
 \subsection{Advanced Encryption Standard}
+% TODO: Robert Gustafsson, lovin! Sweet lovin
 AES is based on the idea of substitution-permutation\cite{AESISFAST:Online}, this supports that
 diffusion and confusions together will complicate statistics attacks and hides
-local patterns in the language. Unlike DES who uses a Fiestel network,
+local patterns in the language. Unlike DES, which uses a Fiestel network,
 AES is using a structure  similar to Rijndael – with a fixed block size.
-Encryptton is preformed in rounds, the number of rounds depends on the lenght of the key. Decryption is done with the same key but inversed, it is also preformed in a itterativly.
+Encryption is preformed in rounds, the number of rounds depends on the lenght of the key. Decryption is done with the same key but inversed, it is also preformed in a itterativly.
 
