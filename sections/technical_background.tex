@@ -50,7 +50,7 @@ request.onsuccess = function(evt) {
 
 \subsection{Web Storage}
 
-Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in figure~\ref{lst:localStorage}. The \texttt{localStorage} is persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
+Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in figure~\ref{lst:localStorage}. The \texttt{localStorage} object persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of Web Storage}, label={lst:localStorage}]
@@ -71,7 +71,7 @@ localStorage.removeItem("foo");
 
 \subsection{WebSQL}
 \label{sec:websql}
-WebSQL is the only client-side storage technology mentioned who tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is very performant thanks to indexing, and many database developers can start using it as-is. However, by the use of SQL the database is vulnarable to SQL injection attacks, unless this is taken into account by the developer.
+WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is very performant thanks to indexing, and many database developers can start using it as-is. However, by the use of SQL the database is vulnarable to SQL injection attacks, unless this is taken into account by the developer.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of WebSQL}, label={lst:websql}]
