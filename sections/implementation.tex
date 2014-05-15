@@ -117,12 +117,12 @@ Web Crypto Key Discovery API was originally thought as a part of the Web Crypto 
 
 % TODO Johannes
 
-\section{Data storage}
+\section{IndexedDBStorage}
 \label{sec:datastorage}
 
 % TODO Johan: Oversee this.
 
-The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). By the use of the concept of \emph{promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API could be made very streamlined and simple to manage. An example can be found in listing~\ref{lst:api}. The module supports use of multiple object stores and auto-generation of GUID keys.
 
 \begin{Code}
 \begin{lstlisting}[caption={Common database operations}, label={lst:api}]
@@ -146,6 +146,9 @@ Store.destroy(guid).then(function(record) { ... })
 \end{Code}
 
 The largest challenge came to the edge cases when storing files, or as they are called in web browser: \emph{Blobs}. Since at present only Firefox can store blobs directly in IndexedDB, an alternate route had to be taken for other browsers. Initially the module used conditionals and converted incoming data to and from \emph{ArrayBuffers} (the browser construct for raw byte streams). But since ArrayBuffers are just the raw data, all metadata for the blobs (such as filename, timestamps, size) would be lost when saving as an ArrayBuffer. In early versions of the data storage module this metadata would be stored in a separate store in the database, but this was too tightly coupled and was removed. The final implementation is storing data as-is – any metadata must be saved explicitly in a separate operation.
+
+%The asynchronous API of IndexedDB is relatively verbose and complex. It makes heavy use of event driven programming and thus the developer communicates with the database with callbacks.
+% TODO Johan: More here.
 
 The data storage module is a separate repository and the source is available at https://github.com/rymdjs/data-storage.
 
