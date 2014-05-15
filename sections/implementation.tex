@@ -87,7 +87,7 @@ $RSAES-PKCS1-v1.5$ - an AES implementation based on the RSA algorithm.
   }
 \end{lstlisting}
 \end{Code}
-The fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption.
+Regarding $RSAES-PKCS1-v1.5$,the fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption (se table \ref{table:webcryptoapi})..
 Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption with
 Regarding accessibility, both algorithms are included in the Web Crypto API and are therefore provided by the browser as black boxes.
 % add text about hashing
@@ -107,6 +107,8 @@ AES-CMAC & SYM &  &  & x & x & x \\
 AES-GCM & SYM & x & x &  &  & x \\
 AES-CFB & SYM & x & x &  &  & x
 \end{tabular}
+\caption{W3C Draft Table}
+\label{table:webcrypoapi}
 \end{table}
 In commercial terms as for our project, RSA is clearly the winner; commercial RSA certificates are much more widely deployed than DSA certificates.
 Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format.
