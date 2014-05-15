@@ -42,11 +42,8 @@ All of the mentioned technologies are sandboxed: the data is tied to a single or
 The conclusion was to use IndexedDB for persisted resource storage. It was chosen because of its support by Google Chrome, Internet Explorer and Firefox, and due to the fact that it is actively maintained (while WebSQL is not). Users of the Safari browser will not be able to utilize the product, but considering the project's overall direction with regards to experimental technologies, this is negligible.
 
 \section{Peer-to-peer communication}
-Even though a Microsoft is drafting their own standard for peer-to-peer communcatition, at this time being the only viable alternative is WebRTC.
-Since the alternatives for peer-to-peer communication in the browser are quite limited, we chose to go with the WebRTC API.
 
-Among the three primary APIs in WebRTC, the one that turned up to be the most relevant was. .
-The API in
+Even though there are two projects which seeks to enable peer-to-peer communication in the browser - WebRTC and CU-RTC-Web - the only viable alternative at the time being is WebRTC. The project is under development by the organizations W3C and IETF, and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF, and is not implemented in any browsers.
 
 % TODO Niklas: ^^
 
