@@ -1,3 +1,5 @@
+% TODO This chapter *must* detail our implementation of the modules introduced in System Design!
+
 This chapter details the underlying implementation of the modules of Rymd and Shuttle (Data Storage, Communication, Authentication, Encryption), as well as documenting and motivating the different choices of required technologies. The latter is a crucial part in the development of web application systems: composing appropriate technologies and tools for the goal based on given criterias.
 
 \section{Authentication}
@@ -168,5 +170,42 @@ In line with the project guidelines regarding modularity, PeerJS-specific code i
 
 \section{Testing}
 \label{sec:testing}
-Automatic unit tests have been implemented where possible. No integration or functional tests have been written for testing larger parts of the system. This is due to the fast iteration of the library's interface and constant change in implementation.
-% TODO Johan: more here?
+Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{sec:libraries} for links to external libraries used).
+
+\begin{Code}
+\begin{lstlisting}[caption={Sample test suite}, label={lst:testsuite}]
+describe("IndexedDBStore", function() {
+
+  var db;
+
+  beforeEach(function() {
+		db = new IndexedDBStore({
+			dbName: "test"
+		});
+	});
+
+  it("should have a database name", function() {
+		db.name.should.equal("test");
+	});
+
+  it("should save a record and return an id", function() {
+		return db.save({foo: "bar"})
+		.then(function(id) {
+			id.should.be.a("String");
+		});
+	});
+
+  it("should retrieve a given record", function() {
+		return db.save({foo: "bar"})
+      .then(db.get.bind(db))
+      .then(function(record) {
+
+			record.should.be.an("Object");
+			record.data.foo.should.equal("bar");
+		});
+	});
+});
+\end{lstlisting}
+\end{Code}
+
+No integration or functional tests have been written for testing larger parts of the system. This is due to the fast iteration of the library's interface and constant change in implementation.
