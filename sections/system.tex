@@ -1,4 +1,4 @@
-This chapter describes the technical foundations of the system and how the problems described in section~\ref{sec:problem} have been addressed in Rymd.
+This chapter describes the technical foundations of the system and how the problems described in section~\ref{sec:problem} have been addressed.
 
 % TODO Robert: Introduction to the overall system design?
 
@@ -49,7 +49,7 @@ Even though there are two projects which seeks to enable peer-to-peer communicat
 
 \section{Peer identity verification}
 \label{sec:authorization}
-One of the main issues to be resolved in a project of this nature is that of distribution of cryptographic keys. For a truly decentralized system, it is not acceptable to adapt a CA-entered approach. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time. The conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distributed hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice at the cost of a small amount of the Namecoin currency (currently 0.01 NMC \cite{Namecoin:2014:Online}, which is roughly equivalent to 0.03 USD \cite{CryptoCoinCharts:2014:Online}). Ethereum, which was announced just a couple of weeks before the start of this project, extends this by their scripting language which not only allows storage of arbitrary data in the blockchain, but can also be scripted with a Turing complete programming language and can therefore be used to implement arbitrary systems. A system like Ethereum could be very interesting to explore for a project like Rymd, but it is still in such an early stage that it is deemed too unstable to be useful at this point. Namecoin is currently considered a good candidate for key distribution.
+One of the main issues to be resolved in a project of this nature is that of distribution of cryptographic keys. For a truly decentralized system, it is not acceptable to adapt a CA-centered approach, because of the high level of trust that is put in central authorities. While a Web of Trust is interesting, it might be too cumbersome for users. This issue is addressed in "Zooko's Triangle" (See figure~\ref{fig:zooko}), stating that no system assigning names to participants in a network can have the property that names are secure, decentralized and meaningful at the same time\cite{Zooko:2001:Online}. The conjecture has since been proven false by the design of systems such as the blockchain of the cryptocurrency Namecoin, which effectively acts as a cryptographically secured distributed hash table (DHT) with unique keys. Users can reserve a name and assign to it a value of their choice at the cost of a small amount of the Namecoin currency (currently 0.01 NMC \cite{Namecoin:2014:Online}, which is roughly equivalent to 0.03 USD \cite{CryptoCoinCharts:2014:Online}). Ethereum, which was announced just a couple of weeks before the start of this project, extends this by their scripting language which not only allows storage of arbitrary data in the blockchain, but can also be scripted with a Turing complete programming language and can therefore be used to implement arbitrary systems. A system like Ethereum could be very interesting to explore for a project like Rymd, but it is still in such an early stage that it is deemed too unstable to be useful at this point. Namecoin is currently considered a good candidate for key distribution.
 
 Rymd therefore utilizes Namecoin for storage of keys to achieve all of these goals: The distributed nature of cryptocurrencies makes it decentralized; peers can choose their own names (identities), giving meaningful names; the blockchain-based approach makes it secure. Additionally, the small monetary fee required to register a name prevents massive name-squatting. However, there are practical limitations and consequences associated with this approach. The monetary cost associated with the insertion of a new value means that key insertion needs to be handled outside of Rymd. That updates can take a significant amount of time to propagate over the network (up to several hours) is another issue, but since insertion or updates of keys should happen very seldomly, this should be acceptable. Most importantly, since Namecoin (or any other currently existing cryptocurrency for that matter) communicates using their own binary data protocol\cite{BitcoinSource:2014:Online}, web applications can not interact directly with the blockchain to fetch this information before a mutual peer-to-peer authenticated connection is established. As a consequence, a service that acts as a bridge between Rymd and the blockchain is needed.
 
@@ -57,7 +57,7 @@ Rymd therefore utilizes Namecoin for storage of keys to achieve all of these goa
 \centering
 \includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
 ]{figures/Zooko_s_Triangle}
-\caption{Zooko's Triangle, with the edges representing the achievable combinations of features \cite{Zooko:2001:Online}}
+\caption{Zooko's Triangle, with the edges representing the achievable combinations of features \cite{WikiMedia:2006}}
 \label{fig:zooko}
 \end{figure}
 
@@ -78,7 +78,7 @@ In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where a
 \end{description}
 
 \section{Decentralization}
-Assuming that the system can utilize a DHT such as a cryptocurrency blockchain for storage of the public part of RSA key pairs, the issue of how to interface a web application with the blockchain in a way that allows for verification of identities without putting too much trust in the HTTP/cryptocurrency gateway also needs to be addressed. Additionally, as previously stated, the initial insertion of the key requires monetary resources and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice.
+Since the system utilizes the Namecoin blockchain for storage of public keys, there is an issue of how to interface web applications with the blockchain without putting too much trust in the HTTP/cryptocurrency gateway. Users could host their own gateways or retrieve or verify keys manually through their own Namecoin clients. Additionally, as previously stated, the initial insertion of the key requires monetary resources and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice.
 While the public key can be stored in a DHT, private keys need to be stored securely on each client, preferably without giving client code any direct access to the raw keys.
 
 \section{Creation and transfers of resources}
@@ -86,21 +86,20 @@ First, we address the question of how to identify resources. That identifiers sh
 
 Full access to a resource implies possession of three things: the encrypted resource data, the cryptographic key used to encrypt said data and the metadata describing the resource. The creation of a new resource is done as follows:
 
-\begin{enumerate}
-  \item Metadata is generated. Metadata consists of resource name, author identity, MIME type, a randomly generated GUID, incrementing file version (always $1$ in the case of new resource) and a timestamp.
-  \item A resource-specific symmetric cryptographic key is generated. In the default implementation, a 256 bit AES-CBC key is used.
-  \item The resource data is encrypted using the resource key.
-  \item A resource hash is calculated based on the metadata and encrypted data.
-  \item The hash is added to the metadata.
-  \item The metadata and the encrypted data is combined to form the internal representation of the resource.
-  \item The key is saved in a local key store.
-\end{enumerate}
+\begin{description}
+  \item[Generation of metadata] Metadata consists of resource name, author identity, MIME type, a randomly generated GUID, incrementing file version (always $1$ in the case of new resource) and a timestamp.
+  \item[Generation of resource-specific symmetric cryptographic key] In the default implementation, a 256 bit AES-CBC key is used.
+  \item[Encryption of the resource data using the resource key]
+  \item[Calculation of resource hash based on the metadata and encrypted data] The hash is then added to the metadata.
+  \item[Combination of metadata and encrypted data into the internal representation of the resource]
+  \item[Saving of key to local key store]
+\end{description}
 
 To save a resource locally, a user-specific symmetric \emph{master key}, generated at the time of first access, is used to encrypt the metadata before saving it and the encrypted resource data to a local resource store.
 
 The exact flow involved in a transfer depends on the implementing application. Generally (and in Shuttle), the metadata and the encrypted data are transferred separately - maybe even from separate peers. Therefore the hash is important to verify the integrity of the encrypted data. Resource IDs and hashes could also be communicated via trusted channels outside of Rymd, for example on web pages or via e-mail. Once again, verification of integrity and authenticity of resources are achieved by verifying the hash. It is vital that a sufficiently secure hashing algorithm is used; MD5, which used to be the de-facto standard for generating file checksums, has been proven to be weak and contain vulnerabilities to the extent where checksum collisions are too easy to generate \cite{MD5Broken:Online}. SHA-1 has for some time been recommended for verification of data integrity, but due to theoretical collision attacks and advances in computational capabilities, the U.S. government currently recommends against the use of SHA-1 for applications that require collision resistance\cite{NIST:2012}. In the default Rymd implementation, the superceding SHA-256 algorithm is used. This gives a strong protection while avoiding the computational overhead of e.g. SHA-512. Note that hashing provides message integrity, but not authentication (establishment of author). This could be established by letting the author of the resource sign the hash with their private key. Peers on the receiving end could then verify the signature using the author's public key. Establishing resource authentication has not been considered a main goal of Rymd and this functionality is therefore not (yet) implemented.
 
-The metadata and resource data are handled separately in Rymd and the communication flow will differ depending on the implementing application. Generally, the metadata will be shared with trusted peers to allow them to decrypt the resource. The encrypted resource can be shared freely since possession of the key is required to make anything useful from it. In this way untrusted peers could help facilitate transfers of resources in distributed systems. In the example implementation Shuttle, file sharing is initiated from the sharing end. Consider the case where Bob wishes to share a resource with Alice (assuming both Alice and Bob are already connected to the network):
+The metadata and resource data are handled separately in Rymd and the communication flow will differ depending on the implementing application. Generally, the metadata will be shared with trusted peers to allow them to decrypt the resource. The encrypted resource can be shared freely since possession of the key is required to make anything useful from it. In this way untrusted peers could help facilitate transfers of resources in a distributed fashion. In the example implementation Shuttle, file sharing is initiated from the sharing end. Consider the case where Bob wishes to share a resource with Alice (assuming both Alice and Bob are already connected to the network):
 
 \begin{figure}[h]
 \centering
@@ -110,7 +109,7 @@ The metadata and resource data are handled separately in Rymd and the communicat
 \label{fig:flow}
 \end{figure}
 \begin{enumerate}
-  \item Bob requests Alice's public key and endpoint ID's from the DHT.
+  \item Bob requests Alice's public key and endpoint IDs from the DHT.
   \item Bob initiates a connection with Alice and they are mutually authenticated. This process is described in~\ref{sec:authorization}.
   \item Bob sends the metadata and key for the resource to Alice.
   \item Alice creates a new resource as described above, but without the encrypted data, and saves it to her data store.

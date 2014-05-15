@@ -1,4 +1,4 @@
-Initially the project was split into two parts: an evaluation phase and an implementation phase. This chapter presents in more detail the results of each phase and how it relates to the end product.
+Initially the project was split into three parts: an evaluation phase, a rapid prototyping phase and an implementation phase. This chapter further details the results of each phase and how it relates to the end product.
 
 \section{Evaluation of technologies}
 
@@ -10,7 +10,7 @@ The goal of the evaluation phase was to map out the landscape of relevant techno
   \item[Industry support] Are some unsupported browsers neglible? What are the industry's current opinions?
 \end{description}
 
-Research was done concerning open web technologies, mainly those belonging to the HTML5 standard. The usage of open web technologies was a requirement of the project's end product, Rymd, which meant that no native code could be written as part of the system and that the quality of the product would be completely dependent on the state of existing APIs and tools for web development. Thus research was done in order to survey the landscape of existing technologies in order to determine which, if any, fulfilled the requirements so that the end product actually could be developed using them.
+Research was done concerning open web technologies, mainly those belonging to the HTML5 standard. The usage of open web technologies was a requirement of the project's end product, Rymd, which meant that no native code could be written as part of the system and that the quality of the product would be completely dependent on the state of existing APIs and tools for web development. Thus research was done in order to survey the landscape of existing technologies in order to determine which, if any, fulfilled the requirements so that the end product actually could be developed using them. The result of this research is presented in \ref{sec:tech_background} with the resulting analysis and discussion in \ref{sec:system}.
 
 A set of areas was created, where each area connected with one or several core problems stated within the project. In each area, evaluation and comparisons were made, which included researching APIs and prototyping actual test cases implementing isolated forms of future system features. The research areas were divided as follows:
 
@@ -24,20 +24,19 @@ A set of areas was created, where each area connected with one or several core p
 
 \section{Prototyping}
 
-The aim for the prototyping area was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Therefore a rough prototype of Rymd and Shuttle was created, which implemented two basic test cases: storing a file in the chosen data storage implementation and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the choice of those special technologies.
+The aim for the prototyping phase was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Therefore a rough prototype of Rymd and Shuttle was created, which implemented two basic test cases: storing a file in the chosen data storage implementation and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the choice of those special technologies.
 
 \section{Implementation}
 
-During the implementation phase, which stretched from the end of the evaluation to the end of the project, the product was implemented according to the requirements. At an early stage it was decided that the implementation process would apply light agile methodologies. For this project, this included having a Product Backlog with User Stories, working in sprints and having semi-weekly Scrum-meetings where current state and eventual problems were brought up. For managing the stories in the backlog, the online management tool Pivotal Tracker was used.
+At an early stage it was decided that the implementation process would apply light agile methodologies. For this project, this included having a Product Backlog with User Stories, working in sprints and having semi-weekly Scrum-meetings where current state and eventual problems were brought up. 
 
-All source code was managed by the distributed source versioning system git\footnote{http://git-scm.com/} and with the online tool GitHub\footnote{https://github.com/rymdjs}.
+All source code was managed by the distributed source versioning system git\footnote{http://git-scm.com/} and hosted at the online service GitHub\footnote{https://github.com/rymdjs}.
 
 \subsection{Modularity}
 
-As stated in section~\ref{sec:purpose}, developers should be able to easily incorporate their own preferred implementations of the system's core functionality. For modularity to be properly fulfilled, these main features had to be clearly identified and separated into individual code repositories ("modules").
+As stated in section~\ref{sec:purpose}, developers should be able to easily incorporate their own preferred implementations of the system's core functionality. For modularity to be properly fulfilled, features that could have alternative implementations had to be clearly identified and separated into individual code repositories ("modules").
 
-Accomplishing this would allow developers to not only supply more fitting modules to their end products, but also exchanging existing ones if better alternatives were to be released. This has been particularily important in Rymd since it utilizes technologies at the web's furthest frontier, meaning unfinished drafts in constant change. While these technologies caused a lot of problems, e.g. certain features suddenly breaking because of an update, they supplied the neccessary functionalty required for Rymd's key features to work.
+Accomplishing this would allow developers to not only supply more fitting modules to their end products, but also exchanging existing ones if better alternatives were to be released. This has been particularily important in Rymd since it utilizes technologies at the web's furthest frontier, meaning unfinished drafts in constant change. While these technologies caused a lot of problems, e.g. certain features suddenly breaking because of an update, they supplied the neccessary functionality required for Rymd's key features to work.
 
-Furthermore, a system with separate interchangeable parts allowed for both advantages and disadvantages. Easier testing was one of the former, where instead of a suite covering the whole system, tests could be limited to each module. Something that proved to be more difficult was debugging flow of events covering multiple modules. Data would travel through connecting end points between modules and then be sent far down call hierarchies (perhaps triggering new events or having more information appended to itself) before bubbling back up in the call chain. Any error occuring in such a flow were hard to pinpoint.
 
 
