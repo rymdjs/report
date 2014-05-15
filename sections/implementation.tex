@@ -59,7 +59,7 @@ The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-C
 AES-CBC is a symmetric key AES based using cipher block chaining; it is the only symmetric algorithm implemented at the time of writing, besides it is fast\cite{AESISFAST:Online} and simple to use.
 $RSAES-PKCS1-v1.5$ - an AES implementation based on the RSA algorithm.
 The Signing uses $RSASSA-PKCS1-v1_5$, this choice is motivated by the lack of alternatives and the fact the the web crypto api recommends the use of this algorithm on their webpage. Finally, there are no other RSA signing algorithms included in the Web Crypto Api.
-A motivation for the use of sha -256 could be found in the Decentralization section.
+A motivation for the use of SHA-256 could be found in the Decentralization section.
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
   var generationAlgorithmSign =  {
@@ -89,7 +89,7 @@ A motivation for the use of sha -256 could be found in the Decentralization sect
   }
 \end{lstlisting}
 \end{Code}
-Regarding $RSAES-PKCS1-v1.5$, the fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption (se table \ref{table:webcryptoapi})..
+Regarding $RSAES-PKCS1-v1.5$, the fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption (se table \ref{table:webcrypoapi})..
 Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption with
 Regarding accessibility, both algorithms are included in the Web Crypto API and are therefore provided by the browser as black boxes.
 % add text about hashing
@@ -109,7 +109,7 @@ AES-CMAC & SYM &  &  & x & x & x \\
 AES-GCM & SYM & x & x &  &  & x \\
 AES-CFB & SYM & x & x &  &  & x
 \end{tabular}
-\caption{W3C Draft Table}
+\caption{Some Web Cryptp Api Algorithms}
 \label{table:webcrypoapi}
 \end{table}
 In commercial terms as for our project, RSA is clearly the winner; commercial RSA certificates are much more widely deployed than DSA certificates.
