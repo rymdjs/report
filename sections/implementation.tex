@@ -24,13 +24,13 @@ The front-end prototype was built in order to test and implement the features of
 
 The source code is available at: https://github.com/rymdjs/prototype.
 
-Shuttle uses Rymd's functionality by instantiating a global \typettt{RymdNode} object (see~\ref{sec:rymd}). This effectively makes Shuttle a node in the network. In-app notifications are shown by listening to certain events on the \typettt{rymdNode} object.
+Shuttle uses Rymd's functionality by instantiating a global \texttt{RymdNode} object (see~\ref{sec:rymd}). This effectively makes Shuttle a node in the network. In-app notifications are shown by listening to certain events on the \texttt{rymdNode} object.
 
 When the front-end Javascript code was beginning to grow fairly complex, a decision was made to rewrite the code for the front-end framework Backbone\footnote{http://backbonejs.org}. Backbone provides a barebones concept of models, collections, views and events, as well as a URL router. The prototype was thus restructured and integrated with Backbone's patterns.
 
 \subsection{Persisting front-end models}
 
-A major feature of Backbone is the ability to connect to an existing data API for persisting front-end models to a backend. By the use of \typettt{XMLHttpRequest} for asynchronous HTTP requests Backbone is able to talk to a RESTful API when creating, reading, updating or deleting models. However, in Shuttle the data should not be persisted to a remote server, but instead use the local data store in Rymd (see~\ref{sec:indexeddbstore}). A custom adapter was written\footnote{https://github.com/rymdjs/prototype/blob/develop/lib/Backbone.ResourceStore.js}, which intercepts Backbone's calls by overriding the \typettt{sync} method to make it communicate with the local store with CRUD actions.
+A major feature of Backbone is the ability to connect to an existing data API for persisting front-end models to a backend. By the use of \texttt{XMLHttpRequest} for asynchronous HTTP requests Backbone is able to talk to a RESTful API when creating, reading, updating or deleting models. However, in Shuttle the data should not be persisted to a remote server, but instead use the local data store in Rymd (see~\ref{sec:indexeddbstore}). A custom adapter was written\footnote{https://github.com/rymdjs/prototype/blob/develop/lib/Backbone.ResourceStore.js}, which intercepts Backbone's calls by overriding the \texttt{sync} method to make it communicate with the local store with CRUD actions.
 
 \begin{Code}
 \begin{lstlisting}[caption={Sample scenario of persisting models}, label={lst:backbonesync}]
