@@ -1,8 +1,16 @@
 % TODO This chapter *must* detail our implementation of the modules introduced in System Design!
 
-This chapter details the underlying implementation of the modules of Rymd and Shuttle (Data Storage, Communication, Authentication, Encryption), as well as documenting and motivating the different choices of required technologies. The latter is a crucial part in the development of web application systems: composing appropriate technologies and tools for the goal based on given criterias.
+This chapter details the underlying implementation of the modules of the whole system.
 
-\section{Authentication}
+\section{Rymd}
+
+% TODO Somebody
+
+\section{Shuttle}
+
+% TODO Johan
+
+\section{Authentication (DHT, DHT Client)}
 Since the default authentication implementation utilizes Namecoin, which can not be accessed directly from a web application, a gateway service needs to be used. Therefore, the domain of authentication spans over several parts in separate systems:
 \begin{description}
   \item[DHT] A Node.js\footnote{http://nodejs.org} based server that looks up entries in the Namecoin blockchain. It is also used to keep track of session-based IDs, as described under~\ref{sec:communication}. This is the only module that runs outside of the Rymd library.
@@ -12,7 +20,7 @@ Since the default authentication implementation utilizes Namecoin, which can not
 
 The idea with this separation is that the authentication algorithm is part of the core library, while derivative projects should be able to replace $DHT$ and $DHT-client$ with implementations using other stores like Ethereum or Keybase without having to consider writing a secure authentication protocol, should they so desire.
 
-\section{Cryptography}
+\section{RymdCrypto}
 \label{sec:cryptography}
 %TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
 %In Rymd, security is achieved through secure primitives, user restrictions and by the use of cryptographic communication libraries.
@@ -157,8 +165,9 @@ The largest challenge came to the edge cases when storing files, or as they are 
 
 The data storage module is a separate repository and the source is available at https://github.com/rymdjs/data-storage.
 
-\section{Communication}
+\section{PeerJS Connection}
 \label{sec:p2p}
+
 % TODO: Niklas
 
 % - built on top of peerjs, TODO (not sure how to reference to github)
@@ -178,10 +187,9 @@ In order to map the identity registered in the Namecoin blockchain to the ID sup
 In line with the project guidelines regarding modularity, PeerJS-specific code is separated into a module of its own. If the requirements are to change, then those changes are contained in a single module.
 
 
-
-% TODO Johan: Oversee this.
 \section{Testing}
 \label{sec:testing}
+
 Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{sec:libraries} for links to external libraries used).
 
 \begin{Code}
