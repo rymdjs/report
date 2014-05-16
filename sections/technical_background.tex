@@ -234,7 +234,7 @@ Microsoft warns against supporting the new technology until it has actually beco
 % TODO, it seems like more than Google and Mozilla are involved in the project eg Opera
 All in all, Microsoft remains optimistic that a common standard will eventually be established\cite{WebRTCAndMicrosoft:2012:Online}. They do however stress that more participants need to get involved in addition to Google and Mozilla. Since all major browser vendors (except Microsoft) support WebRTC at this time we chose this technology for the project.
 
-\subsection{NAT, STUN, TURN and ICE}
+\subsection{NAT Traversal}
 A problem with the construction of peer-to-peer applications using WebRTC, is the presence of NATs (Network Address Translation). NATs were first introduced in RFC 1631 as a short term solution to the problems regarding IP address depletion in IPv4. The idea was that by utilizing NATs, several hosts in a private network could together share a single public IP address \cite{RFC1631:Online}.
 
 A NAT is responsible for maintaining a table with entries that map an internal IP address and port to a public IP address and port and dropping these entries when they are no longer of relevance. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table which can then be used to route the response back to the internal host(See figure ~\ref{fig:NAT}) \cite{RFC5245:Online}.
