@@ -147,9 +147,8 @@
 
 %\renewcommand{\firstabstract}{}
 
-% TODO: Don't forget abstracts, for god's sake
-\firstabstract{\lipsum}
-\secondabstract{swedish}{\lipsum} % Optional
+\firstabstract{\input{abstracts/abstract_english.tex}}
+\secondabstract{swedish}{\input{abstracts/abstract_swedish.tex}}
 \keywords{peer-to-peer, Javascript, IndexedDB, distributed, file sharing}
 
 %\preface{\lipsum} % You can use \input to put preface and acknowledgements in another document
@@ -196,9 +195,12 @@
 
  \newpage
  \pagenumbering{roman}
- \makeabstractpage\pagestyle{plain}
-
-  \makesecondabstractpage
+ 
+ % Increase page margins for abstract pages
+ \newgeometry{left=0.22\paperwidth, right=0.22\paperwidth}
+    \makeabstractpage\pagestyle{plain}
+    \makesecondabstractpage
+  \restoregeometry
 
   %\makeacknowledgementspage
 

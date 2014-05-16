@@ -143,7 +143,7 @@
   \setlength{\paperwidth}{169mm}
   \setlength{\paperheight}{239mm}
 \fi
-\RequirePackage[top=0.1\paperheight, bottom=0.1\paperheight, left=0.168\paperwidth, right=0.168\paperwidth]{geometry}
+\RequirePackage[top=0.1\paperheight, bottom=0.1\paperheight, left=0.2\paperwidth, right=0.2\paperwidth]{geometry}
 
 % Makes the chapters act like a big section
 \RequirePackage{titlesec}
@@ -224,7 +224,7 @@
    \def\papername{Artikel}%
    \def\publicationname{Publikation}%
   }
- 
+
   \addto\captionsenglish{%
    \def\countryname{Sweden}%
    \def\cityname{G\"oteborg}%Gothenburg}%
@@ -252,7 +252,7 @@
   }{}
 
  }{\ClassError{chalmers-thesis}{Package 'babel' required}{}}
- 
+
  % Document metadata setup
  \@ifpackageloaded{hyperref}{
   \@checkifdefined{author}
@@ -287,7 +287,7 @@
 \renewcommand{\author}[1]{\gdef\@author{#1}}
 \renewcommand{\title}[1]{\gdef\@title{#1}}
 \newcommand{\subtitle}[1]{\gdef\@subtitle{#1}} % Optional
-\newcommand{\firstabstract}[1]{\gdef\@firstabstract{#1}} 
+\newcommand{\firstabstract}[1]{\gdef\@firstabstract{#1}}
 \newcommand{\secondabstract}[2]{\gdef\@secondarylanguage{#1}\gdef\@secondabstract{#2}} % Optional
 \newcommand{\keywords}[1]{\gdef\@keywords{#1}}
 \newcommand{\preface}[1]{\gdef\@preface{#1}} % Optional
@@ -631,7 +631,7 @@
  \vskip 2em
  {\noindent \copyright\ {\renewcommand{\and}{, }\MakeUppercase{\@author}}, \@copyrightyear\par}
  \vskip 2em
- {\noindent% 
+ {\noindent%
   \ifdefempty{\@reportno}{}{\@reportseries\ \@reportno\\}%
   \ifdefempty{\@ISSN}{}{ISSN \@ISSN\\}%
   \@department\\
@@ -747,19 +747,19 @@
   {\MakeUppercase{\thesisname\ \inname\ \@thesisin}\par}
   \vskip 5em
   \includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio]{figures/rymd-logo-512.png}
-  
+
   \vskip 3em
   {\Large \@title\par}
   \vskip 1em
   \@ifundefined{@subtitle}{}{{\@subtitle\par}}
   \vskip 1em
   {\renewcommand{\and}{\NoCaseChange{\\}}\MakeTextUppercase{\@author}\par}
-  
+
   \vspace*{\stretch{2}}
   %\includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio]{figures/rymd-logo-512.png}
-  
+
 %  \vspace*{\stretch{2}}
-  
+
   {\@department\par}
   \@ifundefined{@division}{}{{\textit{\@division}\par}}
   {\MakeUppercase{\universityname}
@@ -884,7 +884,7 @@
     Licentiate of Engineering
    \fi in \@thesisin\ at the \@department, \universityname, \cityname, \countryname\par}
   \vspace{\stretch{1}}
-  {To be 
+  {To be
    \if@doctorate
     defended
    \else
