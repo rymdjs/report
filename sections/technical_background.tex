@@ -13,18 +13,18 @@ Client-side storage is how arbitrary data can be persisted on disk, accessible t
   \item[Web Storage]\cite{WebStorage:Online} is a simple key-value store in the HTML5 specification.
   \item[WebSQL Database]\cite{WebSQL:Online} is an embedded SQL relational database.
   \item[FileSystem]\cite{FileSystem:Online} is an API providing direct file system access.
-  \item[Indexed Database]\cite{IndexedDB:Online} is a NoSQL asynchronous data store.
+  \item[Indexed Database]\cite{IndexedDB:Online}, or \emph{IndexedDB}, is a NoSQL asynchronous data store.
 \end{description}
 
 All of these technologies offers ways of storing data on the user's hard drive instead of on a remote server. There are two main reasons for this: to make the application available offline and to improve performance (fewer requests to a server). Older storage techniques include cookies, plugin based storage (Java, Flash, Google Gears) or browser-specific features.
 
-All four APIs tie data to a single \emph{origin}, which is called \emph{Same Origin Policy}. An origin is the transfer protocol, the domain, and the port number. Thus every data store is associated with an origin, which implicates certain security aspects: an application in \emph{http://domain.com/subdir} may retrieve data from \emph{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \emph{https://domain.com:3000} due to the different protocol and port number. This is a layer of protection against Cross Site Scripting (XSS) attacks, even though there is no prevention against XSS holes in the other parts of the application (the database might be compromised due to malicious scripts injected elsewhere).
+All four APIs tie data to a single \emph{origin}, which is called \emph{Same Origin Policy}. An origin is defined by the transfer protocol, the domain, and the port number of a website. Thus every data store is associated with an origin, which implicates certain security aspects: an application in \emph{http://domain.com/subdir} may retrieve data from \emph{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \emph{https://domain.com:3000} due to the different protocol and port number. This is a layer of protection against Cross Site Scripting (XSS) attacks. Note that this is no prevention against XSS holes in the other parts of the application, since a user might be attacked from malicious scripts injected elsewhere in the application.
 
-In order to prevent malicious flooding of users' hard drives, browsers impose limits on storage capacity. If the application exceeds that limit the browser typically show a dialog in the interface to let the user increase the the limit. This quota is separated for each origin and storage mechanism. For instance, "sub.domain.com" may be allowed to store 5MB of Web Storage and 25MB of IndexedDB data, while "sub2.domain.com" may have other restrictions.
+In order to prevent malicious flooding of users' hard drives, browsers impose limits on storage capacity. If the application exceeds that limit, the browser typically show a dialog in the interface to let the user increase the the limit. This quota is separated for each origin and storage mechanism. For instance, "sub.domain.com" may be allowed to store 5MB of Web Storage and 25MB of IndexedDB data, while "sub2.domain.com" may have other restrictions.
 
-Both the database mechanisms, IndexedDB and WebSQL, supports \emph{transactions}. This ensures the integrity of the database due to the prevention of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy.
+Both of the database-centered technologies, IndexedDB and WebSQL, support \emph{transactions}. This ensures the integrity of the database by preventing of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy. This is done by locking the database for  writing until a sequence of commands are finished.
 
-Most of the storage formats supports synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking and performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided, and is triggered on completion. This fits well with the asynchronous nature of JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and \ref{lst:asyncCall} show the difference in synchronous and asynchronous calls.
+Most of the storage formats support synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking and performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided and called on completion. This is the traditional approach to work with asynchronous operations in JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and~\ref{lst:asyncCall} show the differences between synchronous and asynchronous calls.
 
 \begin{Code}
 \begin{lstlisting}[caption={Synchronous call}, label={lst:syncCall}]
@@ -48,7 +48,6 @@ request.onsuccess = function(evt) {
 % Mention WebSQL, IndexedDB, etc.
 
 \subsection{Web Storage}
-
 Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in figure~\ref{lst:localStorage}. The \texttt{localStorage} object persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
 
 \begin{Code}
@@ -70,7 +69,7 @@ localStorage.removeItem("foo");
 
 \subsection{WebSQL}
 \label{sec:websql}
-WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is very performant thanks to indexing, and many database developers can start using it as-is. However, by the use of SQL the database is vulnarable to SQL injection attacks, unless this is taken into account by the developer.
+WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is high-performing thanks to indexing. Developers used to work with traditional databases can start using it in a familiar manner. However, by the use of SQL the database is vulnarable to SQL injection attacks, unless this is taken into account by the developer.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of WebSQL}, label={lst:websql}]
@@ -99,7 +98,7 @@ db.transaction(function(tx) {
 
 \subsection{FileSystem}
 \label{sec:filesystem}
-The FileSystem API allows for creation and reading of files and folders on the user's hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system.
+The FileSystem API allows for creation and reading of files and folders on the users hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of FileSystem}, label={lst:filesystem}]
