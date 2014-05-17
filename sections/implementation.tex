@@ -236,6 +236,9 @@ The following steps explain how PeerJS brokers connections:
 
 In order to map the identity registered in the Namecoin blockchain to the ID supplied by the PeerJS server, the DHT service is used. After a client has connected to a PeerJS server, it supplies the data regarding the server IP and the generated ID to the DHT. When another client wants to create a peer-to-peer connection, it queries the DHT service for the Namecoin identity, which then returns the IP for the PeerJS server and the id for the client.
 
+% TODO need to expand this
+As communication with the PeerJS server and the DHT service utilize XHR and WebSockets, which is not encrypted per default, it is vital that these channels are encrypted to ensure the integrity of users.
+
 % modularity and such
 In line with the project guidelines regarding modularity, PeerJS-specific code is separated into a module of its own. If the requirements are to change, then those changes are contained in a single module.
 
