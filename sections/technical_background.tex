@@ -24,7 +24,7 @@ In order to prevent malicious flooding of users' hard drives, browsers impose li
 
 Both of the database-centered technologies, IndexedDB and WebSQL, support \emph{transactions}. This ensures the integrity of the database by preventing of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy. This is done by locking the database for  writing until a sequence of commands are finished.
 
-Most of the storage formats support synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking and performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided and called on completion. This is the traditional approach to work with asynchronous operations in JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and~\ref{lst:asyncCall} show the differences between synchronous and asynchronous calls.
+Most of the storage formats support synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking and performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided and called on completion. This is the traditional approach to work with asynchronous operations in JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and~\ref{lst:asyncCall} show the difference between synchronous and asynchronous calls.
 
 \begin{Code}
 \begin{lstlisting}[caption={Synchronous call}, label={lst:syncCall}]
@@ -69,7 +69,7 @@ localStorage.removeItem("foo");
 
 \subsection{WebSQL}
 \label{sec:websql}
-WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is high-performing thanks to indexing. Developers used to work with traditional databases can start using it in a familiar manner. However, by the use of SQL the database is vulnarable to SQL injection attacks, unless this is taken into account by the developer.
+WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is high-performing thanks to indexing. Developers used to work with traditional databases can start using it in a familiar manner. However, the use of SQL makes the database vulnarable to SQL injection attacks, unless this is taken into account by the developer.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of WebSQL}, label={lst:websql}]
@@ -144,16 +144,16 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-The IndexedDB is a transactional, indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera: its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
+IndexedDB is a transactional indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
 % Cursors, Object Stores, Indexes
-Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similarly to tables in relational database management systems. An object store can hold \emph{objects} of different types including binary data and Javascript primitives and objects. Each object has a \emph{key} (either specified by the developer from the object's properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
+Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similarly to tables in relational database management systems. An object store can hold \emph{objects} of different types including binary data and JavaScript primitives and objects. Each object has a \emph{key} (either specified by the developer from the objects properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an objects properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
 
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API might include complex patterns if the developer is not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but at the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set: instead requests are returned, which will trigger \emph{events} for when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data.
+The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL in favor of NoSQL is the prevention of SQL injection attacks, but at the cost of a steeper learning curve for already experienced database developers. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of IndexedDB}]
@@ -189,7 +189,7 @@ request.onsuccess = function(event) {
 
 \subsubsection{Security and reliability}
 \label{subsec:security}
-IndexedDB is built on a transactional model which means that all commands run inside a transaction context. Transactions have a certain lifetime and cannot be used after its expiration. This transactional model is especially useful for when several instances of a client application are using the same database and issuing commands: without transactions, concurrency problems and other collisions might occur with data loss as a result. Transactions are able to abort and be rolled back to the state of the database before the transaction was started.
+IndexedDB is built on a transactional model. This means that all commands run inside a transaction context. Transactions have a certain lifetime and cannot be used after they expire. This transactional model is especially useful for when several instances of a client application are using the same database and issuing commands: Without transactions, concurrency problems and other collisions might occur with data loss as a result. Transactions are able to abort and roll back the database to the state it was in before the transaction was started, should an error occur.
 
 Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB driven application in their \emph{An Investigation into Possible Attacks on HTML5 IndexedDB and their Prevention}\cite{IndexedDBSecurity:2012:Online}:
 
@@ -200,9 +200,9 @@ Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB
   \item Code analysis
 \end{itemize}
 
-The database in IndexedDB does not include any kind of bundled encryption or validation, which means it is the developer's responsibility to sanitize and encrypt sensitive data before inserting into the store. Encryption is vital for the scenario where the contents of the database are compromised: the attacker must have access to the encryption key in order to read the information in plain text. Validation is needed in order to prevent malicious content, such as JavaScript, being inserted as the data fields in the store (without the user's knowledge). Inserted JavaScript would otherwise pose a security risk since it could be executed at a later stage.
+The database in IndexedDB does not include any kind of bundled encryption or validation, which means that it is the developers responsibility to sanitize and encrypt sensitive data before insertion into the store. Encryption is vital for the scenario where the contents of the database are compromised, since the attacker would need access to the encryption key in order to read the information in plaintext. Validation is needed in order to prevent malicious content, such as XSS, from being inserted as the data fields in the store (without the users knowledge). Properly crafted code could otherwise pose a security risk since vulnerable applications could execute it at a later stage.
 
-Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be inserted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can according to \cite{IndexedDBSecurity:2012:Online} be done by checking the call from the web application to the database and on success, the database operation can be performed.
+Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be inserted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can be done by checking the call from the web application to the database. On success, the database operation s allowed to fully execute\cite{IndexedDBSecurity:2012:Online}.
 
 \section{Distributed storage}
 With the inherent problems of trust in CAs in a PKI, several approaches to publicly available distribution of cryptographic keys have emerged in recent years. Some use a blockchain-based approach derived from Bitcoin. This implies distributing a cryptographically based ledger over an entire network and taking it beyond that of a monetary currency to systems that can be used for a wider range of applications. There are also other ideas on how to solve the trust issue.
