@@ -79,8 +79,7 @@ The source code is available at: https://github.com/rymdjs/dht-client and https:
 %TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
 %In Rymd, security is achieved through secure primitives, user restrictions and by the use of cryptographic communication libraries.
 % uses the Web Crypto Api for encryption (3AES - 1024) ,decryption key import and export ,
-At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium.
-Even if the implementations provided by these browsers supply key generation, there is no support for persisting keys between sessions or even exporting private keys. Until this is implemented, the Rymd crypto module therefore generates keys on its own; doing this is bad practice and is only performed in order to get a prototype running.
+At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium. The implementations provided by these browsers supply key generation but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind the WebCrypto API - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in favor of decreased implementation complexity. Before the WebCrypto Key Discovery API is implemented, the RymdCrypto module generates keys on its own. Doing this is bad practice and is only performed in order to get a prototype running.
 
 The source code is available at: https://github.com/rymdjs/crypto.
 
@@ -181,8 +180,6 @@ In commercial terms as for our project, RSA is clearly the winner; commercial RS
 Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format.
 The Private-Key Information Syntax Standard (PKCS\#8) -  defines a way to store the private key and the Simple public key infrastructure (SPKI) - defines a way to store the public key.
 All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}.
-
-W3C - the organization behind the Web Crypto API, have announced also their intention to handle the problem with a secure key storage option, that would work between sessions, namely the Web Crypto Key Discovery API \cite{WebCryptoKeyDiscovery:Online}, the Api would allow Rymd to persist keys between sessions in a secure manner yet not possible since there is no intention from Google Chrome to implent this before the completion of the Web Crypto Api. Web Crypto Key Discovery API was originally thought as a part of the Web Crypto API was extracted in favor overall of decreased implementation complexity.
 
 % TODO Johannes
 
