@@ -315,7 +315,7 @@ Data transfers are secured with the DTLS (Datagram Transport Layer Security) pro
 \section{Cryptography}
 Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. With the advent of the new Web Cryptography API, or simply WebCrypto, these issues are being addressed\cite{WebCrypto:Online}.
 
-\subsection{Web Crypto API}
+\subsection{Web Cryptography API}
 The WebCrypto API is an open standard for implementation of cryptographic primitives accessible through web client code\cite{WebCrypto:Online}. Basically, all primitives (such as hashing, encryption, decryption, signing, verification and generation of keys) and raw material (the underlying keys and algorithms) would be black boxed for the client application and executed natively in the web browser. However, the API is still in an early stage and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator. The exact implementation of the different features may come to change drastically over time.
 
 \subsection{Certificates}
