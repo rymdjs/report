@@ -327,8 +327,6 @@ Furthermore, certificates are structured according to a certain schema, and one 
 
 \subsection{Advanced Encryption Standard}
 % TODO: Explain relevance of algorithms in general as well as usage of AES and why it's relevant
-A common encryption algorithm is the Advanced Encryption Standard, or simply AES, which is based on the idea of substitution-permutation\cite{AESISFAST:Online}. The algorithm distorts the inputed value by means of replacement and uses a structure with a fixed block size similar to Rijndael \footnote{http://searchsecurity.techtarget.com/definition/Rijndael}, unlike DES\footnote{http://en.kioskea.net/contents/134-introduction-to-encryption-with-des}.
+A common encryption algorithm is the Advanced Encryption Standard, or simply AES, which is based on the idea of substitution-permutation\cite{AESISFAST:Online}. The algorithm distorts the inputed value by means of replacement and uses a structure with a fixed block size similar to Rijndael \footnote{http://searchsecurity.techtarget.com/definition/Rijndael} and unlike DES\footnote{http://en.kioskea.net/contents/134-introduction-to-encryption-with-des}. Encryption is performed in rounds with the number of rounds depending on the lenght of the key. The same key is used for both encryption and decryption but the key is inversed in the latter case.
 
 % Diffusion and confusions together will complicate statistics attacks and hides local patterns in the language.
-
-Encryption is performed in rounds, the number of rounds depends on the lenght of the key. Decryption is done with the same key but inversed, it is also performed in a itterativly.
