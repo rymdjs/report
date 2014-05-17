@@ -125,6 +125,25 @@ The metadata and resource data are handled separately in Rymd and the communicat
 % TODO Robin: Describe our concrete modules better here. This section *has* to describe how
 % *we* used modularity in our project.
 
+With key features being implemented with technologies from everchanging fields at the web's forefront, it was imperitive to design the system to allow for exchange of these implementations (as explained in section \ref{sec:modularity}). The core Rymd library acts as the hub with workflows that binds the different parts, or \emph{modules}, together. The key features were extracted into the following modules:
+
+\begin{enumerate}
+  \item Data storage,
+  \item Cryptography,
+  \item Peer-to-peer communication and
+  \item DHT interaction
+\end{enumerate}
+
+Furthermore, the following modules are treated as one but should be separated before Rymd reaches the stage of release candidate:
+
+\begin{enumerate}
+  \item Key storage,
+  \item Resource data storage and
+  \item Metadata storage
+\end{enumerate}
+
+Rymd is designed to have the modules supplied dynamically through dependency injection.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
