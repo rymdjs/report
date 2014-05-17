@@ -116,12 +116,14 @@ Furthermore, because the WebCrypto API lacks functionality for storing keys betw
 %\end{Code}
 
 % TODO Robert/Robin: Oversee this.
+% TODO Explain cipher block chaining below
 \subsection{Algorithms}
-The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$.
-AES-CBC is a symmetric key AES based using cipher block chaining; it is the only symmetric algorithm implemented at the time of writing, besides it is fast\cite{AESISFAST:Online} and simple to use.
-$RSAES-PKCS1-v1.5$ - an AES implementation based on the RSA algorithm.
-The signing uses $RSASSA-PKCS1-v1_5$. This choice is motivated by the lack of alternatives and the fact the the WebCrypto API recommends the use of this algorithm on their web page. Finally, there are no other RSA signing algorithms included in the WebCrypto API.
-A motivation for the use of SHA-256 could be found in the Decentralization section.
+The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a fast and simple to use symmetric key based on AES using cipher block chaining\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm.
+
+For the signing algorithm the working group behind the WebCrypto API recommends $RSASSA-PKCS1-v1_5$. This choice is further motivated by the lack of alternatives, there are no other RSA signing algorithms included in the WebCrypto API.
+
+% A motivation for the use of SHA-256 could be found in the Decentralization section.
+% - No it isn't?
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
   var generationAlgorithmSign =  {
@@ -151,9 +153,9 @@ A motivation for the use of SHA-256 could be found in the Decentralization secti
   }
 \end{lstlisting}
 \end{Code}
-Regarding $RSAES-PKCS1-v1.5$, the fact that it uses RSA is inline with our guidelines since it allows the key to be reused for both signing and encryption (se table \ref{table:webcrypoapi})..
-Considering DSA algorithms: the DSA is faster for signing and key generating but slower when it comes to signature checking and it also lack the ability to preform encryption.
-Regarding accessibility, both algorithms are included in the WebCrypto API and are therefore provided by the browser as black boxes.
+
+Both $RSAES-PKCS1-v1.5$ and the DSA algorithms are included in the WebCrypto API (and therefore provided by the browser). The $RSAES-PKCS1-v1.5$ uses RSA which makes it is appropriate for Rymd since its keys can be used for both signing and encryption (se table \ref{table:webcrypoapi}). DSA algorithms are faster for signing and key generating but slower when it comes to signature checking. They also lack the ability to perform encryption.
+
 % add text about hashing
 % why is the hashing in
 \begin{table}[h]
@@ -174,10 +176,8 @@ AES-CFB & SYM & x & x &  &  & x
 \caption{Some Web Cryptp Api Algorithms}
 \label{table:webcrypoapi}
 \end{table}
-In commercial terms as for our project, RSA is clearly the winner; commercial RSA certificates are much more widely deployed than DSA certificates.
-Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format.
-The Private-Key Information Syntax Standard (PKCS\#8) -  defines a way to store the private key and the Simple public key infrastructure (SPKI) - defines a way to store the public key.
-All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}.
+
+When considering commercial aspects for our project RSA is clearly the winner. Commercial RSA certificates are much more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. The Private-Key Information Syntax Standard (PKCS\#8) defines a way to store the private key, and the Simple public key infrastructure (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}.
 
 The source code is available at: https://github.com/rymdjs/crypto.
 
