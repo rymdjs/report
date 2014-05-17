@@ -313,19 +313,22 @@ The RTCDataChannel API allows for arbitrary data to be sent peer-to-peer by leve
 Data transfers are secured with the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is constructed for datagrams while TLS is used for reliable transport protocols such as TCP.
 
 \section{Cryptography}
-Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. This is being addressed by the new Web Cryptography API\cite{WebCrypto:Online}, an open standard for implementation of cryptographic primitives in web clients accessible through client code. Basically, all primitives (such as hashing, encryption, decryption, signing and generation of keys) and raw key material would be black boxed for the client application and executed natively in the web browser. However, it is not yet finished and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator.
+Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives, as well as raw private and secret key data. With the advent of the new Web Cryptography API, or simply WebCrypto, these issues are being addressed\cite{WebCrypto:Online}.
 
 \subsection{Web Crypto API}
-The Web Crypto API provides a common set of interfaces that allow web applications to preform signature, generation, verification, hashing, encryption and decryption, without requiring access to the underlying keys and algorithms: referd to as the raw material. The Web Crypto Api is still in an early stage and the exact implementation of the different functionalities may come to change many times over time.
+The WebCrypto API is an open standard for implementation of cryptographic primitives accessible through web client code\cite{WebCrypto:Online}. Basically, all primitives (such as hashing, encryption, decryption, signing, verification and generation of keys) and raw material (the underlying keys and algorithms) would be black boxed for the client application and executed natively in the web browser. However, the API is still in an early stage and at this time of writing only Google Chrome out of the major browsers have implemented more than a basic pseudo-random number generator. The exact implementation of the different features may come to change drastically over time.
 
 \subsection{Certificates}
-% TODO: Roberto Carlos, this paragraph needs some love
-In essence, a certificate contains a public key plus additional information about the user and: Usually the whole block is signed by a Central Authority) or another third party, the signing helps to prof the identity. One commonly used schema for certificates is the X.509 standard. In the X.509 system, a (CA) issues a certificate, binding a public key to a name such as an e-mail address or a DNS entry.
+% TODO: Explain what a certificate is
+% TODO: Explain usage of X.509 and why it's relevant
+A well known concept in cryptography is certificates which are used to confirm the validity of users' keys\cite{EETimesCrypto:Online}. Instead of requesting keys directly, which could have potentially been compromised by malicious third parties, certificates are retrieved from trusted CAs. In essence, a certificate contains a user's public key along with user data and information about the certificate. The CA signs the certificate and a hash is imbedded as proof that the certificate has not been unlawfully modified.
+
+Furthermore, certificates are structured according to a certain schema, and one commonly used schema for certificates is the X.509 standard\cite{IETFX509:Online}. In the X.509 system, a CA issues a certificate binding a public key to a name such as an e-mail address or a DNS entry.
 
 \subsection{Advanced Encryption Standard}
-% TODO: Robert Gustafsson, lovin! Sweet lovin
-AES is based on the idea of substitution-permutation\cite{AESISFAST:Online}, this supports that
-diffusion and confusions together will complicate statistics attacks and hides
-local patterns in the language. Unlike DES, which uses a Fiestel network,
-AES is using a structure  similar to Rijndael – with a fixed block size.
+% TODO: Explain relevance of algorithms in general as well as usage of AES and why it's relevant
+A common encryption algorithm is the Advanced Encryption Standard, or simply AES, which is based on the idea of substitution-permutation\cite{AESISFAST:Online}. The algorithm distorts the inputed value by means of replacement and uses a structure with a fixed block size similar to Rijndael \footnote{http://searchsecurity.techtarget.com/definition/Rijndael}, unlike DES\footnote{http://en.kioskea.net/contents/134-introduction-to-encryption-with-des}.
+
+% Diffusion and confusions together will complicate statistics attacks and hides local patterns in the language.
+
 Encryption is preformed in rounds, the number of rounds depends on the lenght of the key. Decryption is done with the same key but inversed, it is also preformed in a itterativly.
