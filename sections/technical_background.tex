@@ -232,7 +232,7 @@ WebSocket (RFC 6455)\cite{RFC6455:Online} is a protocol which was standardized i
 
 \subsection{NAT Traversal}
 % rewrite so its not centered around webrtc
-Network Address Translation (NAT) was first introduced in RFC 1631\cite{RFC1631:Online} as a short-term solution to the problem of IP address depletion in IPv4. The idea was that by utilizing NATs, several hosts in a private network could share a single public IP address.
+Network Address Translation (NAT)\cite{RFC1631:Online} was first introduced as as a short-term solution to the problem of IP address depletion in IPv4. The idea was that by utilizing NATs, several hosts in a private network could share a single public IP address.
 
 A NAT is responsible for maintaining a table of entries that map an internal IP address and port to a public IP address and port and dropping these entries when they are no longer of relevant. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table which can then be used to route the response back to the internal host(See figure~\ref{fig:NAT}) \cite{RFC5245:Online}.
 
@@ -248,7 +248,7 @@ The presence of NATs can pose a problem to applications leveraging the UDP proto
 
 A technique commonly used to solve the problem with UDP entries expiring and being dropped is to utilize keepalives at regular intervals. This is is commonly referred to as \emph{UDP hole punching} \cite{UDPHolePunching:Online}.
 
-Another problem is that internal hosts know their internal IP address but not their public one. If a host runs an application that communicates the IP address as a part of the payload to hosts oustide of the private network, there would obviously be a missmatch if the internal address is chosen. Therefore it is common to utilize a protocol called STUN (Session Traversal Utilities for NAT), which was introduced in RFC 5389\cite{RFC5389:Online}. The protocol enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}).
+Another problem is that internal hosts know their internal IP address but not their public one. If a host runs an application that communicates the IP address as a part of the payload to hosts oustide of the private network, there would obviously be a missmatch if the internal address is chosen. Therefore it is common to utilize a protocol called STUN (Session Traversal Utilities for NAT)\cite{RFC5389:Online}. STUN enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}).
 
 \begin{figure}[htp]
 \centering
@@ -258,7 +258,7 @@ Another problem is that internal hosts know their internal IP address but not th
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-These techniques are not always adequate which is caused by the fact that STUN does not work with all types of NATs. In some cases, UDP traffic might be blocked by a firewall. This is where the TURN (Traversal Using Relays around NAT) protocol, specified in RFC 5766, can be leveraged.  TURN establish a TCP connection with a relay server when UDP has failed. The relay server is used to tunnel data to the other host, which means that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}) \cite{RFC5766:Online}.
+These techniques are not always adequate because of the fact that STUN does not work with all types of NATs. In some cases, UDP traffic might be blocked by a firewall. This is where the TURN (Traversal Using Relays around NAT) protocol\cite{RFC5766:Online} can be leveraged.  TURN establish a TCP connection with a relay server when UDP has failed. The relay server is used to tunnel data to the other host, which means that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}).
 
 \begin{figure}[htp]
 \centering
@@ -270,20 +270,18 @@ These techniques are not always adequate which is caused by the fact that STUN d
 
 \subsection{WebRTC}
 
-Up until recently browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}.
+Up until recently, browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}. Since then, WebRTC has been evolved to enabling more general real-time data communication between browsers\cite{WebRTC:Online}. 
 
-Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standarizing protocols, and drafing APIs. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft actually supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google’s (or nowdays, W3C’s and IETF) version of it\cite{WebRTCAndMicrosoft:2012:Online}.
+Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standardizing protocols and drafing APIs. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft actually supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Googles (or nowdays, W3Cs and IETFs) version of it\cite{WebRTCAndMicrosoft:2012:Online}.
 
-Microsoft warns against supporting the new technology until it has actually become a standard and also does not fully agree on some constraints placed on the technology\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft explains that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of similar to a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft’s answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which tries to addresses these issues.
+Microsoft warns against supporting the new technology until it has actually become a standard and also does not fully agree on some constraints placed on the technology\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft explains that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsofts answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which tries to addresses these issues.
 % TODO, it seems like more than Google and Mozilla are involved in the project eg Opera
-All in all, Microsoft remains optimistic that a common standard will eventually be established\cite{WebRTCAndMicrosoft:2012:Online}. They do however stress that more participants need to get involved in addition to Google and Mozilla. 
+All in all, Microsoft remains optimistic that a common standard will eventually be established\cite{WebRTCAndMicrosoft:2012:Online}. They do however stress that more participants need to get involved in addition to Google and Mozilla.
 
-WebRTC is a project which enables real-time communication between browsers\cite{WebRTC:Online}. Through the project, developers are able to create different types of applications which leverage peer-to-peer technology.
-
-To obtain and transfer streaming data WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of the data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
+To obtain and transfer streaming data, WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of the data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
 
 \subsubsection{RTCPeerConnection}
-The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of inherent problems regarding NATs by leveraging the Interactive Connection Establishment (ICE) protocol. The ICE protocol is specified by RFC 5245 and has the objective of connecting peers in the most efficient way. It makes use of STUN and the fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) \cite{RFC5245:Online}.
+The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of inherent problems regarding NATs by leveraging the Interactive Connection Establishment (ICE) protocol\cite{RFC5245:Online}. ICE has the objective of connecting peers in the most efficient way. It makes use of STUN and the fallback to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) .
 
 \begin{figure}[htp]
 \centering
@@ -301,7 +299,6 @@ Before a connection can be initiated between peers, one of two parts must extend
 \end{itemize}
 
 Regarding the choice of signaling channel, a dedicated signaling server is often used. That is, a server which relays connection offers from one peer to another. Although this is the most common choice of signaling channel, examples of a more serverless approach can be found \cite{webrtcsignalserver}. For the choice of signaling protocol the standard does not provide any recommendations - this is for developers to decide.
-
 
 \subsubsection{RTCDataChannel}
 The RTCDataChannel API allows for arbitrary data to be sent peer-to-peer by leveraging the RTCPeerConnection API. For the transportation of data, the API makes use of the SCTP (Stream Control Transport Protocol) protocol. SCTP is built on top on UDP, and provides some additional services such as congestion and flow control \cite{HighPerfBrowserNetworking:Online}.
