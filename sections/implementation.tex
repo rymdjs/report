@@ -81,7 +81,8 @@ The source code is available at: https://github.com/rymdjs/dht-client and https:
 % uses the Web Crypto Api for encryption (3AES - 1024) ,decryption key import and export ,
 At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium. The implementations provided by these browsers supply key generation but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind the WebCrypto API - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in favor of decreased implementation complexity. Before the WebCrypto Key Discovery API is implemented, the RymdCrypto module generates keys on its own. Doing this is bad practice and is only performed in order to get a prototype running.
 
-The Crypto module is based around the use of cryptographic communication libraries; the module is strutured in a way such that \emph{cryptoback.js} handles key generation and parsing while the rest is handled by the crypto.js module.
+The Crypto module is based around the use of cryptographic communication libraries. The key generation and parsing is handled by \emph{cryptoback.js}:
+
 \begin{Code}
 \begin{lstlisting}[caption={Included database operations}, label={lst:api}]
  //dependecies cryptoback.js
@@ -95,8 +96,8 @@ The Crypto module is based around the use of cryptographic communication librari
     utils = require("./cryptoback");
 \end{lstlisting}
 \end{Code}
-As previously mentioned, the WebCrypto API lacks functionality for storing keys between sessions or even exporting private keys. In order to support key storage between sessions, the key generation is moved out of the API and handled by a library \emph{bignumber-jt} \cite{Bignumber:Online}; The key is then parsed to a certificate.
-All certificate have a static key size where asymmetric keys are of $1024bits$ and symmetric ($AES-CBC$) are of $256bits$; none are explicitly generated via the API.
+
+Furthermore, because the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys, IndexedDB is used as makeshift storage. In order to use IndexedDB for the keys they need to be parsed to certificates. This is done by the library \emph{bignumber-jt} through cryptoback.js. All certificates have a static key size where asymmetric keys are of $1024bits$ and symmetric ($AES-CBC$) are of $256bits$; none are explicitly generated via the API.
 
 %\subsection{Interface}
 % before it's imported into its low-level interface. %TODO: Proper reference
