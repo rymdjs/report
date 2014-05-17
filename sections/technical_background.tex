@@ -225,11 +225,11 @@ Keybase \cite{Keybase:Online} is another recent initiative that intends to solve
 % TODO Niklas & Robin
 In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Then further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHTTPRequest API and therein unlocking the creation of dynamic web applications. Since that point we have witnessed the introduction of the WebSocket protocol which enables persistent connections between client and server. These techniques are centered around communication between a client and a server, but with the recent initiative called WebRTC which enables peer-to-peer communication there are some new possibilities in the field. In order to understand how these techniques work some inherent problems with the Internets infrastructure will be discussed in the NAT Traversal section.
 
-\subsection{XMLHTTPRequest}
-Ajax is nice etc
+\subsection{XMLHttpRequest}
+XMLHttpRequest (XHR) is a browser API which enables data to be fetched asynchronously from servers. This means that a web page can retrieve new updates from the server without a full page reload. The browser is responsible for the construction of HTTP requests according to parameters passed to the API. In the use case where real-time updates from the server are desired, a common technique is to poll the server at regular intervals as the possibilities for streaming are limited. Although the name of the API suggests that data transfers are limited to XML this is not the case, the name is nothing more than a remnant of the past \cite{XHR:Online}.
 
 \subsection{WebSocket}
-WebSocket (RFC 6455) is a protocol which was standarized in 2011. The protocol allows two way communication between a server and a client through persistent connections. It does not require opening multiple HTTP connections like XMLHTTPRequest. The protocol is built on top of the TCP protocol, and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XMLHTTPRequest, and the high overhead from HTTP is eliminated which ease server workload \cite{RFC6455:Online}.
+WebSocket (RFC 6455) is a protocol which was standarized in 2011. The protocol allows two way communication between a server and a client through persistent connections. It does not require opening multiple HTTP connections like XHR. The protocol is built on top of the TCP protocol, and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which ease server workload \cite{RFC6455:Online}.
 
 \subsection{NAT Traversal}
 % rewrite so its not centered around webrtc
