@@ -18,7 +18,7 @@ There are essentially four alternatives for persisting data on the client:
 \item FileSystem API
 \end{itemize}
 
-LocalStorage is included in the HTML5 Web Storage specification \cite{WebStorage:Online} and is a basic key-value store with a simplistic API. It is supported across all major browsers and has a maximum storage limit of 5 megabytes. The latter was a deal-breaker, since the product would have to support larger files than could possibly fit into that space. Further, LocalStorage does not support complex structures and indexing, and storing different data types is complicated and needs manual serialization and deserialization. Thus this solution was immediately rejected.
+LocalStorage is included in the HTML5 Web Storage specification \cite{WebStorage:Online} and is a basic key-value store with a simplistic API. It is supported across all major browsers and has a maximum storage limit of 5 megabytes. The latter was a deal-breaker since the product would have to support larger files than could possibly fit into that space. Further, LocalStorage does not support complex structures and indexing, and storing different data types is complicated and needs manual serialization and deserialization. Thus this solution was immediately rejected.
 
 IndexedDB and WebSQL are both client side databases and more sophisticated storage solutions than LocalStorage. WebSQL is supported by Google Chrome, Apple Safari (desktop and iOS), Opera and Android. The specification is no longer maintained by W3C \cite{WebSQL:Online} and will probably be deprecated on all browsers in the future. IndexedDB is supported by all major browsers except for Safari (desktop and iOS) and is a Candidate Recommendation by W3C \cite{IndexedDB:Online}. Arbitrary types of data can be stored in the database, such as strings, numbers, Javascript objects, and raw binary data.
 
@@ -43,7 +43,7 @@ The conclusion was to use IndexedDB for persisted resource storage. It was chose
 
 \section{Peer-to-peer communication}
 
-Even though there are two projects which seeks to enable peer-to-peer communication in the browser - WebRTC and CU-RTC-Web - the only viable alternative at the time being is WebRTC. The project is under development by the organizations W3C and IETF and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF and is not implemented in any browsers.
+Even though there are two projects which seeks to enable peer-to-peer communication in the browser - WebRTC and CU-RTC-Web - the only viable alternative for the time being is WebRTC. The project is under development by the organizations W3C and IETF and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF and is not implemented in any browsers.
 
 % TODO Niklas: ^^
 
