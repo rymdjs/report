@@ -6,7 +6,7 @@ This chapter describes how the problems described in section~\ref{sec:problem} h
 %Why RSA and not diffie hellman?
 
 \section{Data storage}
-
+\label{sec:datastorage}
 Storage of data is crucial for any file sharing system. Since the data store was to be used by several parts of the application the demands for the module's interface had to be as general as possible, adhering to a standard CRUD\footnote{Create–Read–Update–Delete} interface, including methods for creating, fetching, updating and deleting records in the store.
 
 There are essentially four alternatives for persisting data on the client:
@@ -53,7 +53,7 @@ One of the main issues to be resolved in a project of this nature is that of dis
 
 Rymd therefore utilizes Namecoin for storage of keys to achieve all of these goals: The distributed nature of cryptocurrencies makes it decentralized; peers can choose their own names (identities), giving meaningful names; the blockchain-based approach makes it secure. Additionally, the small monetary fee required to register a name prevents massive name-squatting. However, there are practical limitations and consequences associated with this approach. The monetary cost associated with the insertion of a new value means that key insertion needs to be handled outside of Rymd. That updates can take a significant amount of time to propagate over the network (up to several hours) is another issue, but since insertion or updates of keys should happen very seldomly, this should be acceptable. Most importantly, since Namecoin (or any other currently existing cryptocurrency for that matter) communicates using their own binary data protocol\cite{BitcoinSource:2014:Online}, web applications can not interact directly with the blockchain to fetch this information before a mutual peer-to-peer authenticated connection is established. As a consequence, a service that acts as a bridge between Rymd and the blockchain is needed.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
 ]{figures/Zooko_s_Triangle}
@@ -102,7 +102,7 @@ The exact flow involved in a transfer depends on the implementing application. G
 
 The metadata and resource data are handled separately in Rymd and the communication flow will differ depending on the implementing application. Generally, the metadata will be shared with trusted peers to allow them to decrypt the resource. The encrypted resource can be shared freely since possession of the key is required to make anything useful from it. In this way untrusted peers could help facilitate transfers of resources in a distributed fashion. In the example implementation Shuttle, file sharing is initiated from the sharing end. Consider the case where Bob wishes to share a resource with Alice (assuming both Alice and Bob are already connected to the network):
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
 ]{figures/flow}
@@ -126,7 +126,7 @@ The metadata and resource data are handled separately in Rymd and the communicat
 % TODO Robin: Describe our concrete modules better here. This section *has* to describe how
 % *we* used modularity in our project.
 
-With key features being implemented with technologies from everchanging fields at the web's forefront, it was imperitive to design the system to allow for exchange of these implementations (as explained in section \ref{sec:modularity}). The core Rymd library acts as the hub with workflows that binds the different parts, or \emph{modules}, together. The key features were extracted into the following modules:
+The core Rymd library acts as the hub with workflows that binds all parts together. The library is divided into modules that separates complex areas of the application – areas that are most likely to change independently over time – into well defined and easily exchangeble \emph{modules}. With key features being implemented with technologies from everchanging fields at the web's forefront, this modular design was imperitive in order to make the system maintainable (as explained in section \ref{sec:modularity}). The key features were extracted into the following modules:
 
 \begin{enumerate}
   \item Data storage,
@@ -145,10 +145,26 @@ Furthermore, the following modules are treated as one but should be separated be
 
 Rymd is designed to have the modules supplied dynamically through dependency injection.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
 ]{figures/architecture}
 \caption{The modules and external APIs utilized in Rymd and Shuttle}
 \label{fig:architecture}
 \end{figure}
+
+
+%Cryptoback.js
+\begin{Code}
+\begin{lstlisting}[caption={Included database operations}, label={lst:api}]
+ //dependecies cryptoback.js
+  var rsa = require('bignumber-jt'),
+      Q = require('q');
+
+ //dependecies crypto.js
+  var root = this,
+    Q = require('q'),
+    cryptojs = require('crypto-js'),
+    utils = require("./cryptoback");
+\end{lstlisting}
+\end{Code}
