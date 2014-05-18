@@ -120,7 +120,7 @@ RymdCrypto uses two algorithms for encryption namely the $RSAES-PKCS1-v1.5$ and 
 
 For the signing algorithm the working group behind the WebCrypto API recommends $RSASSA-PKCS1-v1_5$. This choice is further motivated by the lack of alternatives, there are no other RSA signing algorithms included in the WebCrypto API.
 
-Also, a good hashing algorithm is needed in order to avoid collision of hashes, that is two generated hash values being exactly the same – similar to the birthday problem~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}. For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
+Also, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
 
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
