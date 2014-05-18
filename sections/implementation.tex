@@ -211,10 +211,10 @@ The asynchronous API of IndexedDB is relatively verbose and complex. It makes he
 \section{PeerJS Connection}
 \label{sec:p2p}
 
-% TODO: Niklas
-
 % - built on top of peerjs, TODO (not sure how to reference to github)
-Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
+Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. This module was therefore constructed, in line with the project guidelines regarding modularity, to contain PeerJS-specific code and to provide an independent interface which does not reveal the details of PeerJS's inner workings. If changes in Rymd's requirements makes the choice of PeerJS obsolete, then the changes will be isolated and one should still be able to depend on the same interface. 
+
+PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
 
 The source code is available at: https://github.com/rymdjs/peerjs-connection.
 
@@ -230,9 +230,6 @@ In order to map the identity registered in the Namecoin blockchain to the ID sup
 
 % TODO need to expand this
 As communication with the PeerJS server and the DHT service utilize XHR and WebSockets, which is not encrypted per default, it is vital that these channels are encrypted to ensure the integrity of users.
-
-% modularity and such
-In line with the project guidelines regarding modularity, PeerJS-specific code is separated into a module of its own. If the requirements are to change, then those changes are contained in a single module.
 
 \section{Testing}
 \label{sec:testing}
