@@ -118,7 +118,7 @@ AES-CFB & SYM & x & x &  &  & x
 When considering commercial aspects for our project RSA is clearly the winner. Commercial RSA certificates are much more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}. See listing~\ref{lst:cryptoalgorithms} for a complete rundown of Rymd's algorithms.
 
 \begin{Code}
-\begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
+\begin{lstlisting}[caption={Algorithms implemented}, label={lst:cryptoalgorithms}]
   var generationAlgorithmSign =  {
     name: "RSASSA-PKCS1-v1_5",
     modulusLength: 2048,
@@ -150,7 +150,7 @@ When considering commercial aspects for our project RSA is clearly the winner. C
 \subsection{Interface}
 before it's imported into its low-level interface. %TODO: Proper reference
 \begin{Code}
-\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
+\begin{lstlisting}[caption={Common database operations}, label={lst:cryptointerface}]
 generateKeyPair: function() -> Promise({Uint8array,Uint8array})
 exportKey: function(WebCrypto::Key) -> Promise({Uint8array})
 importKey: function(String,Uint8array) -> Promise(WebCrypto::Key)
@@ -173,7 +173,7 @@ The main task for the data storage module was to abstract away the low-level met
 The source code is available at: https://github.com/rymdjs/data-storage.
 
 \begin{Code}
-\begin{lstlisting}[caption={Common database operations}, label={lst:api}]
+\begin{lstlisting}[caption={Common database operations}, label={lst:indexeddbapi}]
 var IndexedDbStore = require("indexeddbstore")
 
 var Store = new IndexedDbStore("myStore")
