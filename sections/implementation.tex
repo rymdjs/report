@@ -83,8 +83,6 @@ At this stage Rymd only runs in the very recent development versions of Google C
 
 Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys. In order to use IndexedDB for the keys they need to be parsed to certificates. This is done by the library \emph{bignumber-jt} through cryptoback.js. All certificates have a static key size where asymmetric keys are of $1024bits$ and symmetric keys are of $256bits$; none are explicitly generated via the API.
 
-% TODO Robert/Robin: Oversee this.
-% TODO Explain cipher block chaining below
 \subsection{Algorithms}
 RymdCrypto uses two algorithms for encryption namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a fast and simple to use symmetric key algorithm, and it is based on AES using cipher block chaining\footnote{Cipher Block Chaining, or CBC, is a mode of operation for encryption and decryption that divides data into blocks and makes each subsequent block depend on the preceeding ones.\cite{SearchSecurityCipherBlockChaining:Online}}\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm.
 
