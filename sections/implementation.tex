@@ -79,9 +79,7 @@ The source code is available at: https://github.com/rymdjs/dht-client and https:
 %TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
 %In Rymd, security is achieved through secure primitives, user restrictions and by the use of cryptographic communication libraries.
 % uses the Web Crypto Api for encryption (3AES - 1024) ,decryption key import and export ,
-At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium. The implementations provided by these browsers supply key generation but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind the WebCrypto API - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in favor of decreased implementation complexity. Before the WebCrypto Key Discovery API is implemented, the RymdCrypto module generates keys on its own. Doing this is bad practice and is only performed in order to get a prototype running.
-
-The Crypto module is based around the use of cryptographic communication libraries. The key generation and parsing is handled by \emph{cryptoback.js}:
+At this stage Rymd only runs in the very recent development versions of Google Chrome or Chromium. The implementations provided by these browsers supply key generation but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind the WebCrypto API - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in favor of decreased implementation complexity. Before the WebCrypto Key Discovery API is implemented, the RymdCrypto module generates keys on its own. Doing this is bad practice and is only performed in order to get a prototype running. The Crypto module is based around the use of cryptographic communication libraries. The key generation and parsing is handled by \emph{cryptoback.js}:
 
 \begin{Code}
 \begin{lstlisting}[caption={Included database operations}, label={lst:api}]
@@ -118,9 +116,7 @@ Furthermore, because the WebCrypto API lacks functionality for storing keys betw
 % TODO Robert/Robin: Oversee this.
 % TODO Explain cipher block chaining below
 \subsection{Algorithms}
-The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a fast and simple to use symmetric key based on AES using cipher block chaining\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm.
-
-For the signing algorithm the working group behind the WebCrypto API recommends $RSASSA-PKCS1-v1_5$. This choice is further motivated by the lack of alternatives, there are no other RSA signing algorithms included in the WebCrypto API.
+The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a fast and simple to use symmetric key based on AES using cipher block chaining\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm. For the signing algorithm the working group behind the WebCrypto API recommends $RSASSA-PKCS1-v1_5$. This choice is further motivated by the lack of alternatives, there are no other RSA signing algorithms included in the WebCrypto API.
 
 % A motivation for the use of SHA-256 could be found in the Decentralization section.
 % - No it isn't?
@@ -158,7 +154,7 @@ Both $RSAES-PKCS1-v1.5$ and the DSA algorithms are included in the WebCrypto API
 
 % add text about hashing
 % why is the hashing in
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{lcccccc}
 Algorithm name & Type & Encrypt & Decrypt & Sign & Verify & ImportKey \\
@@ -246,7 +242,7 @@ In line with the project guidelines regarding modularity, PeerJS-specific code i
 \section{Testing}
 \label{sec:testing}
 
-Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{sec:libraries} for links to external libraries used).
+Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{chap:libraries} for links to external libraries used).
 
 \begin{Code}
 \begin{lstlisting}[caption={Sample test suite}, label={lst:testsuite}]
