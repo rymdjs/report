@@ -116,10 +116,12 @@ Furthermore, because the WebCrypto API lacks functionality for storing keys betw
 % TODO Robert/Robin: Oversee this.
 % TODO Explain cipher block chaining below
 \subsection{Algorithms}
-The Encryption uses two algorithms, namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a fast and simple to use symmetric key based on AES using cipher block chaining\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm. For the signing algorithm the working group behind the WebCrypto API recommends $RSASSA-PKCS1-v1_5$. This choice is further motivated by the lack of alternatives, there are no other RSA signing algorithms included in the WebCrypto API.
+RymdCrypto uses two algorithms for encryption namely the $RSAES-PKCS1-v1.5$ and the $AES-CBC$. AES-CBC is a fast and simple to use symmetric key based on AES using cipher block chaining\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm.
 
-% A motivation for the use of SHA-256 could be found in the Decentralization section.
-% - No it isn't?
+For the signing algorithm the working group behind the WebCrypto API recommends $RSASSA-PKCS1-v1_5$. This choice is further motivated by the lack of alternatives, there are no other RSA signing algorithms included in the WebCrypto API.
+
+Also, a good hashing algorithm is needed in order to avoid collision of hashes, that is two generated hash values being exactly the same – similar to the birthday problem~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}. For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
+
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
   var generationAlgorithmSign =  {
