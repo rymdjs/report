@@ -92,6 +92,31 @@ Rymd's signing algorithm uses $RSASSA-PKCS1-v1_5$ mainly because it is recommend
 
 Also, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
 
+The only alternatives in the WebCrypto API to RSA algorithms are \emph{Diffy-Hellman key exchange} and \emph{DSA}. DSA algorithms are faster for signing and key generation compared to RSA, but DSA algorithms are slower when it comes to signature checking. They also lack the ability to perform encryption, which is the main reason for them not being used in Rymd. The $RSAES-PKCS1-v1.5$ uses RSA which makes it appropriate for Rymd since its keys can be used for both signing and encryption (see table \ref{table:webcrypoapi}).
+
+% add text about hashing
+% why is the hashing in
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccccc}
+Algorithm name & Type & Encrypt & Decrypt & Sign & Verify & ImportKey \\
+RSAES-PKCS1-v1\_5 & ASYM & x & x &  &  & x \\
+RSASSA-PKCS1-v1\_5 & ASYM &  &  & x & x & x \\
+RSA-PSS & ASYM &  &  & x & x & x \\
+RSA-OAEP & ASYM & x & x &  &  & x \\
+ECDSA & ASYM &  &  & x & x & x \\
+AES-CTR & SYM & x & x &  &  & x \\
+AES-CBC & SYM & x & x &  &  & x \\
+AES-CMAC & SYM &  &  & x & x & x \\
+AES-GCM & SYM & x & x &  &  & x \\
+AES-CFB & SYM & x & x &  &  & x
+\end{tabular}
+\caption{Some WebCrypto API algorithms}
+\label{table:webcrypoapi}
+\end{table}
+
+When considering commercial aspects for our project RSA is clearly the winner. Commercial RSA certificates are much more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}. See listing~\ref{lst:cryptoalgorithms} for a complete rundown of Rymd's algorithms.
+
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:api}]
   var generationAlgorithmSign =  {
@@ -122,31 +147,6 @@ Also, a good hashing algorithm is needed in order to avoid collision of hashes, 
 \end{lstlisting}
 \end{Code}
 
-The only alternatives in the WebCrypto API to RSA algorithms are \emph{Diffy-Hellman key exchange} and \emph{DSA}. DSA algorithms are faster for signing and key generation compared to RSA, but DSA algorithms are slower when it comes to signature checking. They also lack the ability to perform encryption, which is the main reason for them not being used in Rymd. The $RSAES-PKCS1-v1.5$ uses RSA which makes it appropriate for Rymd since its keys can be used for both signing and encryption (see table \ref{table:webcrypoapi}). 
-
-% add text about hashing
-% why is the hashing in
-\begin{table}[ht]
-\centering
-\begin{tabular}{lcccccc}
-Algorithm name & Type & Encrypt & Decrypt & Sign & Verify & ImportKey \\
-RSAES-PKCS1-v1\_5 & ASYM & x & x &  &  & x \\
-RSASSA-PKCS1-v1\_5 & ASYM &  &  & x & x & x \\
-RSA-PSS & ASYM &  &  & x & x & x \\
-RSA-OAEP & ASYM & x & x &  &  & x \\
-ECDSA & ASYM &  &  & x & x & x \\
-AES-CTR & SYM & x & x &  &  & x \\
-AES-CBC & SYM & x & x &  &  & x \\
-AES-CMAC & SYM &  &  & x & x & x \\
-AES-GCM & SYM & x & x &  &  & x \\
-AES-CFB & SYM & x & x &  &  & x
-\end{tabular}
-\caption{Some WebCrypto API algorithms}
-\label{table:webcrypoapi}
-\end{table}
-
-When considering commercial aspects for our project RSA is clearly the winner. Commercial RSA certificates are much more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}.
-
 \subsection{Interface}
 before it's imported into its low-level interface. %TODO: Proper reference
 \begin{Code}
@@ -168,7 +168,7 @@ The source code is available at: https://github.com/rymdjs/crypto.
 \section{IndexedDBStore}
 \label{sec:indexeddbstore}
 
-The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). An API example can be found in listing~\ref{lst:api}. The module supports use of multiple object stores and auto-generation of GUID keys.
+The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). An API example can be found in listing~\ref{lst:indexeddbapi}. The module supports use of multiple object stores and auto-generation of GUID keys.
 
 The source code is available at: https://github.com/rymdjs/data-storage.
 
