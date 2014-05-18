@@ -152,3 +152,19 @@ Rymd is designed to have the modules supplied dynamically through dependency inj
 \caption{The modules and external APIs utilized in Rymd and Shuttle}
 \label{fig:architecture}
 \end{figure}
+
+
+%Cryptoback.js
+\begin{Code}
+\begin{lstlisting}[caption={Included database operations}, label={lst:api}]
+ //dependecies cryptoback.js
+  var rsa = require('bignumber-jt'),
+      Q = require('q');
+
+ //dependecies crypto.js
+  var root = this,
+    Q = require('q'),
+    cryptojs = require('crypto-js'),
+    utils = require("./cryptoback");
+\end{lstlisting}
+\end{Code}
