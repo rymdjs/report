@@ -1,6 +1,6 @@
 % TODO This chapter *must* detail our implementation of the modules introduced in System Design!
 
-With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}.
+With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}).
 
 \begin{figure}[ht]
 \centering
@@ -95,6 +95,21 @@ Also, a good hashing algorithm is needed in order to avoid collision of hashes, 
 
 RSA is currently the only asymmetric encryption scheme supported in WebCrypto. There are two encryption algorithms to choose from: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ can use the same keys for encryption and signing, which makes it the natural choice for Rymd. See table~\ref{table:webcryptoapi}. 
 
+%Cryptoback.js
+% \begin{Code}
+% \begin{lstlisting}[caption={Included database operations}, label={lst:cryptoback}]
+%  //dependecies cryptoback.js
+%   var rsa = require('bignumber-jt'),
+%       Q = require('q');
+
+%  //dependecies crypto.js
+%   var root = this,
+%     Q = require('q'),
+%     cryptojs = require('crypto-js'),
+%     utils = require("./cryptoback");
+% \end{lstlisting}
+% \end{Code}
+
 % add text about hashing
 % why is the hashing in
 \begin{table}[ht]
@@ -154,7 +169,6 @@ Until the WebCrypto Key Discovery API is available, the RymdCrypto module genera
 Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys. In order to use IndexedDB for the keys they need to be parsed to certificates. This is also handled by bignumber-jt. All certificates have a static key size where asymmetric keys are of $1024bits$ and symmetric keys are of $256bits$; none are explicitly generated via the API.
 
 Hashing is handled by the external library \emph{crypto-js}\footnote{https://github.com/evanvosberg/crypto-js}.
-
 
 \subsection{Interface}
 before it's imported into its low-level interface. %TODO: Proper reference
