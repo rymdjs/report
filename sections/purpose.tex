@@ -1,13 +1,12 @@
 \section{Purpose}\label{sec:purpose}
 
-The purpose of this project is a cryptographically secured distributed peer-to-peer system for storage and communication of data. It should be bundled as a developer library with focus on modularity, decentralization and security. The goal is to determine if such a system can be implemented solely with web technologies and become usable for scenarios such as file sharing between clients.
-
-The underlying requirements of the library was partially determined from section~\ref{sec:problem}:
+The purpose of this project is a cryptographically secured distributed peer-to-peer system for storage and communication of data resources (e.g. files). It should be bundled as a developer library with focus on modularity, decentralization and security. The goal is to determine if such a system can be implemented solely with web technologies and become usable for scenarios such as file sharing between clients.
+Such a system should fulfill the following requirements:
 
 \begin{description}
-  \item[Privacy] Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by a user.
+  \item[Privacy] Only users that are given explicit access to a resource should be able to deduce anything useful about its content. No central entity, such as a server administrator or network operator, should be able to extract incriminating information about a client. Users should be able to trust that they know who they are communicating with. No network operator or server administrator should be able to forge identities in a way that can not be detected by users.
 
-\item[Security] Encryption in each step, from resource storage to data transfer.
+\item[Security] Encryption in each step, from resource storage to data transfer. Only users with explicit access to a resource should be able to read it.
 
 \item[Reliability] If any server goes down and can not be recovered, no damage should be done to the network as a whole as long as anyone can host a new server using the same source code.
 
