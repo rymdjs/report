@@ -1,6 +1,14 @@
 % TODO This chapter *must* detail our implementation of the modules introduced in System Design!
 
-With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area.
+With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth,height=0.4\paperheight,keepaspectratio
+]{figures/architecture}
+\caption{The modules and external APIs utilized in Rymd and Shuttle}
+\label{fig:architecture}
+\end{figure}
 
 \section{Rymd}
 \label{sec:rymd}
