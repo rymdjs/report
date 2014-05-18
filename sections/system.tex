@@ -126,22 +126,22 @@ The metadata and resource data are handled separately in Rymd and the communicat
 % TODO Robin: Describe our concrete modules better here. This section *has* to describe how
 % *we* used modularity in our project.
 
-The core Rymd library acts as the hub with workflows that binds all parts together. The library is divided into modules that separates complex areas of the application – areas that are most likely to change independently over time – into well defined and easily exchangeble \emph{modules}. With key features being implemented with technologies from everchanging fields at the web's forefront, this modular design was imperitive in order to make the system maintainable (as explained in section \ref{sec:modularity}). The key features were extracted into the following modules:
+The core Rymd library acts as the hub with workflows that binds all parts together. The library is divided into modules that separates complex areas of the application – areas that are most likely to change independently over time – into well defined and easily exchangeble \emph{modules}. With key features being implemented with technologies from everchanging fields at the web's forefront, this modular design was imperitive in order to make the system maintainable (as explained in section \ref{sec:modularity}). Key functionality were extracted into the following modules:
 
-\begin{enumerate}
-  \item Data storage,
-  \item Cryptography,
-  \item Peer-to-peer communication and
+\begin{itemize}
+  \item Data storage
+  \item Cryptography
+  \item Peer-to-peer communication
   \item DHT interaction
-\end{enumerate}
+\end{itemize}
 
 Furthermore, the following modules are treated as one but should be separated before Rymd reaches the stage of release candidate:
 
-\begin{enumerate}
-  \item Key storage,
-  \item Resource data storage and
+\begin{itemize}
+  \item Key storage
+  \item Resource data storage
   \item Metadata storage
-\end{enumerate}
+\end{itemize}
 
 Rymd is designed to have the modules supplied dynamically through dependency injection.
 
