@@ -78,20 +78,14 @@ The source code is available at: https://github.com/rymdjs/dht-client and https:
 \label{sec:cryptography}
 %TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
 % uses the Web Crypto Api for encryption (3AES - 1024) ,decryption key import and export ,
-The implementations of WebCrypto in Chromium supply key generation, but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind WebCrypto - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this in Chromium before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in order to decrease implementation complexity. Until the WebCrypto Key Discovery API is available, the RymdCrypto module generates pseudo-random keys through the external library \emph{bignumber-jt}\footnote{https://www.npmjs.org/package/bignumber-jt}. To do low-level key generation directly in JavaScript is bad practice and is performed in order to make Rymd runnable until a more solid solution is available.
-
-Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys. In order to use IndexedDB for the keys they need to be parsed to certificates. This is also handled by bignumber-jt. All certificates have a static key size where asymmetric keys are of $1024bits$ and symmetric keys are of $256bits$; none are explicitly generated via the API.
-
-Hashing is handled by the external 
+The implementations of WebCrypto in Chromium supply key generation, but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind WebCrypto - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this in Chromium before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in order to decrease implementation complexity.
 
 \subsection{Algorithms}
-RymdCrypto uses two algorithms for encryption, namely $RSAES-PKCS1-v1.5$ and $AES-CBC$. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\footnote{Cipher Block Chaining, or CBC, is a mode of operation for encryption and decryption that divides data into blocks and makes each subsequent block depend on the preceeding ones.\cite{SearchSecurityCipherBlockChaining:Online}}\cite{AESISFAST:Online}. $RSAES-PKCS1-v1.5$ on the other hand is an AES implementation based on the RSA algorithm.
-
-Rymd's signing algorithm uses $RSASSA-PKCS1-v1_5$ mainly because it is recommended by the working group behind the WebCrypto API. This choice is further motivated by the lack of alternatives: There are no other RSA algorithms intended for signing included in the WebCrypto API.
+RymdCrypto uses two algorithms for encryption, namely $RSAES-PKCS1-v1.5$ and $AES-CBC$. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\cite{AESISFAST:Online}. Rymd's signing algorithm uses $RSAES-PKCS1-v1.5$ mainly because it is recommended by the working group behind the WebCrypto API. This choice is further motivated by the lack of alternatives: There are no other RSA algorithms intended for signing included in the WebCrypto API.
 
 Also, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
 
-The only alternatives in the WebCrypto API to RSA algorithms are \emph{Diffy-Hellman key exchange} and \emph{DSA}. DSA algorithms are faster for signing and key generation compared to RSA, but DSA algorithms are slower when it comes to signature checking. They also lack the ability to perform encryption, which is the main reason for them not being used in Rymd. The $RSAES-PKCS1-v1.5$ uses RSA which makes it appropriate for Rymd since its keys can be used for both signing and encryption (see table \ref{table:webcryptoapi}).
+RSA is currently the only asymmetric encryption scheme supported in WebCrypto. There are two encryption algorithms to choose from: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ can use the same keys for encryption and signing, which makes it the natural choice for Rymd. See table~\ref{table:webcryptoapi}. 
 
 % add text about hashing
 % why is the hashing in
@@ -114,7 +108,7 @@ AES-CFB & SYM & x & x &  &  & x
 \label{table:webcryptoapi}
 \end{table}
 
-When considering commercial aspects for our project RSA is clearly the winner. Commercial RSA certificates are much more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}. See listing~\ref{lst:cryptoalgorithms} for a complete rundown of Rymd's algorithms.
+Commercial RSA certificates are more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium \cite{ImplementedChromium:Online}. See listing~\ref{lst:cryptoalgorithms} for a complete rundown of Rymd's algorithms.
 
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:cryptoalgorithms}]
@@ -145,6 +139,14 @@ When considering commercial aspects for our project RSA is clearly the winner. C
   }
 \end{lstlisting}
 \end{Code}
+
+\subsection{Libraries}
+Until the WebCrypto Key Discovery API is available, the RymdCrypto module generates pseudo-random keys through the external library \emph{bignumber-jt}\footnote{https://www.npmjs.org/package/bignumber-jt}. To do low-level key generation directly in JavaScript is bad practice and is performed in order to make Rymd runnable until a more solid solution is available.
+
+Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys. In order to use IndexedDB for the keys they need to be parsed to certificates. This is also handled by bignumber-jt. All certificates have a static key size where asymmetric keys are of $1024bits$ and symmetric keys are of $256bits$; none are explicitly generated via the API.
+
+Hashing is handled by the external library \emph{crypto-js}\footnote{https://github.com/evanvosberg/crypto-js}.
+
 
 \subsection{Interface}
 before it's imported into its low-level interface. %TODO: Proper reference
