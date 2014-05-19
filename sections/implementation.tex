@@ -1,5 +1,7 @@
 % TODO This chapter *must* detail our implementation of the modules introduced in System Design!
 
+% Johan
+
 With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}).
 
 \begin{figure}[ht]
@@ -15,7 +17,7 @@ With the background of the high-level foundations presented in chapter\ref{chap:
 
 % TODO Somebody
 
-The source code is available at: https://github.com/rymdjs/rymd. The Rymd library is the only truly implementation-agnostic module and should be runnable on any platform as long as implementation modules are dependency injected. 
+The source code is available at: https://github.com/rymdjs/rymd. The Rymd library is the only truly implementation-agnostic module and should be runnable on any platform as long as implementation modules are dependency injected.
 
 \section{Shuttle}
 \label{sec:shuttle}
@@ -93,7 +95,7 @@ RymdCrypto uses two algorithms for encryption, namely $RSAES-PKCS1-v1.5$ and $AE
 
 Also, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
 
-RSA is currently the only asymmetric encryption scheme supported in WebCrypto. There are two encryption algorithms to choose from: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ can use the same keys for encryption and signing, which makes it the natural choice for Rymd. See table~\ref{table:webcryptoapi}. 
+RSA is currently the only asymmetric encryption scheme supported in WebCrypto. There are two encryption algorithms to choose from: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ can use the same keys for encryption and signing, which makes it the natural choice for Rymd. See table~\ref{table:webcryptoapi}.
 
 %Cryptoback.js
 % \begin{Code}
@@ -226,7 +228,7 @@ The asynchronous API of IndexedDB is relatively verbose and complex. It makes he
 \label{sec:p2p}
 
 % - built on top of peerjs, TODO (not sure how to reference to github)
-Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. This module was therefore constructed, in line with the project guidelines regarding modularity, to contain PeerJS-specific code and to provide an independent interface which does not reveal the details of PeerJS's inner workings. If changes in Rymd's requirements makes the choice of PeerJS obsolete, then the changes will be isolated and one should still be able to depend on the same interface. 
+Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. This module was therefore constructed, in line with the project guidelines regarding modularity, to contain PeerJS-specific code and to provide an independent interface which does not reveal the details of PeerJS's inner workings. If changes in Rymd's requirements makes the choice of PeerJS obsolete, then the changes will be isolated and one should still be able to depend on the same interface.
 
 PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
 
