@@ -8,8 +8,10 @@
 % Results
 % Conclusions
 
-This thesis describes the development of a cryptographically secured decentralized peer-to-peer file sharing system, bundled as a JavaScript developer library. We evaluate current web technologies and determine if they are sufficient to implement such a system. The Namecoin blockchain is used for storing user identities mapped to their public encryption keys, which in turn are used to encrypt data. The results are illustrated by using the system to create a web application in which users can store and share files easily. 
+This thesis describes a cryptographically secured decentralized peer-to-peer file sharing system, bundled as a JavaScript developer library called \emph{Rymd}. This includes evaluating current web technologies and determining if they are sufficient to implement such a system.
 
-By making the system highly modular, we manage to achieve satisfying results in reliability and technical agnosticism with regards to underlying implementations.
+The problem domain includes how to make the system secure, decentralized, anonymous and modular using web technologies. By making the system highly modular, we manage to achieve satisfying results in reliability and technical agnosticism with regards to underlying implementations. Putting the modular aspect aside, the motivation for developing such a system lies in giving control back to users over typically centralized services, such as for messaging or in our case for storing data and sharing files.
 
-Even though this project succeeds with its goal of creating a client-side file sharing platform, standards bodies and browser vendors still have work to do within the area of cryptography for the web.
+Alongside Rymd a web application, \emph{Shuttle}, is developed that injects modules implementing core features into Rymd. IndexedDB is used for persistent data and key storage while peer-to-peer communication is achieved through WebRTC. Common cryptographic services such as encryption, decryption, signing and more are done through the Web Cryptography API. The Namecoin blockchain is used for storing user identities mapped to their public encryption keys, which in turn are used to encrypt data.
+
+Even though this project succeeds with its goal of creating a client-side file sharing platform, the technolgies used are in such a premature state that they cannot fully satisfy security goals. We are confident that the standard bodies and browser vendors will continue their work on bringing open web technologies up to speed with their native counterparts.
