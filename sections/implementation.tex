@@ -22,9 +22,19 @@ In \nameref{sec:modules} the overall areas of responsibility for the system modu
 \section{Rymd}
 \label{sec:rymd}
 
-% TODO Somebody
+The Rymd library is the only truly implementation-agnostic module and should be runnable on any platform as long as implementation modules are dependency injected.  It defines the business logic for behaviour such as:
 
-The Rymd library is the only truly implementation-agnostic module and should be runnable on any platform as long as implementation modules are dependency injected.
+\begin{itemize}
+  \item The structure of resources and metadata
+  \item The communication and authentication flow
+  \item The \emph{resource store}: How resources are saved and identified independent of implementation
+  \item Management of chryptographic keys
+  \item Session management
+\end{itemize}
+
+Applications utilizing Rymd will generally instantiate a \emph{RymdNode} object, which is the main entry point of the library and inject implementation modules. The RymdNode object will then act as the interface between the application and the Rymd library.
+
+
 
 \section{Shuttle}
 \label{sec:shuttle}
