@@ -95,7 +95,7 @@ Since the default authentication implementation utilizes Namecoin, which can not
 
 The idea with this separation is that the authentication algorithm is part of the core library, while derivative projects should be able to replace $DHT$ and $DHT-client$ with implementations using other stores like Ethereum or Keybase without having to consider writing a secure authentication protocol, should they so desire.
 
-\section{Cryptography}
+\section{RymdCrypto}
 \label{sec:cryptography}
 The implementations of WebCrypto in Chromium supply key generation, but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind WebCrypto - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this in Chromium before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in order to decrease implementation complexity.
 
