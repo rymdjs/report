@@ -1,8 +1,15 @@
-% TODO This chapter *must* detail our implementation of the modules introduced in System Design!
+With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a client-side web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}). Links to the source code for all modules are available in chapter~\ref{chap:source}.
 
-% Johan
+In \nameref{sec:modules} the overall areas of responsibility for the system modules were defined. This resulted in the following concrete modules described in this chapter:
 
-With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}).
+\begin{description}
+  \item[Rymd] The business logic for the system. Has references to the other modules through dependency injection.
+  \item[Shuttle] The front-end prototype – a client-side web application.
+  \item[DHT Client] Module which looks up records in the Namecoin blockchain through a NodeJS web service (see~\ref{chap:source}).
+  \item[RymdCrypto] Module for cryptography.
+  \item[IndexedDBStore] Module for data and key storage.
+  \item[PeerJS Connection] Module for communication with the PeerJS service.
+\end{description}
 
 \begin{figure}[ht]
 \centering
@@ -244,8 +251,7 @@ The following steps explain how PeerJS brokers connections:
 
 In order to map the identity registered in the Namecoin blockchain to the ID supplied by the PeerJS server, the DHT service is used. After a client has connected to a PeerJS server, it supplies the data regarding the server IP and the generated ID to the DHT. When another client wants to create a peer-to-peer connection, it queries the DHT service for the Namecoin identity, which then returns the IP for the PeerJS server and the ID for the client.
 
-% TODO need to expand this
-As communication with the PeerJS server and the DHT service utilize XHR and WebSockets, which is not encrypted per default, it is vital that these channels are encrypted to ensure the integrity of users.
+To ensure the integrity of users it is vital that the communication with the PeerJS server and the DHT service is encrypted. The current implementation utilize the WebSocket protocol and the XHR API, which are not encrypted per default, for communication over these channels. Therefore an implementation running on top of the SSL/TLS protocol has to be in place before the project can be considered to have reached a releasable state.
 
 \section{Testing}
 \label{sec:testing}
