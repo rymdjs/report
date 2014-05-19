@@ -24,7 +24,7 @@ In \nameref{sec:modules} the overall areas of responsibility for the system modu
 
 % TODO Somebody
 
-The source code is available at: https://github.com/rymdjs/rymd. The Rymd library is the only truly implementation-agnostic module and should be runnable on any platform as long as implementation modules are dependency injected.
+The Rymd library is the only truly implementation-agnostic module and should be runnable on any platform as long as implementation modules are dependency injected.
 
 \section{Shuttle}
 \label{sec:shuttle}
@@ -38,8 +38,6 @@ The front-end prototype was built in order to test and implement the features of
   \item Download remote files that have been shared by other users
   \item Add custom encryption keys
 \end{itemize}
-
-The source code is available at: https://github.com/rymdjs/prototype.
 
 Shuttle uses Rymd's functionality by instantiating a global \texttt{RymdNode} object (see~\ref{sec:rymd}). This effectively makes Shuttle a node in the network. In-app notifications are shown by listening to certain events on the \texttt{rymdNode} object.
 
@@ -88,8 +86,6 @@ Since the default authentication implementation utilizes Namecoin, which can not
 \end{description}
 
 The idea with this separation is that the authentication algorithm is part of the core library, while derivative projects should be able to replace $DHT$ and $DHT-client$ with implementations using other stores like Ethereum or Keybase without having to consider writing a secure authentication protocol, should they so desire.
-
-The source code is available at: https://github.com/rymdjs/dht-client and https://github.com/rymdjs/dht.
 
 \section{Cryptography}
 \label{sec:cryptography}
@@ -195,14 +191,10 @@ generateSymmetricKey: function() -> Promise(WebCrypto::Key)
 \end{lstlisting}
 \end{Code}
 
-The source code is available at: https://github.com/rymdjs/crypto.
-
 \section{IndexedDBStore}
 \label{sec:indexeddbstore}
 
 The main task for the data storage module was to abstract away the low-level methods in IndexedDB (the backing store used, see section~\ref{sec:indexeddb}). An API example can be found in listing~\ref{lst:indexeddbapi}. The module supports use of multiple object stores and auto-generation of GUID keys.
-
-The source code is available at: https://github.com/rymdjs/data-storage.
 
 \begin{Code}
 \begin{lstlisting}[caption={Common database operations}, label={lst:indexeddbapi}]
@@ -238,8 +230,6 @@ The asynchronous API of IndexedDB is relatively verbose and complex. It makes he
 Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. This module was therefore constructed, in line with the project guidelines regarding modularity, to contain PeerJS-specific code and to provide an independent interface which does not reveal the details of PeerJS's inner workings. If changes in Rymd's requirements makes the choice of PeerJS obsolete, then the changes will be isolated and one should still be able to depend on the same interface.
 
 PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
-
-The source code is available at: https://github.com/rymdjs/peerjs-connection.
 
 % - explain how peer.js works.
 The following steps explain how PeerJS brokers connections:
