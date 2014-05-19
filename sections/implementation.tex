@@ -99,6 +99,7 @@ The idea with this separation is that the authentication algorithm is part of th
 \label{sec:cryptography}
 The implementations of WebCrypto in Chromium supply key generation, but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind WebCrypto - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this in Chromium before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in order to decrease implementation complexity.
 
+
 \subsection{Algorithms}
 RymdCrypto uses two algorithms for encryption, namely $RSAES-PKCS1-v1.5$ and $AES-CBC$. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\cite{AESISFAST:Online}. Rymd's signing algorithm uses $RSAES-PKCS1-v1.5$ mainly because it is recommended by the working group behind the WebCrypto API. This choice is further motivated by the lack of alternatives: There are no other RSA algorithms intended for signing included in the WebCrypto API.
 
@@ -181,8 +182,18 @@ Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lack
 
 Hashing is handled by the external library \emph{crypto-js}\footnote{https://github.com/evanvosberg/crypto-js}.
 
-% \subsection{Interface}
-% before it's imported into its low-level interface. %TODO: Proper reference
+\subsection{Interface}
+
+In short, the RymdCrypto module exposes functions handling:
+\begin{description}
+  \item[Generation of asymmetric keys] Generates RSA key pair
+  \item[Generation of symmetric keys] Generates AES key.
+  \item[Exporting and importing keys]
+  \item[Encryption and decryption] For AES and RSA
+  \item[Signing and verification] For RSA
+  \item[Hashing] Using SHA-256
+\end{description}
+% before it's imported into its low-level interface.
 % \begin{Code}
 % \begin{lstlisting}[caption={Common database operations}, label={lst:cryptointerface}]
 % generateKeyPair: function() -> Promise({Uint8array,Uint8array})
@@ -196,6 +207,7 @@ Hashing is handled by the external library \emph{crypto-js}\footnote{https://git
 % generateSymmetricKey: function() -> Promise(WebCrypto::Key)
 % \end{lstlisting}
 % \end{Code}
+
 
 \section{IndexedDBStore}
 \label{sec:indexeddbstore}
