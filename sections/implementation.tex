@@ -99,8 +99,6 @@ The idea with this separation is that the authentication algorithm is part of th
 
 \section{Cryptography}
 \label{sec:cryptography}
-%TODO: Rewrite, explain "secure primitives". Probably this whole sentence should be removed./Robert
-% uses the Web Crypto Api for encryption (3AES - 1024) ,decryption key import and export ,
 The implementations of WebCrypto in Chromium supply key generation, but there is no support for persisting keys between sessions or even exporting private keys. W3C - the organization behind WebCrypto - have announced their intention to handle persistent key storage in an upcoming API called WebCrypto Key Discovery \cite{WebCryptoKeyDiscovery:Online}. However, Google has no intention of implementing this in Chromium before the WebCrypto API is finalized. WebCrypto Key Discovery API was originally intended to be a part of the WebCrypto API but was extracted in order to decrease implementation complexity.
 
 \subsection{Algorithms}
@@ -236,7 +234,6 @@ The asynchronous API of IndexedDB is relatively verbose and complex. It makes he
 \section{PeerJS Connection}
 \label{sec:p2p}
 
-% - built on top of peerjs, TODO (not sure how to reference to github)
 Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. This module was therefore constructed, in line with the project guidelines regarding modularity, to contain PeerJS-specific code and to provide an independent interface which does not reveal the details of PeerJS's inner workings. If changes in Rymd's requirements makes the choice of PeerJS obsolete, then the changes will be isolated and one should still be able to depend on the same interface.
 
 PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
