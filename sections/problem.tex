@@ -20,24 +20,24 @@ In a truly distributed system, it is necessary to avoid having crucial system lo
 Each user of the system will be associated with a self-generated private-public pair of asymmetric cryptographic keys. With knowledge of the public keys of their peers, there are standardized identity verification protocols used on a session-to-session basis. Regardless of the authentication protocol used, there is always a chicken-and-egg problem with the distribution of public keys and how to tie them to identities. In order to trust the validity of the key provided from another entity, the user puts trust in that entity. Traditionally, there are two types of Public Key Infrastructures (PKIs) with different ways to address this:
 
 \begin{itemize}
-  \item A Web of Trust, as often utilized in OpenPGP \cite{Maurer:1996}. Here, a user has a list of peers that they trust - trusted introducers. If they receive a public key and associated identity signed by one of their trusted introducers, they will know that the trusted introducer has verified the connection between the identity and the public key. In this way, an active user will steadily grow their network of trusted introducers. One needs to have a network of dependable and active peers in order to successfully participate in a Web of Trust.
+ \item A Web of Trust, as often utilized in OpenPGP \cite{Maurer:1996}. Here, a user has a list of peers that they trust - trusted introducers. If they receive a public key and associated identity signed by one of their trusted introducers, they will know that the trusted introducer has verified the connection between the identity and the public key. In this way, an active user will steadily grow their network of trusted introducers. One needs to have a network of dependable and active peers in order to successfully participate in a Web of Trust.
 
-\item A PKI centered around one or several Certificate Authorities (CAs). Here, there is a predefined list of authorities that are trusted to sign participants public keys. This creates a centralized network and puts a lot of trust in the CAs. SSL utilizes this approach and there are several historical examples of when this trust has been broken (more recently in the Diginotar hack of 2011).
+\item A PKI centered around one or several Certificate Authorities (CAs). Here, there exists a predefined list of authorities that are trusted to sign participants' public keys. This creates a centralized network and puts a lot of trust in the CAs. SSL utilizes this approach and there are several historical examples of when this trust has been broken (more recently in the Diginotar hack of 2011).
 \end{itemize}
 
 \subsection{Resource storage}
-Usability, security and adherence to public web standards are three highly prioritized properties that make the question of how to locally store resources on clients a difficult one. The FileSystem API\footnote{http://w3c.github.io/filesystem-api/Overview.html} enables access of the local filesystem. Implementation has started in some browsers, but the standard is now considered dead\cite{W3C:2014}. Local file access could be very useful – but without cross-platform support, it are considered out of the question. A secure way to store the encryption keys for encrypted resources also needs to be determined.
+Usability, security and adherence to public web standards are three highly prioritized properties that make the question of how to locally store resources on clients a difficult one. The FileSystem API\footnote{http://w3c.github.io/filesystem-api/Overview.html} enables access to the local filesystem. Some browsers have simple implementations in place, but the standard is now considered dead\cite{W3C:2014}. Local file access could be very useful – but without cross-platform support it is considered out of the question. A secure way to store the encryption keys for encrypted resources also needs to be determined.
 
 \subsection{Resource identification}
 It is desirable for resources to have identifiers that are memorable, secure, and unique. Resource checksums will have to be communicated and verified by peers before accepting a transfer of resource data.
 
 \subsection{Communication flow and transfer initiation}
-In order for nodes to be able to share data, they need a way to connect to each other. They also need to do this in a secure manner in order to prevent potential vicious third parties listening on a connection from making any sense of retrieved data. In other words critical parts should not be sent in raw form, but rather be encrypted. When considering security aspects there are essentially three questions that need to be answered regarding the issue of connecting nodes:
+In order for nodes to be able to share data, they need a way to connect to each other. They also need to do this in a secure manner in order to prevent potential vicious third parties listening on a connection from making any sense of retrieved data. In other words, critical parts should not be sent in raw form but rather be encrypted. When also considering security aspects there are essentially three questions that need to be answered regarding the issue of connecting nodes:
 
 \begin{itemize}
 \item How can a node find another node to begin with (peer discovery)?
 \item When a node has been found, how can a connection be established?
-\item What data needs to be encrypted in order to ensure the integrity of the system?
+\item What data needs to be encrypted in order to ensure the system's integrity?
 \end{itemize}
 
 Answering these questions and finding the corresponding best technology was the focus of this research area. In recent years there has been a trend driving more and more tools and services on the web towards user collaboration. A natural step in this trend is initiatives such as WebRTC and CU-RT-Web which enable direct peer-to-peer communication.
