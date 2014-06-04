@@ -101,11 +101,12 @@ The implementations of WebCrypto in Chromium supply key generation, but there is
 
 
 \subsection{Algorithms}
-RymdCrypto uses two algorithms for encryption, namely $RSAES-PKCS1-v1.5$ and $AES-CBC$. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\cite{AESISFAST:Online}. Rymd's signing algorithm uses $RSAES-PKCS1-v1.5$ mainly because it is recommended by the working group behind the WebCrypto API. This choice is further motivated by the lack of alternatives: There are no other RSA algorithms intended for signing included in the WebCrypto API.
+Since Rymd uses asymmetric keys for authentication, RymdCrypto should supply asymmetric signing and encryption schemes using the same keys. Considering the support in WebCrypto, this leaves RSA based schemes as the only alternatives (See table~\ref{table:webcryptoapi}). There are only two RSA based encryption schemes that are part of WebCrypto: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ is currently the only one that is implemented in Google Chrome, and is therefore the current choice for Rymd.  Rymd uses $RSASSA-PKCS1-v1.5$ for signing, mainly because it is recommended by the working group behind the WebCrypto API.
 
-Also, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
+For encryption of resources, a symmetric algorithm is used. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\cite{AESISFAST:Online}. 
 
-RSA is currently the only asymmetric encryption scheme supported in WebCrypto. There are two encryption algorithms to choose from: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ can use the same keys for encryption and signing, which makes it the natural choice for Rymd. See table~\ref{table:webcryptoapi}.
+Finally, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
+
 
 %Cryptoback.js
 % \begin{Code}
