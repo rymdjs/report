@@ -11,8 +11,6 @@ With background of the purpose and requirements, there are a set of concrete pro
 \item Communication flow and transfer initiation
 \end{itemize}
 
-These points affect the architecture as presented in the following sections.
-
 \subsection{Decentralization of system logic}
 In a truly distributed system, it is necessary to avoid having crucial system logic and data on a central server. The functionality of the system should not rely on the availability of any specific server. If servers are needed for any reason, they should not store persistant or sensitive data and be easily replacable with new servers running the same software. Temporary downtime can be accepted in this case. Since clients do not know what software their peers are running, all information from them must be considered untrusted until verified.
 
