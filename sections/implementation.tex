@@ -70,7 +70,7 @@ destroyResource: (guid:String):Promise
 \end{lstlisting}
 \end{Code}
 
-\texttt{RymdNode} triggers certain events on itself, which can be used for handling incoming resource sharing proposals, resource download requests, and more. The complete list of events are listed in figure~\ref{lst:rymdnode_events}. These events might initially be triggered inside some injected module, but \texttt{RymdNode} listens to events and triggers them on itself in order to present a coherent external event interface. For instance, the \texttt{request} event is triggered inside the PeerJS Connection module (section~ \ref{sec:p2p}) and bubbled up to \texttt{RymdNode}.
+\texttt{RymdNode} triggers certain events on itself, which can be used for handling incoming resource sharing proposals, resource download requests, and more. The complete list of events are listed in figure~\ref{lst:rymdnode_events}. These events might initially be triggered inside some injected module, but \texttt{RymdNode} listens to events and triggers them on itself in order to present a coherent external event interface. For instance, the \texttt{request} event is triggered inside the PeerJS Connection module (section~\ref{sec:p2p}) and bubbled up to \texttt{RymdNode}.
 
 \begin{Code}
 \begin{lstlisting}[caption={Events triggered on \texttt{RymdNode}}, label={lst:rymdnode_events}]
