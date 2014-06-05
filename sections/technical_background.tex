@@ -257,7 +257,9 @@ A NAT is responsible for maintaining a table of entries that map an internal IP 
 \label{fig:NAT}
 \end{figure}
 
-The presence of NATs can pose a problem to applications leveraging the UDP protocol for transportation of data and network communication in general. The underlying issue with the UDP protocol is the absense of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
+The presence of NATs can pose a problem to applications leveraging the UDP protocol for transportation of data and network communication in general. The different techniques that can be used to resolve problems caused by NATs are often referred to as \emph{NAT Traversal} techniques.
+
+The underlying issue with the UDP protocol is the absense of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
 
 A technique commonly used to solve the problem with UDP entries expiring and being dropped is to utilize keepalives at regular intervals. This is is commonly referred to as \emph{UDP hole punching}~\cite{UDPHolePunching:Online}.
 
@@ -310,7 +312,8 @@ For the sake of security, data is encrypted according to the DTLS (Datagram Tran
 
 \subsubsection{RTCPeerConnection}
 \label{subsubsec:rtcpeerconnection}
-The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of the inherent problems regarding NATs by utilizing the Interactive Connection Establishment (ICE) protocol~\cite{RFC5245:Online}. ICE has the objective of connecting peers in the most efficient way. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) .
+<<<<<<< HEAD
+The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the Interactive Connection Establishment (ICE) protocol~\cite{RFC5245:Online}. The ICE protocol handles \emph{NAT Traversal} and is used for establishing peer-to-peer connections. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure~\ref{fig:ICE}).
 
 \begin{figure}[htp]
 \centering
