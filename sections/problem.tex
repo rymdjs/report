@@ -26,7 +26,7 @@ The stated requirement of privacy can only be assured if the identities of peers
 \end{itemize}
 
 \subsection{Resource storage}
-Usability, security and adherence to public web standards are three highly prioritized properties that make the question of how to locally store resources on clients a difficult one. The FileSystem API\footnote{http://w3c.github.io/filesystem-api/Overview.html} enables access to the local filesystem. Some browsers have simple implementations in place, but the standard is now considered dead\cite{W3C:2014}. Local file access could be very useful – but without cross-platform support it is considered out of the question. A secure way to store the encryption keys for encrypted resources also needs to be determined.
+Usability, security and adherence to public web standards are three highly prioritized properties that make the question of how to locally store resources on clients a difficult one. The FileSystem API \cite{FileSystem:Online} enables access to the local filesystem. Some browsers have simple implementations in place, but the standard is now considered dead\cite{W3C:2014}. Local file access could be very useful – but without cross-platform support it is considered out of the question. A secure way to store the encryption keys for encrypted resources also needs to be determined.
 
 \subsection{Resource identification}
 It is desirable for resources to have identifiers that are memorable, secure, and unique. Resource checksums will have to be communicated and verified by peers before accepting a transfer of resource data.
