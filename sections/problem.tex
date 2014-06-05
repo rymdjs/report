@@ -1,7 +1,7 @@
 \section{Problem}
 \label{sec:problem}
 
-With background of the purpose and requirements, we can identify a set of concrete problems that a web-based file sharing project needs to address:
+With background of the purpose and requirements, there are a set of concrete problems that a web-based file sharing project needs to address:
 
 \begin{itemize}
 \item Decentralization of system logic
@@ -11,8 +11,6 @@ With background of the purpose and requirements, we can identify a set of concre
 \item Communication flow and transfer initiation
 \end{itemize}
 
-These points affect the architecture as presented in the following sections.
-
 \subsection{Decentralization of system logic}
 In a truly distributed system, it is necessary to avoid having crucial system logic and data on a central server. The functionality of the system should not rely on the availability of any specific server. If servers are needed for any reason, they should not store persistant or sensitive data and be easily replacable with new servers running the same software. Temporary downtime can be accepted in this case. Since clients do not know what software their peers are running, all information from them must be considered untrusted until verified.
 
@@ -20,13 +18,13 @@ In a truly distributed system, it is necessary to avoid having crucial system lo
 The stated requirement of privacy can only be assured if the identities of peers can be verified. This is generally done with public-key cryptography, where each user is associated with a pair of asymmetric cryptographic keys. With knowledge of the public keys of their peers, there are standardized identity verification protocols used on a session-to-session basis. Regardless of the authentication protocol used, there is always a chicken-and-egg problem with the distribution of public keys and how to tie them to identities. In order to trust the validity of the key provided from another entity, the user puts trust in that entity. Traditionally, there are two types of Public Key Infrastructures (PKIs) with different ways to address this:
 
 \begin{itemize}
- \item A Web of Trust, as often utilized in OpenPGP \cite{Maurer:1996}. Here, a user has a list of peers that they trust - trusted introducers. If they receive a public key and associated identity signed by one of their trusted introducers, they will know that the trusted introducer has verified the connection between the identity and the public key. In this way, an active user will steadily grow their network of trusted introducers. One needs to have a network of dependable and active peers in order to successfully participate in a Web of Trust.
+ \item A Web of Trust, as often utilized in OpenPGP~\cite{Maurer:1996}. Here, a user has a list of peers that they trust - trusted introducers. If they receive a public key and associated identity signed by one of their trusted introducers, they will know that the trusted introducer has verified the connection between the identity and the public key. In this way, an active user will steadily grow their network of trusted introducers. One needs to have a network of dependable and active peers in order to successfully participate in a Web of Trust.
 
 \item A PKI centered around one or several Certificate Authorities (CAs). Here, there exists a predefined list of authorities that are trusted to sign participants' public keys. This creates a centralized network and puts a lot of trust in the CAs. SSL utilizes this approach and there are several historical examples of when this trust has been broken (more recently in the Diginotar hack of 2011).
 \end{itemize}
 
 \subsection{Resource storage}
-Usability, security and adherence to public web standards are three highly prioritized properties that make the question of how to locally store resources on clients a difficult one. The FileSystem API\footnote{http://w3c.github.io/filesystem-api/Overview.html} enables access to the local filesystem. Some browsers have simple implementations in place, but the standard is now considered dead\cite{W3C:2014}. Local file access could be very useful – but without cross-platform support it is considered out of the question. A secure way to store the encryption keys for encrypted resources also needs to be determined.
+Usability, security and adherence to public web standards are three highly prioritized properties that make the question of how to locally store resources on clients a difficult one. The FileSystem API~\cite{FileSystem:Online} enables access to the local filesystem. Some browsers have simple implementations in place, but the standard is now considered dead~\cite{W3C:2014}. Local file access could be very useful – but without cross-platform support it is considered out of the question. A secure way to store the encryption keys for encrypted resources also needs to be determined.
 
 \subsection{Resource identification}
 It is desirable for resources to have identifiers that are memorable, secure, and unique. Resource checksums will have to be communicated and verified by peers before accepting a transfer of resource data.
