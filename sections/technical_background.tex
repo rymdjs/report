@@ -1,21 +1,23 @@
-This chapter gives a theoretical foundation for the areas: client-side storage, distributed storage, communication, and cryptography. Standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application are being continously pushed by browser vendors and standards groups.
+This chapter gives a theoretical foundation and state of the field for the technical domains of relevance for this project: client-side storage, distributed storage, communication, and cryptography. In all fields, standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application are being continously pushed by browser vendors and standards groups. The goals of Rymd has indeed become technically viable in a web environment as of very recently.
 
-% TODO Introduce the sections better here
 
 % Client-side storage
-The development of client side data storage in HTML5 is also an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage like databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even offline caching with Application Cache \cite{OfflineWebApps:Online} in order to build completely offline applications with no requirements for internet access.
+The development of client-side data storage in HTML5 is an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage like databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even access to the local file system (FileSystem). Under section~\ref{sec:clientstorage}, al of these technologies are presented.
 
 % Distributed storage
+Some of the new \emph{cryptocurrencies} can be utilized for distributed storage of data like cryptographic keys. Namecoin and Ethereum are notable examples. In section~\ref{sec:distributedstorage}, they are presented together with Keybase, a service specialized for this purpose that uses a different approach of verifying identities through links at social media accounts.
 
 % Communication
-The Web Real-Time Communications (WebRTC) protocol \cite{WebRTC:Online} has become usable for arbitrary data streams in major browsers in 2014\cite{WebRTCChrome:Online}\cite{WebRTCFirefox:Online}.
+There has been a steady progression in the introduction of communication protocols available for web applications. From client-server HTTP requests (XMLHttpRequest) via client-server full-duplex TCP connections (WebSocket), it has recently become possible with peer-to-peer real-time communication (WebRTC). In section~\ref{sec:communication}, these technologies are presented. Also, issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC is explained.
 
 % Crypto
-Also of interest, the still unfinalized WebCrypto API \cite{WebCrypto:Online} has become available in an experimental stage in recent months. The goals of Rymd has thus become technically viable in a web environment as of very recently.
+Also of interest, the still unfinalized WebCrypto API \cite{WebCrypto:Online} has become available in an experimental stage in recent months. In section\ref{sec:techcryptography}, the basics of public-key cryptography and certificates are explained, together with the Web Cryptography API and the Advanced Encryption Standard as part of a symmetric encryption scheme.
+
+
 
 % %%%%%%%%%%%%
-
 \section{Client-side storage}
+\label{sec:clientstorage}
 
 Client-side storage is how arbitrary data can be persisted on disk, accessible through an API, by a web browser. This is a general term for several separate but related APIs:
 
@@ -154,7 +156,7 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-IndexedDB is a transactional indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
+IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
 % Cursors, Object Stores, Indexes
@@ -204,7 +206,7 @@ IndexedDB is built on a transactional model. This means that all commands run in
 Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB driven application in their \emph{An Investigation into Possible Attacks on HTML5 IndexedDB and their Prevention}\cite{IndexedDBSecurity:2012:Online}:
 
 \begin{itemize}
-  \item Client side data encryption
+  \item Client-side data encryption
   \item Input validation
   \item SOP (Same-Origin Policy)
   \item Code analysis
@@ -215,6 +217,7 @@ The database in IndexedDB does not include any kind of bundled encryption or val
 Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be inserted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can be done by checking the call from the web application to the database. On success, the database operation s allowed to fully execute\cite{IndexedDBSecurity:2012:Online}.
 
 \section{Distributed storage}
+\label{sec:distributedstorage}
 With the inherent problems of trust in CAs in a PKI, several approaches to publicly available distribution of cryptographic keys have emerged in recent years. Some use a blockchain-based approach derived from Bitcoin. This implies distributing a cryptographically based ledger over an entire network and taking it beyond that of a monetary currency to systems that can be used for a wider range of applications. There are also other ideas on how to solve the trust issue.
 
 \subsection{Namecoin}
@@ -233,7 +236,7 @@ Keybase \cite{Keybase:Online} is another recent initiative that intends to solve
 
 \section{Communication}
 \label{sec:communication}
-In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHttpRequest API, thereby unlocking the creation of dynamic web applications. Since that point we have witnessed the introduction of the WebSocket protocol which enables persistent two-way communication between client and server. These techniques are centered around communication between a client and a server, but with the recent initiative of WebRTC (Web Real-Time Communication) which enables peer-to-peer communication there are some new possibilities in the field. In order to understand how these techniques work, some inherent problems with the infrastructure of the internet will be discussed in the NAT Traversal section.
+In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHttpRequest API, thereby unlocking the creation of dynamic web applications. Since then, we have witnessed the introduction of the WebSocket protocol which enables persistent two-way communication between client and server. These techniques are centered around communication between a client and a server, but with the recent initiative of WebRTC (Web Real-Time Communication) which enables peer-to-peer communication there are some new possibilities in the field. In order to understand how these techniques work, some inherent problems with the infrastructure of the internet will be discussed in the NAT Traversal section.
 
 \subsection{XMLHttpRequest}
 XMLHttpRequest (XHR) is a browser API which enables data to be fetched asynchronously from servers. This means that a web page can retrieve new updates from the server without a full page reload. The browser is responsible for the construction of HTTP requests according to parameters passed to the API. In the use case where real-time updates from the server are desired, a common technique is to poll the server at regular intervals as the possibilities for streaming are limited. Although the name of the API suggests that data transfers are limited to XML, this is not the case and the name is nothing more than a remnant of the past \cite{XHR:Online}. Today it is much more common to transport data in the form of JavaScript-serialized objects, also known as \emph{JSON} (JavaScript Object Notation).
@@ -282,20 +285,16 @@ These techniques are not always adequate because of the fact that STUN does not 
 
 \subsection{WebRTC}
 
-Up until recently, browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}. Since then, WebRTC has evolved to enable more general real-time data communication between browsers\cite{WebRTC:Online}.
+Up until recently, browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}. Since then, WebRTC has evolved to enable more general real-time data communication between browsers \cite{WebRTC:Online}. It has become usable for arbitrary data streams in major browsers in 2014\cite{WebRTCChrome:Online}\cite{WebRTCFirefox:Online}.
 
-Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standardizing protocols and drafing APIs. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft actually supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google's (or nowdays, W3C's and IETF's) version of it\cite{WebRTCAndMicrosoft:2012:Online}.
-
-Microsoft warns against supporting the new technology until it has actually become a standard and also does not fully agree on some constraints placed on the technology\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft explains that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft's answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which tries to addresses these issues.
-% TODO, it seems like more than Google and Mozilla are involved in the project eg Opera
-All in all, Microsoft remains optimistic that a common standard will eventually be established\cite{WebRTCAndMicrosoft:2012:Online}. They do however stress that more participants need to get involved in addition to Google and Mozilla.
+Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standardizing protocols and drafting APIs. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google's (or nowadays, W3C's and IETF's) version of it\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft doesn't want to support the new technology until it has become a standard and does not fully agree on some constraints placed on it\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft states that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft's answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which attempts to address these issues.
 
 WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of the data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
 
 % Introduce that WebRTC builds on top of UDP
 At the transport layer WebRTC makes use of UDP which can be motivated by the fact that timeliness is vital for real-time communication \cite{HighPerfBrowserNetworking:Online}. The UDP protocol alone is not enough to construct efficient peer-to-peer applications. For this very reason, WebRTC leverages a number of additional protocols built on top of UDP (See figure~\ref{fig:WebRTCProtocols}).
 
-The fact that WebRTC utilize UDP makes it inclined to be affected by the situation regarding NATs (see section~\ref{subsec:nattraversal}), naturally this has been take into account and can be relieved by using the ICE protocol (see section \ref{subsubsec:rtcpeerconnection}).
+WebRTC's usage of UDP makes peer-to-peer communication inclined to suffer from connectivity problems in the presence of NATs (see section~\ref{subsubsec:rtcpeerconnection}). This problem has been taken into account and is relieved by utilizing the ICE protocol (see section~\ref{subsubsec:rtcpeerconnection}).
 
 For the sake of security, data is encrypted according to the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is constructed for datagrams while TLS is used for reliable transport protocols such as TCP.
 % udp does not guarantee that much, introduce some other protcols that helps
@@ -338,9 +337,10 @@ Regarding the choice of signaling channel, a dedicated signaling server is often
 The RTCDataChannel API allows for arbitrary data to be sent peer-to-peer by leveraging the RTCPeerConnection API. As UDP itself, which WebRTC runs on top of, is not suitable for reliable data transportation the RTCDataChannel API utilize the SCTP (Stream Control Transport Protocol) protocol. SCTP can be configured in terms of reliability and message order, and it provides some additional services such as congestion and flow control \cite{HighPerfBrowserNetworking:Online}.
 
 \section{Cryptography}
+\label{sec:techcryptography}
 Encryption is the process of running data through an algorithm with the goal of making the information unreadable for unauthorized parties. The output of an algorithm depends on the input data and the \emph{encryption key} used. There are two types of key schemes: symmetric-key schemes and asymmetric-key schemes (also known as public-private). In symmetric cryptography  schemes such as AES, the same key is used for both encryption and decryption. Because of this, both sender and recipient must possess the same key, and the key must therefore somehow be communicated through a secure channel. Asymmetric key-schemes like RSA, on the other hand, work with pairs of keys where the encryption of one corresponds to the decryption of the other. One of these keys is called \emph{private} and should only be known to the person generating the key-pair, and the other is called \emph{public} and can be shared freely. In this way, there is no problem with how to transmit keys. Generally, encryption and decryption in asymmetric schemes are much more computationally demanding than that of symmetric schemes, so a common approach is to use symmetric encryption for data and asymmetric keys for the communication of the symmetric key.
 
-Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives\footnote{The basic functions in a cryptographic scheme such as hashing, encryption, decryption, signing, verification and generation of keys}, as well as raw private and secret key data. With the advent of the new Web Cryptography API, or \emph{WebCrypto}, these issues are being addressed\cite{WebCrypto:Online}.
+Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client-side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives\footnote{The basic functions in a cryptographic scheme such as hashing, encryption, decryption, signing, verification and generation of keys}, as well as raw private and secret key data. With the advent of the new Web Cryptography API, or \emph{WebCrypto}, these issues are being addressed\cite{WebCrypto:Online}.
 
 \subsection{Web Cryptography API}
 WebCrypto is an open standard for implementation of cryptographic primitives accessible through web client code\cite{WebCrypto:Online}. Basically, all primitives and raw material (the underlying keys and algorithms) would be blackboxed for the client application and executed natively in the web browser. However, the API is still in an early stage and at the time of this writing only Chromium\cite{ImplementedChromium:Online} and Microsoft Internet Explorer\cite{WCAImplementationMicrosoft:Online}, out of the major browsers have implemented more than a basic pseudo-random number generator\cite{WCAImplementationMozilla:Online}. The exact implementation of the different features may come to change drastically over time.
