@@ -156,7 +156,7 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-IndexedDB is a transactional indexed client side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
+IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. its specification is a Candidate Recommendation by the W3C, as of July 2013\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
 % Cursors, Object Stores, Indexes
@@ -206,7 +206,7 @@ IndexedDB is built on a transactional model. This means that all commands run in
 Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB driven application in their \emph{An Investigation into Possible Attacks on HTML5 IndexedDB and their Prevention}\cite{IndexedDBSecurity:2012:Online}:
 
 \begin{itemize}
-  \item Client side data encryption
+  \item Client-side data encryption
   \item Input validation
   \item SOP (Same-Origin Policy)
   \item Code analysis
@@ -340,7 +340,7 @@ The RTCDataChannel API allows for arbitrary data to be sent peer-to-peer by leve
 \label{sec:techcryptography}
 Encryption is the process of running data through an algorithm with the goal of making the information unreadable for unauthorized parties. The output of an algorithm depends on the input data and the \emph{encryption key} used. There are two types of key schemes: symmetric-key schemes and asymmetric-key schemes (also known as public-private). In symmetric cryptography  schemes such as AES, the same key is used for both encryption and decryption. Because of this, both sender and recipient must possess the same key, and the key must therefore somehow be communicated through a secure channel. Asymmetric key-schemes like RSA, on the other hand, work with pairs of keys where the encryption of one corresponds to the decryption of the other. One of these keys is called \emph{private} and should only be known to the person generating the key-pair, and the other is called \emph{public} and can be shared freely. In this way, there is no problem with how to transmit keys. Generally, encryption and decryption in asymmetric schemes are much more computationally demanding than that of symmetric schemes, so a common approach is to use symmetric encryption for data and asymmetric keys for the communication of the symmetric key.
 
-Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives\footnote{The basic functions in a cryptographic scheme such as hashing, encryption, decryption, signing, verification and generation of keys}, as well as raw private and secret key data. With the advent of the new Web Cryptography API, or \emph{WebCrypto}, these issues are being addressed\cite{WebCrypto:Online}.
+Until recently, the practice of performing cryptographic operations in a web browser environment has been considered bad practice by security professionals\cite{Matasano:Online}. One reason for this is that it has been impossible to verify the integrity of client-side source code between executions - something that has now changed with the advent of signed browser extensions. Another issue is the internal openness of JavaScript - any cryptographic implementation would unavoidably expose all their primitives\footnote{The basic functions in a cryptographic scheme such as hashing, encryption, decryption, signing, verification and generation of keys}, as well as raw private and secret key data. With the advent of the new Web Cryptography API, or \emph{WebCrypto}, these issues are being addressed\cite{WebCrypto:Online}.
 
 \subsection{Web Cryptography API}
 WebCrypto is an open standard for implementation of cryptographic primitives accessible through web client code\cite{WebCrypto:Online}. Basically, all primitives and raw material (the underlying keys and algorithms) would be blackboxed for the client application and executed natively in the web browser. However, the API is still in an early stage and at the time of this writing only Chromium\cite{ImplementedChromium:Online} and Microsoft Internet Explorer\cite{WCAImplementationMicrosoft:Online}, out of the major browsers have implemented more than a basic pseudo-random number generator\cite{WCAImplementationMozilla:Online}. The exact implementation of the different features may come to change drastically over time.

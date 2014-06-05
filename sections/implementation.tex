@@ -213,14 +213,14 @@ The asynchronous API of IndexedDB is relatively verbose and complex. It makes he
 
 Rymd leverages the open source project PeerJS\footnote{http://peerjs.com}, which simplifies sending peer-to-peer data between clients. This module was therefore constructed, in line with the project guidelines regarding modularity, to contain PeerJS-specific code and to provide an independent interface which does not reveal the details of PeerJS's inner workings. If changes in Rymd's requirements makes the choice of PeerJS obsolete, then the changes will be isolated and one should still be able to depend on the same interface.
 
-PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
+PeerJS utilizes WebRTC and is essentially split into two components: a server which acts as the signaling channel, and a client-side API which interacts with the server as well as other peers. The server only handles the brokering of connections, which implies that only the data necessary for negotiating a connection is sent through this point. For communication between the server and the clients, that is the signaling protocol, PeerJS utilizes both WebSockets and XMLHttpRequest \cite{PeerjsGithub:2014:Online}. After a connection has been setup between two clients, the server is no longer needed in order for them to communicate.
 
 % - explain how peer.js works.
 The following steps explain how PeerJS brokers connections:
 \begin{enumerate}
-\item Two clients connect to the PeerJS server, using the client side API.
+\item Two clients connect to the PeerJS server, using the client-side API.
 \item The server returns unique IDs for each of the clients.
-\item One of the clients connects to the other using the client side API, where the unique ID for the other one is provided. The PeerJS server then forwards the information needed to set up a peer-to-peer connection to the other client.
+\item One of the clients connects to the other using the client-side API, where the unique ID for the other one is provided. The PeerJS server then forwards the information needed to set up a peer-to-peer connection to the other client.
 \end{enumerate}
 
 In order to map the identity registered in the Namecoin blockchain to the ID supplied by the PeerJS server, the DHT service is used. After a client has connected to a PeerJS server, it supplies the data regarding the server IP and the generated ID to the DHT. When another client wants to create a peer-to-peer connection, it queries the DHT service for the Namecoin identity, which then returns the IP for the PeerJS server and the ID for the client.
