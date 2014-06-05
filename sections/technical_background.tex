@@ -315,7 +315,7 @@ For the sake of security, data is encrypted according to the DTLS (Datagram Tran
 
 \subsubsection{RTCPeerConnection}
 \label{subsubsec:rtcpeerconnection}
-The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of the inherent problems regarding NATs by utilizing the Interactive Connection Establishment (ICE) protocol\cite{RFC5245:Online}. ICE has the objective of connecting peers in the most efficient way. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure ~\ref{fig:ICE}) .
+The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the Interactive Connection Establishment (ICE) protocol\cite{RFC5245:Online}. The ICE protocol handles \emph{NAT Traversal} and is used for establishing peer-to-peer connections. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure~\ref{fig:ICE}).
 
 \begin{figure}[htp]
 \centering
