@@ -294,7 +294,7 @@ WebRTC's functionality is abstracted into three different APIs: \emph{MediaStrea
 % Introduce that WebRTC builds on top of UDP
 At the transport layer WebRTC makes use of UDP which can be motivated by the fact that timeliness is vital for real-time communication \cite{HighPerfBrowserNetworking:Online}. The UDP protocol alone is not enough to construct efficient peer-to-peer applications. For this very reason, WebRTC leverages a number of additional protocols built on top of UDP (See figure~\ref{fig:WebRTCProtocols}).
 
-The fact that WebRTC utilize UDP makes it inclined to be affected by the situation regarding NATs (see section~\ref{subsec:nattraversal}), naturally this has been take into account and can be relieved by using the ICE protocol (see section \ref{subsubsec:rtcpeerconnection}).
+WebRTC's usage of UDP makes peer-to-peer communication inclined to suffer from connectivity problems in the presence of NATs (see section~\ref{subsubsec:rtcpeerconnection}). This problem has been taken into account and is relieved by utilizing the ICE protocol (see section~\ref{subsubsec:rtcpeerconnection}).
 
 For the sake of security, data is encrypted according to the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is constructed for datagrams while TLS is used for reliable transport protocols such as TCP.
 % udp does not guarantee that much, introduce some other protcols that helps
