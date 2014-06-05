@@ -282,7 +282,7 @@ These techniques are not always adequate because of the fact that STUN does not 
 
 \subsection{WebRTC}
 
-Up until recently, browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}. Since then, WebRTC has been evolved to enabling more general real-time data communication between browsers\cite{WebRTC:Online}.
+Up until recently, browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser \cite{WebRTCMemo:Online}. Since then, WebRTC has evolved to enable more general real-time data communication between browsers\cite{WebRTC:Online}.
 
 Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standardizing protocols and drafing APIs. The major browser vendors Google, Mozilla and Opera support the project \cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft actually supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google's (or nowdays, W3C's and IETF's) version of it\cite{WebRTCAndMicrosoft:2012:Online}.
 
@@ -293,7 +293,7 @@ All in all, Microsoft remains optimistic that a common standard will eventually 
 WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of the data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
 
 % Introduce that WebRTC builds on top of UDP
-At the transport layer WebRTC makes use of UDP which can be motivated by the fact that timeliness is vital for real-time communication. The UDP protocol alone is not enough to construct efficient peer-to-peer applications. For this very reason, WebRTC leverages a number of additional protocols built on top of UDP (See figure~\ref{fig:WebRTCProtocols}).
+At the transport layer WebRTC makes use of UDP which can be motivated by the fact that timeliness is vital for real-time communication \cite{HighPerfBrowserNetworking:Online}. The UDP protocol alone is not enough to construct efficient peer-to-peer applications. For this very reason, WebRTC leverages a number of additional protocols built on top of UDP (See figure~\ref{fig:WebRTCProtocols}).
 
 The fact that WebRTC utilize UDP makes it inclined to be affected by the situation regarding NATs (see section~\ref{subsec:nattraversal}), naturally this has been take into account and can be relieved by using the ICE protocol (see section \ref{subsubsec:rtcpeerconnection}).
 
