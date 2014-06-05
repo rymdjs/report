@@ -1,19 +1,16 @@
-This chapter gives a theoretical foundation and state of the field for the technical domains of relevance for this project: client-side storage, distributed storage, communication, and cryptography. In all fields, standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application are being continously pushed by browser vendors and standards groups. The goals of Rymd has indeed become technically viable in a web environment as of very recently.
-
+This chapter gives a theoretical foundation and state of the field for the technical domains of relevance for this project: client-side storage, distributed storage, communication, and cryptography. In all fields, standards and technologies for web applications are being rapidly developed and the boundaries for what is possible to achieve in a web application are being continously pushed by browser vendors and standards groups. The goals of Rymd has indeed become technically viable in a web environment as of very recently.
 
 % Client-side storage
-The development of client-side data storage in HTML5 is an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage like databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even access to the local file system (FileSystem). Under section~\ref{sec:clientstorage}, al of these technologies are presented.
+The development of client-side data storage in HTML5 is an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage like databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even access to the local file system (FileSystem). Under section~\ref{sec:clientstorage}, all of these technologies are presented.
 
 % Distributed storage
 Some of the new \emph{cryptocurrencies} can be utilized for distributed storage of data like cryptographic keys. Namecoin and Ethereum are notable examples. In section~\ref{sec:distributedstorage}, they are presented together with Keybase, a service specialized for this purpose that uses a different approach of verifying identities through links at social media accounts.
 
 % Communication
-There has been a steady progression in the introduction of communication protocols available for web applications. From client-server HTTP requests (XMLHttpRequest) via client-server full-duplex TCP connections (WebSocket), it has recently become possible with peer-to-peer real-time communication (WebRTC). In section~\ref{sec:communication}, these technologies are presented. Also, issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC is explained.
+There has been a steady progression in the introduction of communication protocols available for web applications. From client-server HTTP requests (XMLHttpRequest) via client-server full-duplex TCP connections (WebSocket), it has recently become possible with peer-to-peer real-time communication (WebRTC). In section~\ref{sec:communication}, these technologies are presented. Also, issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC are explained.
 
 % Crypto
 Also of interest, the still unfinalized WebCrypto API~\cite{WebCrypto:Online} has become available in an experimental stage in recent months. In section\ref{sec:techcryptography}, the basics of public-key cryptography and certificates are explained, together with the Web Cryptography API and the Advanced Encryption Standard as part of a symmetric encryption scheme.
-
-
 
 % %%%%%%%%%%%%
 \section{Client-side storage}
@@ -36,7 +33,7 @@ In order to prevent malicious flooding of users' hard drives, browsers impose li
 
 Both of the database-centered technologies, IndexedDB and WebSQL, support \emph{transactions}. This ensures the integrity of the database by preventing of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy. This is done by locking the database for  writing until a sequence of commands are finished.
 
-Most of the storage formats support synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking and performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided and called on completion. This is the traditional approach to work with asynchronous operations in JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and~\ref{lst:asyncCall} show the difference between synchronous and asynchronous calls.
+Most of the storage formats support synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking, performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided and called on completion. This is the traditional approach to work with asynchronous operations in JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and~\ref{lst:asyncCall} show the difference between synchronous and asynchronous calls.
 
 \begin{Code}
 \begin{lstlisting}[caption={Synchronous call}, label={lst:syncCall}]
@@ -60,7 +57,7 @@ request.onsuccess = function(evt) {
 % Mention WebSQL, IndexedDB, etc.
 
 \subsection{Web Storage}
-Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in figure~\ref{lst:localStorage}. The \texttt{localStorage} object persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
+Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in listing~\ref{lst:localStorage}. The \texttt{localStorage} object persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of Web Storage}, label={lst:localStorage}]
@@ -81,7 +78,7 @@ localStorage.removeItem("foo");
 
 \subsection{WebSQL}
 \label{sec:websql}
-WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization (see figure~\ref{lst:websql}). WebSQL is high-performing thanks to indexing. Developers used to work with traditional databases can start using it in a familiar manner. However, the use of SQL makes the database vulnarable to SQL injection attacks, unless this is taken into account by the developer.
+WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys, and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization (see listing~\ref{lst:websql}). WebSQL is high-performing thanks to indexing. Developers who are used to work with traditional databases can start using it in a familiar manner. However, the use of SQL makes the database vulnarable to SQL injection attacks, unless this is taken into account by the developer.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of WebSQL}, label={lst:websql}]
@@ -110,7 +107,7 @@ db.transaction(function(tx) {
 
 \subsection{FileSystem}
 \label{sec:filesystem}
-The FileSystem API allows for read and write access of files and folders on the user's hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system (see figure~\ref{lst:filesystem}).
+The FileSystem API allows for read and write access of files and folders on the user's hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system (see listing~\ref{lst:filesystem}).
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of FileSystem}, label={lst:filesystem}]
@@ -314,7 +311,6 @@ For the sake of security, data is encrypted according to the DTLS (Datagram Tran
 
 \subsubsection{RTCPeerConnection}
 \label{subsubsec:rtcpeerconnection}
-<<<<<<< HEAD
 The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the Interactive Connection Establishment (ICE) protocol~\cite{RFC5245:Online}. The ICE protocol handles \emph{NAT Traversal} and is used for establishing peer-to-peer connections. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure~\ref{fig:ICE}).
 
 \begin{figure}[htp]
