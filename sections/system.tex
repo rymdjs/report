@@ -1,9 +1,7 @@
-This chapter describes how the problems described in section~\ref{sec:problem} have been approached and how the concepts presented in section~\ref{chap:tech_background} result in the technical foundations of the system. This concludes in the high-level design and modules of Rymd and Shuttle.
+% TODO
+This chapter gives a closer analysis of the technologies brought up in chapter~\ref{chap:tech_background} in relation to the overall problems presented in section~\ref{sec:problem}. This concludes in the high-level design and modules of Rymd and Shuttle.
 
-% TODO Robert: Introduction to the overall system design?
-
-%TODO: Motivate choice of AES-CBC-256 (in implementation?)
-%Why RSA and not diffie hellman?
+% This chapter describes how the problems described in section~\ref{sec:problem} have been approached and how the concepts presented in section~\ref{chap:tech_background} result in the technical foundations of the system. This concludes in the high-level design and modules of Rymd and Shuttle.
 
 \section{Data storage}
 \label{sec:datastorage}
@@ -78,8 +76,7 @@ In 1995, Gavin Lowe described a man-in-the-middle attack on the protocol where a
 \end{description}
 
 \section{Decentralization}
-Since the system utilizes the Namecoin blockchain for storage of public keys, there is an issue of how to interface web applications with the blockchain without putting too much trust in the HTTP/cryptocurrency gateway. Users could host their own gateways or retrieve or verify keys manually through their own Namecoin clients. Additionally, as previously stated, the initial insertion of the key requires monetary resources and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice.
-While the public key can be stored in a DHT, private keys need to be stored securely on each client, preferably without giving client code any direct access to the raw keys.
+Since the system utilizes the Namecoin blockchain for storage of public keys, there is an issue of how to interface web applications with the blockchain without putting too much trust in the HTTP/cryptocurrency gateway. Users could host their own gateways or retrieve or verify keys manually through their own Namecoin clients. Additionally, as previously stated, the initial insertion of the key requires monetary resources and is something that should be solved outside of Rymd. Users can either provide their existing keys and identity to Rymd or let Rymd generate a new pair of keys and manually insert the public part in the DHT of choice. While the public key can be stored in a DHT, private keys need to be stored securely on each client, preferably without giving client code any direct access to the raw keys.
 
 \section{Creation and transfers of resources}
 \label{sec:creationofresources}
@@ -98,7 +95,7 @@ Full access to a resource implies possession of three things: the encrypted reso
 
 To save a resource locally, a user-specific symmetric \emph{master key}, generated at the time of first access, is used to encrypt the metadata before saving it and the encrypted resource data to a local resource store.
 
-The exact flow involved in a transfer depends on the implementing application. Generally (and in Shuttle), the metadata and the encrypted data are transferred separately - maybe even from separate peers. Therefore the hash is important to verify the integrity of the encrypted data. Resource IDs and hashes could also be communicated via trusted channels outside of Rymd, for example on web pages or via e-mail. An interesting possibility is that of \emph{Friend-2-Friend search} in the Retroshare network (described under chapter~\ref{chap:similar}), which makes it possible for users to search for files in a huge network while still only being directly connected to their trusted friends. The separation of storage, encryption and transfers of metadata and file data in Rymd allows Rymd-based applications to realize similar functionality. 
+The exact flow involved in a transfer depends on the implementing application. Generally (and in Shuttle), the metadata and the encrypted data are transferred separately - maybe even from separate peers. Therefore the hash is important to verify the integrity of the encrypted data. Resource IDs and hashes could also be communicated via trusted channels outside of Rymd, for example on web pages or via e-mail. An interesting possibility is that of \emph{Friend-2-Friend search} in the Retroshare network (described under chapter~\ref{chap:similar}), which makes it possible for users to search for files in a huge network while still only being directly connected to their trusted friends. The separation of storage, encryption and transfers of metadata and file data in Rymd allows Rymd-based applications to realize similar functionality.
 
 Once again, verification of integrity and authenticity of resources are achieved by verifying the hash. It is vital that a sufficiently secure hashing algorithm is used; MD5, which used to be the de-facto standard for generating file checksums, has been proven to be weak and contain vulnerabilities to the extent where checksum collisions are too easy to generate \cite{MD5Broken:Online}. SHA-1 has for some time been recommended for verification of data integrity, but due to theoretical collision attacks and advances in computational capabilities, the U.S. government currently recommends against the use of SHA-1 for applications that require collision resistance\cite{NIST:2012}. In the default Rymd implementation, the superceding SHA-256 algorithm is used. This gives a strong protection while avoiding the computational overhead of e.g. SHA-512. Note that hashing provides message integrity, but not authentication (establishment of author). This could be established by letting the author of the resource sign the hash with their private key. Peers on the receiving end could then verify the signature using the author's public key. Establishing resource authentication has not been considered a main goal of Rymd and this functionality is therefore not (yet) implemented.
 
