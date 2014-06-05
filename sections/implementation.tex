@@ -206,7 +206,7 @@ Store.destroy(guid).then(function(record) { ... })
 
 The largest challenge came to the edge cases when storing files, or as they are called in web browser: \emph{Blobs}. Since at present only Firefox can store blobs directly in IndexedDB, an alternate route had to be taken for other browsers. Initially the module used conditionals and converted incoming data to and from \emph{ArrayBuffers} (the browser construct for raw byte streams). But since ArrayBuffers are just the raw data, all metadata for the blobs (such as filename, timestamps, size) would be lost when saving as an ArrayBuffer. In early versions of the data storage module this metadata would be stored in a separate store in the database, but this was too tightly coupled and was removed. The final implementation is storing data as-is – any metadata must be saved explicitly in a separate operation.
 
-The asynchronous API of IndexedDB is relatively verbose and complex. It makes heavy use of event driven programming and thus the developer communicates with the database with callbacks. By the use of \emph{Promises}\footnote{http://en.wikipedia.org/wiki/Promise\_(programming)}, the asynchronous, callback-based methods in the IndexedDB API was made streamlined and simple to manage.
+The asynchronous API of IndexedDB is relatively verbose and complex. It makes heavy use of event driven programming and thus the developer communicates with the database with callbacks. By the use of \emph{Promises} \cite{Promises:Online}, the asynchronous, callback-based methods in the IndexedDB API was made streamlined and simple to manage.
 
 \section{PeerJS Connection}
 \label{sec:p2p}
