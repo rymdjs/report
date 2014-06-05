@@ -49,40 +49,6 @@ The front-end prototype was built in order to test and implement the features of
 
 Shuttle uses Rymd's functionality by instantiating a global \texttt{RymdNode} object (see~\ref{sec:rymd}). This effectively makes Shuttle a node in the network. In-app notifications are shown by listening to certain events on the \texttt{rymdNode} object.
 
-When the front-end JavaScript code was beginning to grow fairly complex, a decision was made to rewrite the code for the front-end framework Backbone\footnote{http://backbonejs.org}. Backbone provides a simplistic concept of models, collections, views and events, as well as a URL router. The prototype was thus restructured and integrated with Backbone's patterns.
-
-\subsection{Persisting front-end models}
-
-A major feature of Backbone is the ability to connect to an existing data API for persisting front-end models to a backend. By the use of \texttt{XMLHttpRequest} for asynchronous HTTP requests, Backbone is able to talk to a RESTful API when creating, reading, updating or deleting models. However, in Shuttle the data should not be persisted to a remote server, but instead use the local data store in Rymd (see~\ref{sec:indexeddbstore}). A custom adapter was written\footnote{https://github.com/rymdjs/prototype/blob/develop/lib/Backbone.ResourceStore.js}, which intercepts Backbone's calls by overriding the \texttt{sync} method to make it communicate with the local store with CRUD actions.
-
-\begin{Code}
-\begin{lstlisting}[caption={Sample scenario of persisting models}, label={lst:backbonesync}]
-
-// The custom overriden adapter for persisting to a local store
-var ResourceStore = require("../Backbone.ResourceStore");
-
-// Define a new collection using the adapter above
-var ResourcesCollection = Backbone.Collection.extend({
-  model: File,
-
-  initialize: function() {
-    // Inject App.rymdNode.store, which is an instance of the IndexedDBStore module
-    this.resourceStore = new ResourceStore(App.rymdNode.store);
-  }
-});
-
-// Backbone Collection for in-memory storage of models
-var myFiles = new ResourcesCollection();
-
-// Populate the collection with file models from the local store
-myFiles.fetch();
-
-// Create a file model for the collection. The model is now automatically saved to the local store,
-// thanks to the above mentioned adapter.
-myFiles.create(new File());
-\end{lstlisting}
-\end{Code}
-
 \section{Authentication (DHT, DHT Client)}
 \label{sec:authentication}
 Since the default authentication implementation utilizes Namecoin, which can not be accessed directly from a web application, a gateway service needs to be used. Therefore, the domain of authentication spans over several parts in separate systems:
@@ -101,11 +67,12 @@ The implementations of WebCrypto in Chromium supply key generation, but there is
 
 
 \subsection{Algorithms}
-RymdCrypto uses two algorithms for encryption, namely $RSAES-PKCS1-v1.5$ and $AES-CBC$. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\cite{AESISFAST:Online}. Rymd's signing algorithm uses $RSAES-PKCS1-v1.5$ mainly because it is recommended by the working group behind the WebCrypto API. This choice is further motivated by the lack of alternatives: There are no other RSA algorithms intended for signing included in the WebCrypto API.
+Since Rymd uses asymmetric keys for authentication, RymdCrypto should supply asymmetric signing and encryption schemes using the same keys. Considering the support in WebCrypto, this leaves RSA based schemes as the only alternatives (See table~\ref{table:webcryptoapi}). There are only two RSA based encryption schemes that are part of WebCrypto: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ is currently the only one that is implemented in Google Chrome, and is therefore the current choice for Rymd.  Rymd uses $RSASSA-PKCS1-v1.5$ for signing, mainly because it is recommended by the working group behind the WebCrypto API.
 
-Also, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
+For encryption of resources, a symmetric algorithm is used. AES-CBC is a fast and simple to use symmetric key algorithm based on AES using cipher block chaining\cite{AESISFAST:Online}.
 
-RSA is currently the only asymmetric encryption scheme supported in WebCrypto. There are two encryption algorithms to choose from: $RSAES-PKCS1-v1.5$ and $RSA-OAEP$. $RSAES-PKCS1-v1.5$ can use the same keys for encryption and signing, which makes it the natural choice for Rymd. See table~\ref{table:webcryptoapi}.
+Finally, a good hashing algorithm is needed in order to avoid collision of hashes, in other words to avoid having two generated hash values being exactly the same (similar to the \emph{birthday problem}~\footnote{http://statistics.about.com/od/ProbHelpandTutorials/a/What-Is-The-Birthday-Problem.htm}). For hashing purposes RymdCrypto uses SHA-256 as explained in section~\ref{sec:creationofresources}.
+
 
 %Cryptoback.js
 % \begin{Code}

@@ -1,8 +1,19 @@
 This chapter gives a theoretical foundation for the areas: client-side storage, distributed storage, communication, and cryptography. Standards and technologies for web applications are being rapidly developed, and the boundaries for what is possible to achieve in a web application are being continously pushed by browser vendors and standards groups.
 
-Of relevance to Rymd, the Web Real-Time Communications (WebRTC) protocol \cite{WebRTC:Online} has become usable for arbitrary data streams in major browsers in 2014\cite{WebRTCChrome:Online}\cite{WebRTCFirefox:Online}. Also of interest, the still unfinalized WebCrypto API \cite{WebCrypto:Online} has become available in an experimental stage in recent months. The goals of Rymd has thus become technically viable in a web environment as of very recently.
+% TODO Introduce the sections better here
 
+% Client-side storage
 The development of client side data storage in HTML5 is also an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage like databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even offline caching with Application Cache \cite{OfflineWebApps:Online} in order to build completely offline applications with no requirements for internet access.
+
+% Distributed storage
+
+% Communication
+The Web Real-Time Communications (WebRTC) protocol \cite{WebRTC:Online} has become usable for arbitrary data streams in major browsers in 2014\cite{WebRTCChrome:Online}\cite{WebRTCFirefox:Online}.
+
+% Crypto
+Also of interest, the still unfinalized WebCrypto API \cite{WebCrypto:Online} has become available in an experimental stage in recent months. The goals of Rymd has thus become technically viable in a web environment as of very recently.
+
+% %%%%%%%%%%%%
 
 \section{Client-side storage}
 
@@ -68,7 +79,7 @@ localStorage.removeItem("foo");
 
 \subsection{WebSQL}
 \label{sec:websql}
-WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization. WebSQL is high-performing thanks to indexing. Developers used to work with traditional databases can start using it in a familiar manner. However, the use of SQL makes the database vulnarable to SQL injection attacks, unless this is taken into account by the developer.
+WebSQL is the only client-side storage technology mentioned that tries to mimic a traditional SQL relational database. It comes with tables, indexing, transactions, keys and support for schemas. Regular SQL expressions are used to interact with the database, which means the developer can rely on the vast research that has been made in SQL query optimization (see figure~\ref{lst:websql}). WebSQL is high-performing thanks to indexing. Developers used to work with traditional databases can start using it in a familiar manner. However, the use of SQL makes the database vulnarable to SQL injection attacks, unless this is taken into account by the developer.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of WebSQL}, label={lst:websql}]
@@ -97,7 +108,7 @@ db.transaction(function(tx) {
 
 \subsection{FileSystem}
 \label{sec:filesystem}
-The FileSystem API allows for read and write access of files and folders on the user's hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system.
+The FileSystem API allows for read and write access of files and folders on the user's hard drive. Currently, only Google Chrome has a working implementation of the API. FileSystem is suitable for storing larger binary files, and has good performance thanks to its asynchronous structure. There is no support for transactions or indexing. Its API includes methods for manipulating files and folders, as one would expect from a standard file system (see figure~\ref{lst:filesystem}).
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of FileSystem}, label={lst:filesystem}]
@@ -152,10 +163,10 @@ Due to IndexedDB's object-oriented nature, a database includes a set of \emph{ob
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL is the prevention of SQL injection attacks. This comes at the cost of a steeper learning curve for database developers already experienced with more traditional databases. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data.
+The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL is the prevention of SQL injection attacks. This comes at the cost of a steeper learning curve for database developers already experienced with more traditional databases. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data. See figure~\ref{lst:indexeddb_use} for common use of IndexedDB.
 
 \begin{Code}
-\begin{lstlisting}[caption={Use of IndexedDB}]
+\begin{lstlisting}[caption={Use of IndexedDB}, label={lst:indexeddb_use}]
 var request = indexedDB.open("testdatabase");
 
 // On database version migrations
