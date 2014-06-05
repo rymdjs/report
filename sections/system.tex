@@ -91,7 +91,7 @@ Full access to a resource implies possession of three things: the encrypted reso
   \item[Generation of resource-specific symmetric cryptographic key] In the default implementation, a 256 bit AES-CBC key is used.
   \item[Encryption of the resource data using the resource key]
   \item[Calculation of resource hash based on the metadata and encrypted data] The hash is then added to the metadata.
-  \item[Combination of metadata and encrypted data into the internal representation of the resource]
+  \item[Creation of resource] Metadata and encrypted data are combined into the internal representation of the resource.
   \item[Saving of key to local key store]
 \end{description}
 
