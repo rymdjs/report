@@ -190,37 +190,7 @@ AES-CFB & SYM & x & x &  &  & x
 \label{table:webcryptoapi}
 \end{table}
 
-Commercial RSA certificates are more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium~\cite{ImplementedChromium:Online}. See listing~\ref{lst:cryptoalgorithms} for a complete rundown of Rymd's algorithms.
-
-\begin{Code}
-\begin{lstlisting}[caption={Algorithms implemented}, label={lst:cryptoalgorithms}]
-  var generationAlgorithmSign =  {
-    name: 'RSASSA-PKCS1-v1_5',
-    modulusLength: 2048,
-    publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-    hash: {
-      name: 'SHA-256'
-    }
-  },
-
-  generationAlgorithmEncrypt =  {
-    name: 'RSAES-PKCS1-v1_5',
-    modulusLength: 2048,
-    publicExponent: new Uint8Array([0x01, 0x00, 0x01])
-  },
-
-  aesAlgorithmKeyGen = {
-    name: 'AES-CBC',
-    length: 256
-  },
-
- specFormats ={
-    public: 'spki',
-    private: 'pkcs8',
-    secret: 'raw'
-  }
-\end{lstlisting}
-\end{Code}
+Commercial RSA certificates are more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium~\cite{ImplementedChromium:Online}.
 
 \subsection{Libraries}
 Until the WebCrypto Key Discovery API is available, the RymdCrypto module generates pseudo-random keys through the external library \emph{bignumber-jt}\footnote{https://www.npmjs.org/package/bignumber-jt}. To do low-level key generation directly in JavaScript is bad practice and is performed in order to make Rymd runnable until a more solid solution is available.
@@ -240,6 +210,40 @@ In short, the RymdCrypto module exposes functions handling:
   \item[Signing and verification] For RSA
   \item[Hashing] Using SHA-256
 \end{description}
+
+\begin{Code}
+\begin{lstlisting}[caption={Public methods of \texttt{RymdCrypto}}, label={lst:rymdnode}]
+// Method signatures on the form <name>: [(<parameter>:<type> ...)]:<Return type>
+
+// Generates symmetric AES key 
+generateSymmetric: ():Promise(key)
+
+// Generates asymmetric RSA key pair 
+generateKeyPair: ():Promise(privateKey, publicKey)
+
+// Import key for use with WebCrypto 
+importKey: (type:String, purpose:String, key:Uint8Array):Promise(key)
+
+// export key
+exportKey: (WebCrypto::Key key):Promise(key)
+
+// decrypt data with key
+decryptData: (WebCrypto::Key key, Uint8Array data):Promise(data)
+
+// encrypt data with key
+encryptData: (WebCrypto::Key key, Uint8Array data):Promise(data) 
+
+// signing for RSA? -> TODO not sure, what does it return etc?
+signKey: (WebCrypto::Key key, Uint8Array data):Promise()
+
+// verification for RSA?
+verifyKey: (WebCrypto::Key key, Uint8Array privateKey, Uint8Array publicKey):Promise()
+
+// hashing
+hashData: (data):Promise
+
+\end{lstlisting}
+\end{Code}
 % before it's imported into its low-level interface.
 % \begin{Code}
 % \begin{lstlisting}[caption={Common database operations}, label={lst:cryptointerface}]
