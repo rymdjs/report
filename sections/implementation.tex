@@ -195,22 +195,22 @@ Commercial RSA certificates are more widely deployed compared to DSA certificate
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:cryptoalgorithms}]
   var generationAlgorithmSign =  {
-    name: "RSASSA-PKCS1-v1_5",
+    name: 'RSASSA-PKCS1-v1_5',
     modulusLength: 2048,
     publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
     hash: {
-      name: "SHA-256"
+      name: 'SHA-256'
     }
   },
 
   generationAlgorithmEncrypt =  {
-    name: "RSAES-PKCS1-v1_5",
+    name: 'RSAES-PKCS1-v1_5',
     modulusLength: 2048,
     publicExponent: new Uint8Array([0x01, 0x00, 0x01])
   },
 
   aesAlgorithmKeyGen = {
-    name: "AES-CBC",
+    name: 'AES-CBC',
     length: 256
   },
 
