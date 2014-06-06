@@ -161,7 +161,7 @@ Due to IndexedDB's object-oriented nature, a database includes a set of \emph{ob
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL is the prevention of SQL injection attacks. This comes at the cost of a steeper learning curve for database developers already experienced with more traditional databases. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data. See figure~\ref{lst:indexeddb_use} for common use of IndexedDB.
+The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL is the prevention of SQL injection attacks. This comes at the cost of a steeper learning curve for database developers already experienced with more traditional databases. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data. See listing~\ref{lst:indexeddb_use} for common use of IndexedDB.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of IndexedDB}, label={lst:indexeddb_use}]
@@ -292,7 +292,7 @@ For the sake of security, data is encrypted according to the DTLS (Datagram Tran
 
 \subsubsection{RTCPeerConnection}
 \label{subsubsec:rtcpeerconnection}
-The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the ICE protocol. 
+The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the ICE protocol.
 
 \begin{figure}[htp]
 \centering
