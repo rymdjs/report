@@ -1,4 +1,4 @@
-In this chapter, we present the standards by which design alternatives and implementation options were judged in the evaluation of technologies. Problems and technologies were divided and included in one of four research areas. The choices made for these areas were evaluated in a web application prototype. Finally, the methodologies and modularization of the final implementation is briefly presented.
+In this chapter we describe how the project was executed by splitting it in two parts: an evaluation phase and an implementation phase. During the evaluation, research was made regarding relevant technologies, and included rapid prototyping to quickly test the technologies for the project's use cases. Finally, the methodologies and modularization of the final implementation are briefly presented.
 
 \section{Evaluation of technologies}
 
@@ -15,21 +15,21 @@ Research was done concerning open web technologies, mainly those belonging to th
 A set of areas was created, where each area was connected with one or several core problems stated within the project. In each area, evaluation and comparisons were made, which included researching APIs and prototyping actual test cases implementing isolated forms of future system features. The research areas were divided as follows:
 
 \begin{description}
-\item[Data storage] How to store data locally on the client.
-\item[Communication] Possibilities for communicating and sending data with peer-to-peer technology between two nodes.
-\item[Authentication and Permissions] How to solve authentication between nodes.
-\item[Prototyping] The development of a rough test case for sending a file from one node to another.
+  \item[Data Storage] How to store data locally on the client.
+  \item[Communication] Possibilities for communicating and sending data with peer-to-peer technology between two nodes.
+  \item[Authentication and Permissions] How to solve authentication between nodes.
+  \item[Prototyping] The development of a rough test case for sending a file from one node to another.
 \end{description}
 
-\section{Prototyping}
+\subsection{Prototyping}
 
 The aim for the prototyping phase was to quickly decide if it was in any way possible to achieve the requirements with the technologies chosen. Therefore a rough prototype of Rymd and Shuttle was created, which implemented two basic test cases: storing a file in the chosen data storage implementation and sending that file to another node where it was stored in that node's local data storage. The prototype worked successfully, which validated the choice of  the particular technologies used. The choices that proved successful were carried over to the next step.
 
 \section{Implementation}
 
-At an early stage it was decided that the implementation process would apply light agile methodologies. For this project, this included having a Product Backlog with User Stories, working in sprints, and having semi-weekly Scrum-meetings where current state and eventual problems were brought up.
+At an early stage it was decided that the implementation process would apply light agile methodologies. For this project, this included having a Product Backlog with User Stories, working in sprints, and having bi-weekly Scrum-meetings where current state and eventual problems were brought up.
 
-All source code was managed by the distributed source versioning system git\footnote{http://git-scm.com/} and hosted at the online service GitHub\footnote{https://github.com/rymdjs}.
+All source code was managed by the distributed source versioning system git\footnote{http://git-scm.com/} and hosted at the online service GitHub\footnote{https://github.com/rymdjs} (links to all source code is available in appendice~\ref{chap:source}).
 
 \subsection{Modularity}
 \label{sec:modularity}
