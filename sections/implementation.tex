@@ -201,37 +201,37 @@ Hashing is handled by the external library \emph{crypto-js}\footnote{https://git
 
 \subsection{Interface}
 
-The RymdCrypto library exposes functions handling key generation, encryption, decryption, signing, verification, and hashing. The methods and their signatures are presented in listing~\ref{lst:cryptomethods}.
+The RymdCrypto library exposes functions handling key generation, encryption, decryption, signing, verification, and hashing. The methods and their signatures are presented in listing~\ref{lst:cryptointerface}.
 
 \begin{Code}
 \begin{lstlisting}[caption={Public methods of \texttt{RymdCrypto}}, label={lst:cryptointerface}]
 // Method signatures on the form <name>: [(<parameter>:<type> ...)]:<Return type>
 
-// Generates symmetric AES key 
+// Generate symmetric key 
 generateSymmetric: ():Promise(key)
 
-// Generates asymmetric RSA key pair 
+// Generate asymmetric key pair 
 generateKeyPair: ():Promise(privateKey, publicKey)
 
-// Import key for use with WebCrypto 
+// Import key. purpose: encrypt|sign. type: public|private|secret
 importKey: (type:String, purpose:String, key:Uint8Array):Promise(key)
 
-// export key
+// Export key
 exportKey: (WebCrypto::Key key):Promise(key)
 
-// decrypt data with key
+// Decrypt data with key
 decryptData: (WebCrypto::Key key, Uint8Array data):Promise(data)
 
-// encrypt data with key
+// Encrypt data with key
 encryptData: (WebCrypto::Key key, Uint8Array data):Promise(data) 
 
-// signing for RSA? -> TODO not sure, what does it return etc?
+// Sign data using asymmetric key
 signKey: (WebCrypto::Key key, Uint8Array data):Promise()
 
-// verification for RSA?
+// Verify data signed using asymmetric key.
 verifyKey: (WebCrypto::Key key, Uint8Array privateKey, Uint8Array publicKey):Promise()
 
-// hashing
+// Hashes data.
 hashData: (data):Promise
 
 \end{lstlisting}
