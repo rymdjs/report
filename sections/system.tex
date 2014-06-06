@@ -129,7 +129,7 @@ The metadata and resource data are handled separately in Rymd and the communicat
 % *we* used modularity in our project.
 % TODO: Explain Dependency injection and other solutions? Under technical background?
 
-The core Rymd library doesn't contain any implementations dealing with specific problem areas, but rather acts as the central hub with workflows binding all parts together. The library is divided into modules that separate complex areas of the application – areas that are most likely to change independently over time – into well defined and easily exchangeable \emph{modules}. Rymd is designed to have the modules supplied dynamically through dependency injection. With key features being implemented with technologies from constantly changing areas at the web's forefront, this modular design was imperative in order to make the system maintainable (as explained in section~\ref{sec:modularity}).
+Rymd is divided into modules that separates complex areas of the application - areas that are most likely to change independently over time - into well defined and easily exchangeable \emph{modules}. These modules are supplied dynamically to the core library - which acts as the central hub that binds the different modules together - through dependency injection. As key features of the project relies on experimental technologies that are constantly changing, this modular design was imperative in order to make the system maintainable (as explained in section~\ref{sec:modularity}).
 
 The items shown below represent the general high-level responsibilities for each module. See chapter~\ref{chap:implementation} for details on the technologies used and accounts of the modules' actual implementations.
 
