@@ -41,7 +41,7 @@ The conclusion was to use IndexedDB for persisted resource storage. It was chose
 
 \section{Peer-to-peer communication}
 
-Even though there are two projects which seeks to enable peer-to-peer communication in the browser - WebRTC and CU-RTC-Web - the only viable alternative for the time being is WebRTC. The project is under development by the organizations W3C and IETF and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF and is not implemented in any browsers.
+Even though there are two projects which seeks to enable peer-to-peer communication in the browser – WebRTC and CU-RTC-Web – the only viable alternative for the time being is WebRTC. The project is under development by the organizations W3C and IETF and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF and is not implemented in any browsers.
 
 For the project's intent of file sharing, the RTCPeerConnection and RTCDataChannel API were found to be most relevant. By using these APIs in conjunction arbitrary data can be sent peer-to-peer. Relating back to the project goals regarding privacy and security it is also convenient that data transfers are encrypted according to the DTLS protocol.
 
@@ -129,16 +129,15 @@ The metadata and resource data are handled separately in Rymd and the communicat
 % *we* used modularity in our project.
 % TODO: Explain Dependency injection and other solutions? Under technical background?
 
-The core Rymd library contains no implementation meant to deal with a problem area but rather acts as the central hub with workflows that binds all parts together. The library is divided into modules that separates complex areas of the application – areas that are most likely to change independently over time – into well defined and easily exchangeable \emph{modules}. Rymd is designed to have the modules supplied dynamically through dependency injection. With key features being implemented with technologies from ever changing areas at the web's forefront, this modular design was imperative in order to make the system maintainable (as explained in section \ref{sec:modularity}).
+The core Rymd library doesn't contain any implementations dealing with specific problem areas, but rather acts as the central hub with workflows binding all parts together. The library is divided into modules that separate complex areas of the application – areas that are most likely to change independently over time – into well defined and easily exchangeable \emph{modules}. Rymd is designed to have the modules supplied dynamically through dependency injection. With key features being implemented with technologies from constantly changing areas at the web's forefront, this modular design was imperative in order to make the system maintainable (as explained in section~\ref{sec:modularity}).
 
-The items shown below represent the general high-level responsibilities behind each module. Please see chapter~\ref{chap:implementation} for specifications of the technologies used and accounts of the modules' actual implementations.
+The items shown below represent the general high-level responsibilities for each module. See chapter~\ref{chap:implementation} for details on the technologies used and accounts of the modules' actual implementations.
 
 \begin{description}
   \item [Cryptography] Handles encryption, decryption, signing and verification as well as key generation and hashing.
-  \item [Peer-to-peer communication] Responsible for setting up initial contact with another peer and maintaining the connection. It also deals with securing this connection through end-to-end encryption.
+  \item [Peer-to-peer communication] Responsible for setting up initial contact with another peer, maintaining the connection and transporting data. It also deals with securing this connection through end-to-end encryption.
   \item [DHT interaction] Used to interface with a Distributed Hash Table in order to retrieve peers' public key and ID.
-  \item [Data storage] Deals with persisting file data and metadata (as described in section~\ref{sec:creationofresources}) on disk, and this module also provides means of accessing and manipulating the data.
-  \item [Key storage] Solves storing and providing access to cryptographic keys.
+  \item [Data storage] Deals with persisting data (as described in section~\ref{sec:creationofresources}) to disk. Different implementations of this module can be used for metadata, resource data and key storage.
 \end{description}
 
 In reality, no distinction was made between the data storage module and the key storage module. Furthermore, it would have been appropriate to split the data storage module into two parts, one for the actual file data and one for the metadata. As it stands, metadata could not be stored if a storage solution that stores data directly on disk would be injected.

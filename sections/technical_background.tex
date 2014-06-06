@@ -161,7 +161,7 @@ Due to IndexedDB's object-oriented nature, a database includes a set of \emph{ob
 % Async API
 % -----------
 % Requests, Callbacks, Events, NoSQL
-The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL is the prevention of SQL injection attacks. This comes at the cost of a steeper learning curve for database developers already experienced with more traditional databases. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data. See figure~\ref{lst:indexeddb_use} for common use of IndexedDB.
+The asynchronous API has patterns that might be daunting and seem complex to developers not used to NoSQL structures. Unlike WebSQL, IndexedDB does not support SQL and instead exposes ways for querying and manipulating data via \emph{requests} and \emph{transactions} (see section~\ref{subsec:security}). A positive side of the rejection of SQL is the prevention of SQL injection attacks. This comes at the cost of a steeper learning curve for database developers already experienced with more traditional databases. Queries to the database will not yield the resulting data set. Instead requests are returned, which will trigger \emph{events} when the operation is finished. When an event is triggered a callback can be passed to handle the scenario and use the data. See listing~\ref{lst:indexeddb_use} for common use of IndexedDB.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of IndexedDB}, label={lst:indexeddb_use}]
@@ -220,30 +220,30 @@ In the beginning of the World Wide Web's history, web browsers performed full pa
 XMLHttpRequest (XHR) is a browser API which enables data to be fetched asynchronously from servers. This means that a web page can retrieve new updates from the server without a full page reload. The browser is responsible for the construction of HTTP requests according to parameters passed to the API. In the use case where real-time updates from the server are desired, a common technique is to poll the server at regular intervals as the possibilities for streaming are limited. Although the name of the API suggests that data transfers are limited to XML, this is not the case and the name is nothing more than a remnant of the past~\cite{XHR:Online}. Today it is much more common to transport data in the form of JavaScript-serialized objects, also known as \emph{JSON} (JavaScript Object Notation).
 
 \subsection{WebSocket}
-WebSocket (RFC 6455)~\cite{RFC6455:Online} is a protocol that was standardized in 2011. The protocol allows two way communication between a server and a client through persistent connections. The protocol runs on top of the TCP protocol and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which eases server workload.
+WebSocket (RFC 6455)~\cite{RFC6455:Online} is a protocol that was standardized in 2011. The protocol allows two-way communication between a server and a client through persistent connections. The protocol runs on top of the TCP protocol and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which eases server workload.
 
 \subsection{NAT Traversal}
 \label{subsec:nattraversal}
 % rewrite so its not centered around webrtc
 Network Address Translation (NAT)~\cite{RFC1631:Online} was first introduced as as a short-term solution to the problem of IP address depletion in IPv4. The idea was that by utilizing NATs, several hosts in a private network could share a single public IP address.
 
-A NAT is responsible for maintaining a table of entries that map an internal IP address and port to a public IP address and port and dropping these entries when they are no longer of relevant. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table which can then be used to route the response back to the internal host(See figure~\ref{fig:NAT})~\cite{RFC5245:Online}.
+A NAT is responsible for maintaining a table of entries that map an internal IP address and port to a public IP address and port and dropping these entries when they are no longer of relevance. When a host behind a NAT wants to communicate with an external host, the NAT creates an entry in the table. This is then used to route the response back to the internal host(See figure~\ref{fig:NAT})~\cite{RFC5245:Online}.
 
 \begin{figure}[htp]
 \centering
 \includegraphics[width=\textwidth,height=0.2\paperheight,keepaspectratio
 ]{figures/nat}
-\caption{A NAT maintains a table mapping internal IP and port, to a public IP and port.~\cite{NATIllustration:Online}.}
+\caption{A NAT maintains a table that maps an internal IP address and port to a public IP address and port.~\cite{NATIllustration:Online}.}
 \label{fig:NAT}
 \end{figure}
 
 The presence of NATs can pose problems to applications leveraging the UDP protocol for transportation of data and network communication in general. The different techniques that can be used to resolve problems caused by NATs are often referred to as \emph{NAT Traversal} techniques.
 
-The underlying issue with the UDP protocol is the absence of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
+The underlying issue with the UDP protocol is the absence of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which has a well defined state, it is inherently simple to determine when an entry should be dropped.
 
 A technique commonly used to solve the problem with UDP entries expiring and being dropped is to utilize keepalives at regular intervals. This is commonly referred to as \emph{UDP hole punching}~\cite{UDPHolePunching:Online}.
 
-Another problem is that internal hosts know their internal IP address but not their public one. If a host runs an application that communicates the IP address as a part of the payload to hosts outside of the private network, there would obviously be a mismatch if the internal address is chosen. it is therefore common to utilize a protocol called STUN (Session Traversal Utilities for NAT)~\cite{RFC5389:Online}. STUN enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}).
+Another problem is that internal hosts know their internal IP address but not their public one. If a host runs an application that communicates the IP address as a part of the payload to hosts outside of the private network, there would obviously be a mismatch if they communicate their internal address. It is therefore common to utilize a protocol called STUN (Session Traversal Utilities for NAT)~\cite{RFC5389:Online}. STUN enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}).
 
 \begin{figure}[htp]
 \centering
@@ -267,14 +267,14 @@ STUN does not work with all types of NATs however, meaning that the mentioned te
 
 Up until recently, browsers lacked support for direct peer-to-peer communication. In 2011, however, Google released a project called WebRTC, with the purpose to enabling real-time voice and video streams in the browser~\cite{WebRTCMemo:Online}. Since then, WebRTC has evolved to enable more general real-time data communication between browsers~\cite{WebRTC:Online}. The technology became usable for arbitrary data streams in major browsers in 2014~\cite{WebRTCChrome:Online}~\cite{WebRTCFirefox:Online}.
 
-Since the announcement of WebRTC, the organizations W3C and IETF worked together on standardizing protocols and drafting APIs. The major browser vendors Google, Mozilla, and Opera support the project~\cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft supports the concept of WebRTC and contributes to the W3C WebRTC working group, the company does not support Google's (or nowadays, W3C's and IETF's) version of it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft does not want to support the new technology until it has become a standard and does not fully agree on some constraints placed on it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft states that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft's answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which attempts to address these issues.
+Since the announcement of WebRTC, the organizations W3C and IETF has been working together on standardizing protocols and drafting APIs. The major browser vendors Google, Mozilla, and Opera support the project~\cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft supports the concept of WebRTC and contributes to the W3C WebRTC working group, the company does not support Google's (or nowadays, W3C's and IETF's) version of it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft does not want to support the new technology until it has become a standard and does not fully agree on some constraints placed on it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft states that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft's answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which attempts to address these issues.
 
-WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}~\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of the data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
+WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}~\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of arbitrary data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
 
 % Introduce that WebRTC builds on top of UDP
-At the transport layer WebRTC makes use of UDP which can be motivated by the fact that timeliness is vital for real-time communication~\cite{HighPerfBrowserNetworking:Online}. The UDP protocol alone is not enough to construct efficient peer-to-peer applications. For this very reason, WebRTC leverages a number of additional protocols built on top of UDP (See figure~\ref{fig:WebRTCProtocols}).
+At the transport layer, WebRTC makes use of UDP which can be motivated by the fact that timeliness is vital for real-time communication~\cite{HighPerfBrowserNetworking:Online}. The UDP protocol alone is not enough to construct efficient peer-to-peer applications. For this reason, WebRTC adds a number of additional protocols on top of UDP (See figure~\ref{fig:WebRTCProtocols}).
 
-WebRTC's usage of UDP makes peer-to-peer communication inclined to suffer from connectivity problems in the presence of NATs (see section~\ref{subsubsec:rtcpeerconnection}). This problem has been taken into account and is relieved by utilizing the ICE protocol (see section~\ref{subsubsec:rtcpeerconnection}).
+WebRTC's usage of UDP makes peer-to-peer communication inclined to suffer from connectivity problems in the presence of NATs. This problem has been taken into account and is relieved by utilizing the Interactive Connection Establishment (ICE) protocol~\cite{RFC5245:Online}. The ICE protocol handles NAT Traversal and is used for establishing peer-to-peer connections. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure~\ref{fig:ICE}).
 
 For the sake of security, data is encrypted according to the DTLS (Datagram Transport Layer Security) protocol. The DTLS protocol is based on the TLS (Transport Layer Security) protocol, the main difference being that DTLS is constructed for datagrams while TLS is used for reliable transport protocols such as TCP.
 % udp does not guarantee that much, introduce some other protcols that helps
@@ -284,7 +284,7 @@ For the sake of security, data is encrypted according to the DTLS (Datagram Tran
 \centering
 \includegraphics[width=\textwidth,height=0.25\paperheight,keepaspectratio
 ]{figures/webrtc_protocol_stack}
-\caption{WebRTC's underlying protocols~\cite{WebRTCProtocolStack:Online}}
+\caption{The underlying protocols of WebRTC~\cite{WebRTCProtocolStack:Online}}
 \label{fig:WebRTCProtocols}
 \end{figure}
 
@@ -292,7 +292,7 @@ For the sake of security, data is encrypted according to the DTLS (Datagram Tran
 
 \subsubsection{RTCPeerConnection}
 \label{subsubsec:rtcpeerconnection}
-The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the Interactive Connection Establishment (ICE) protocol~\cite{RFC5245:Online}. The ICE protocol handles \emph{NAT Traversal} and is used for establishing peer-to-peer connections. It makes use of STUN and falls back to TURN when no other alternatives exists (See figure~\ref{fig:ICE}).
+The RTCPeerConnection API handles the creation of peer-to-peer connections and takes care of connectivity problems caused by NATs (see section~\ref{subsec:nattraversal}) by utilizing the ICE protocol.
 
 \begin{figure}[htp]
 \centering
@@ -311,10 +311,10 @@ Before a connection can be initiated between peers, one of two parts must extend
   \item The choice of signaling protocol - which protocol that should be used for the negotiation
 \end{itemize}
 
-Regarding the choice of signaling channel, a dedicated signaling server is often used. That is, a server which relays connection offers from one peer to another. Although this is the most common choice of signaling channel, examples of a more serverless approach can be found~\cite{webrtcsignalserver}. For the choice of signaling protocol the standard does not provide any recommendations - this is for developers to decide.
+Regarding the choice of signaling channel, a dedicated signaling server is often used. That is, a server which relays connection offers from one peer to another. Although this is the most common choice of signaling channel, examples of a more serverless approach can be found~\cite{webrtcsignalserver}. The standard does not provide any recommendations regarding the choice of a signaling protocol - this is for developers to decide.
 
 \subsubsection{RTCDataChannel}
-The RTCDataChannel API allows for arbitrary data to be sent peer-to-peer by leveraging the RTCPeerConnection API. As UDP itself, which WebRTC runs on top of, is not suitable for reliable data transportation the RTCDataChannel API utilize the SCTP (Stream Control Transport Protocol) protocol. SCTP can be configured in terms of reliability and message order, and it provides some additional services such as congestion and flow control~\cite{HighPerfBrowserNetworking:Online}.
+The RTCDataChannel API allows for arbitrary data to be sent peer-to-peer by leveraging the RTCPeerConnection API. As UDP itself - which WebRTC runs on top of - is not suitable for reliable data transportation, the RTCDataChannel API utilizes the SCTP (Stream Control Transport Protocol) protocol. SCTP can be configured in terms of reliability and message order, and it provides some additional services such as congestion and flow control~\cite{HighPerfBrowserNetworking:Online}.
 
 \section{Distributed storage}
 \label{sec:distributedstorage}
