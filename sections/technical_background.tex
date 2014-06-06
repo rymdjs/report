@@ -4,13 +4,13 @@ This chapter gives a theoretical foundation and an overview of the current state
 The development of client-side data storage in HTML5 is an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage such as databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even access to the local file system (FileSystem). Under section~\ref{sec:clientstorage}, all of these technologies are presented.
 
 % Communication
-In section~\ref{sec:communication}, technologies regarding data communication are presented. There has been a steady progression in the development of communication protocols available for web applications. There are traditional client-server HTTP requests (used by XMLHttpRequest) and client-server full-duplex TCP connections (available with WebSockets). Peer-to-peer communication has recently become possible on the web with WebRTC. Issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC are explained.
+In section~\ref{sec:communication}, technologies regarding data communication are presented. There has been a steady progression in the development of communication protocols available for web applications, such as traditional client-server HTTP requests (used by XMLHttpRequest) and client-server full-duplex TCP connections (available with WebSockets). Peer-to-peer communication has recently become possible on the web with WebRTC. Issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC are explained.
 
 % Distributed storage
 Some of the new \emph{cryptocurrencies} can be utilized for distributed storage of data such as cryptographic keys. Namecoin and Ethereum are notable examples. In section~\ref{sec:distributedstorage}, they are presented together with Keybase, a service specialized for this purpose that uses a different approach of verifying identities through links at social media accounts.
 
 % Crypto
-Also of interest, the still unfinalized WebCrypto API~\cite{WebCrypto:Online} has become available in an experimental stage in recent months. In section\ref{sec:techcryptography}, the basics of public-key cryptography and certificates are explained, together with the Web Cryptography API and the Advanced Encryption Standard as part of a symmetric encryption scheme.
+Also of interest, the still unfinalized WebCrypto API~\cite{WebCrypto:Online} has become available in an experimental stage in recent months. In section~\ref{sec:techcryptography}, the basics of public-key cryptography and certificates are explained, together with the Web Cryptography API and the Advanced Encryption Standard as part of a symmetric encryption scheme.
 
 % %%%%%%%%%%%%
 \section{Client-side storage}
@@ -25,13 +25,13 @@ Client-side storage is how arbitrary data can be persisted on disk, accessible t
   \item[Indexed Database]~\cite{IndexedDB:Online}, or \emph{IndexedDB}, is a NoSQL asynchronous data store.
 \end{description}
 
-All of these technologies offer ways of storing data on the user's hard drive instead of on a remote server. There are two main reasons for this: to make the application available offline and to improve performance (fewer requests to a server). Older storage techniques include cookies, plugin based storage (Java Applets, Flash, Google Gears) or browser-specific features.
+All of these technologies offer ways of storing data on the user's hard drive instead of on a remote server. There are two main reasons for this: to make the application available offline and to improve performance (fewer requests to a server). Older storage techniques include cookies, plugin based storage (Java Applets, Flash, Google Gears), or browser-specific features.
 
 All four APIs tie data to a single \emph{origin}, a practice referred to as \emph{Same Origin Policy}. An origin is defined by the transfer protocol, the domain, and the port number of a website. Thus every data store is associated with an origin, which implicates certain security aspects: an application in \texttt{http://domain.com/subdir} may retrieve data from \texttt{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \texttt{https://domain.com:3000} due to the different protocol and port number. This is a layer of protection against \emph{Cross Site Scripting} attacks (XSS). XSS is a general term for when a middleman injects malicious code in a web page viewed by others. Note that the Same Origin Policy in the data storage layer is no prevention against XSS holes in the other parts of the application, since a user might be attacked from malicious scripts injected elsewhere in the application.
 
-In order to prevent malicious flooding of users' hard drives, browsers impose limits on storage capacity. If the application exceeds that limit, the browser typically show a dialog in the interface to let the user increase the the limit. This quota is separated for each origin and storage mechanism. For instance, \texttt{sub.domain.com} may be allowed to store 5MB of Web Storage and 25MB of IndexedDB data, while \texttt{sub2.domain.com} may have other restrictions.
+In order to prevent malicious flooding of users' hard drives, browsers impose limits on storage capacity. If the application exceeds that limit, the browser typically shows a dialog in the interface to let the user increase the limit. This quota is separated for each origin and storage mechanism. For instance, \texttt{sub.domain.com} may be allowed to store 5MB of Web Storage and 25MB of IndexedDB data, while \texttt{sub2.domain.com} may have other restrictions.
 
-Both of the database-centered technologies, IndexedDB and WebSQL, support \emph{transactions}. This ensures the integrity of the database by preventing of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy. This is done by locking the database for  writing until a sequence of commands are finished.
+Both of the database-centered technologies, IndexedDB and WebSQL, support \emph{transactions}. This ensures the integrity of the database by prevention of \emph{race conditions}, a phenomenon where two sequences of operations are applied at the same time, leading to unpredictable results and a database state of dubious accuracy. This is done by locking the database for  writing until a sequence of commands are finished.
 
 Most of the storage formats support synchronous and asynchronous modes. Synchronous mode is blocking, meaning that the storage operation will be executed and completed before the next line of code is executed. Asynchronous operations are non-blocking, performed in the background while the rest of the code is executed, and may be completed at a later stage. Generally a \emph{callback function} is provided and called on completion. This is the traditional approach to work with asynchronous operations in JavaScript, where events and callbacks are used heavily. The JavaScript code snippets in listings~\ref{lst:syncCall} and~\ref{lst:asyncCall} show the difference between synchronous and asynchronous calls.
 
@@ -44,13 +44,18 @@ var result = DB.find(10);
 \begin{lstlisting}[caption={Asynchronous call}, label={lst:asyncCall}]
 /*
   Request a record with id 10 from a database, continue execute other code,
-  and handle result of the database operation in callback when it has finished
+  and handle result of the database operation in a success handler.
 */
 var request = DB.find(10);
 
 request.onsuccess = function(evt) {
+  // This success handler is executed when the database
+  // operation is finished at a later stage.
   var result = evt.result;
 };
+
+// ... other operations
+
 \end{lstlisting}
 \end{Code}
 
@@ -111,12 +116,15 @@ The FileSystem API allows for read and write access of files and folders on the 
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of FileSystem}, label={lst:filesystem}]
-// Requesting a sandboxed, persistent file system with a size of 2MB and success callback
+/* Request a sandboxed, persistent file system
+   with a size of 2MB and success callback.
+*/
 window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
   console.log("Opened filesystem: " + fs.name);
 
   // Create a text file
-  fs.root.getFile("test.txt", { create: true, exclusive: true }, function(fileEntry) {
+  fs.root.getFile("test.txt", { create: true, exclusive: true },
+  function(fileEntry) {
     console.log("Created " + fileEntry.name + " in " + fileEntry.fullPath);
     // => "Created test.txt in /test.txt"
   });
@@ -137,23 +145,13 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
       reader.readAsText(file);
     });
   });
-
-  // Other methods of FileEntry:
-  fileEntry.getMetadata(successCallback, opt_errorCallback);
-  fileEntry.remove(successCallback, opt_errorCallback);
-  fileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);
-  fileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);
-  fileEntry.getParent(successCallback, opt_errorCallback);
-  fileEntry.toURL(opt_mimeType);
-
-  fileEntry.createWriter(successCallback, opt_errorCallback);
 });
 \end{lstlisting}
 \end{Code}
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. its specification is a Candidate Recommendation by the W3C, as of July 2013~\cite{IndexedDB:Online}.
+IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. Its specification is a Candidate Recommendation by the W3C, as of July 2013~\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
 % Cursors, Object Stores, Indexes
