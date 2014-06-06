@@ -190,37 +190,7 @@ AES-CFB & SYM & x & x &  &  & x
 \label{table:webcryptoapi}
 \end{table}
 
-Commercial RSA certificates are more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium~\cite{ImplementedChromium:Online}. See listing~\ref{lst:cryptoalgorithms} for a complete rundown of Rymd's algorithms.
-
-\begin{Code}
-\begin{lstlisting}[caption={Algorithms implemented}, label={lst:cryptoalgorithms}]
-  var generationAlgorithmSign =  {
-    name: 'RSASSA-PKCS1-v1_5',
-    modulusLength: 2048,
-    publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-    hash: {
-      name: 'SHA-256'
-    }
-  },
-
-  generationAlgorithmEncrypt =  {
-    name: 'RSAES-PKCS1-v1_5',
-    modulusLength: 2048,
-    publicExponent: new Uint8Array([0x01, 0x00, 0x01])
-  },
-
-  aesAlgorithmKeyGen = {
-    name: 'AES-CBC',
-    length: 256
-  },
-
- specFormats ={
-    public: 'spki',
-    private: 'pkcs8',
-    secret: 'raw'
-  }
-\end{lstlisting}
-\end{Code}
+Commercial RSA certificates are more widely deployed compared to DSA certificates. Furthermore, the asymmetric keys are wrapped in PKCS\#8 and SPKI certificates while the symmetric key exist in raw format. \emph{The Private-Key Information Syntax Standard} (PKCS\#8) defines a way to store the private key, and the \emph{Simple Public Key Infrastructure} (SPKI) defines a way to store the public key. All three standards was chosen because they are the only three formats that is currently supported by Chromium~\cite{ImplementedChromium:Online}.
 
 \subsection{Libraries}
 Until the WebCrypto Key Discovery API is available, the RymdCrypto module generates pseudo-random keys through the external library \emph{bignumber-jt}\footnote{https://www.npmjs.org/package/bignumber-jt}. To do low-level key generation directly in JavaScript is bad practice and is performed in order to make Rymd runnable until a more solid solution is available.
@@ -348,34 +318,34 @@ Automatic unit tests have been implemented where possible. Thanks to the use of 
 
 \begin{Code}
 \begin{lstlisting}[caption={Sample test suite}, label={lst:testsuite}]
-describe("IndexedDBStore", function() {
+describe('IndexedDBStore', function() {
 
   var db;
 
   beforeEach(function() {
   	db = new IndexedDBStore({
-  		dbName: "test"
+  		dbName: 'test'
   	});
   });
 
-  it("should have a database name", function() {
-  	db.name.should.equal("test");
+  it('should have a database name', function() {
+  	db.name.should.equal('test');
   });
 
-  it("should save a record and return an id", function() {
-  	return db.save({foo: "bar"})
+  it('should save a record and return an id', function() {
+  	return db.save({foo: 'bar'})
   	.then(function(id) {
-  		id.should.be.a("String");
+  		id.should.be.a('String');
   	});
   });
 
-  it("should retrieve a given record", function() {
-  	return db.save({foo: "bar"})
+  it('should retrieve a given record', function() {
+  	return db.save({foo: 'bar'})
       .then(db.get.bind(db))
       .then(function(record) {
 
-  		record.should.be.an("Object");
-  		record.data.foo.should.equal("bar");
+  		record.should.be.an('Object');
+  		record.data.foo.should.equal('bar');
   	});
   });
 });
