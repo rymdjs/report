@@ -130,7 +130,9 @@
   basicstyle=\small\ttfamily,
   columns=fullflexible,
   showstringspaces=false,
+  breaklines=true,
   captionpos=b,
+  tabsize=4,
   xleftmargin=1.5em,
   xrightmargin=1.5em,
   aboveskip=2\baselineskip,
@@ -189,14 +191,14 @@
 % If you need to do any modifications, you can redefine each page respectively, or just call them manually as;
  \setcounter{page}{-100} % Necessary to give the first pages a unique identifier using hyperref.
    \makecoverpage
-   
+
   \maketitlepage
 
   \makeprintinfopage
 
  \newpage
  \pagenumbering{roman}
- 
+
  % Increase page margins for abstract pages
  \newgeometry{left=0.22\paperwidth, right=0.22\paperwidth}
     \makeabstractpage\pagestyle{plain}
