@@ -3,13 +3,13 @@
 The project has developed two end products: \emph{Rymd} and \emph{Shuttle}:
 
 \begin{description}
-\item[Rymd] is the main outcome and end goal of the project. It should solve authentication and data transfer between nodes, while also providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client-side code, such as a regular front-end web application, browser extension, or widget.
+\item[Rymd] is the main outcome and end goal of the project. It solves authentication and data transfer between nodes, while providing encryption and storage of resources locally. It should be usable as a drop-in module by any web client-side code, such as a regular front-end web application, browser extension, or widget.
 
-\item[Shuttle] is a proof-of-concept prototype using Rymd to show its functionality. It can be seen as an executable evaluation of Rymd and will be briefly discussed in this report. Shuttle should be a working example of a file-sharing application that leverages Rymd to provide all these features.
+\item[Shuttle] is a proof-of-concept prototype using Rymd to show its functionality. It can be seen as an executable evaluation of Rymd and will be briefly discussed in this report. Shuttle is a working example of a peer-to-peer file sharing application that leverages Rymd.
 \end{description}
 
-The system will not deal with version management, synchronization, merging resources, or history. Neither will the issue of leaking of certain kinds of metadata be addressed. This includes information on who is communicating with whom, since this is a very difficult issue far beyond the scope of this project. Unfortunately, network operators will likely be able to make a rough estimate of resource size based on the amount of data transferred. This is considered a reasonable privacy-performance tradeoff as long as transfers are padded enough so that the estimation can only ever be so vague.
+The system will not deal with version management, synchronization, merging resources, or history. Neither will the issue of leaking of certain kinds of metadata be addressed. This includes information on who is communicating with whom, since this is a very difficult issue far beyond the scope of this project. Unfortunately, network operators will likely be able to make a rough estimate of resource size based on the amount of data transferred. This is considered a reasonable privacy-performance tradeoff as long as transfers are padded enough so that estimations can not be really accurate.
 
 Rymd will only handle connections and transfers of data between peers with pre-existing knowledge of each other, and the issue of searching for files hosted by unknown peers will therefore not be within the scope of this project. The system should, however, leave the door open for implementing applications to construct propagating search to allow peers connected through some degrees of separation to exchange files.
 
-Some of the technologies involved in this project have been developed quite recently, meaning that even some of the latest browsers might lack support. The final product will most likely not work on all types of devices and browsers.
+Some of the technologies involved in this project have been developed quite recently, meaning that even some of the latest browsers lack support for some functionalities. The final product will therefore not yet work on all types of devices and browsers.
