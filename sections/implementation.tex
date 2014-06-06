@@ -201,18 +201,10 @@ Hashing is handled by the external library \emph{crypto-js}\footnote{https://git
 
 \subsection{Interface}
 
-In short, the RymdCrypto module exposes functions handling:
-\begin{description}
-  \item[Generation of asymmetric keys] Generates RSA key pair
-  \item[Generation of symmetric keys] Generates AES key.
-  \item[Exporting and importing keys]
-  \item[Encryption and decryption] For AES and RSA
-  \item[Signing and verification] For RSA
-  \item[Hashing] Using SHA-256
-\end{description}
+The RymdCrypto library exposes functions handling key generation, encryption, decryption, signing, verification, and hashing. The methods and their signatures are presented in listing~\ref{lst:cryptomethods}.
 
 \begin{Code}
-\begin{lstlisting}[caption={Public methods of \texttt{RymdCrypto}}, label={lst:rymdnode}]
+\begin{lstlisting}[caption={Public methods of \texttt{RymdCrypto}}, label={lst:cryptointerface}]
 // Method signatures on the form <name>: [(<parameter>:<type> ...)]:<Return type>
 
 // Generates symmetric AES key 
