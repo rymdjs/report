@@ -32,7 +32,7 @@ The Rymd library is the only truly implementation-agnostic module and should be 
   \item Session management
 \end{itemize}
 
-Applications utilizing Rymd will generally instantiate a \texttt{RymdNode} object, which is the main entry point of the library and inject implementation modules. The RymdNode object will then act as the interface between the application and the Rymd library. The public interface of \texttt{RymdNode} is listed in figure~\ref{lst:rymdnode} along with the method signatures and return values.
+Applications utilizing Rymd will generally instantiate a \texttt{RymdNode} object, which is the main entry point of the library and inject implementation modules. The RymdNode object will then act as the interface between the application and the Rymd library. The public interface of \texttt{RymdNode} is listed in listing~\ref{lst:rymdnode} along with the method signatures and return values.
 
 \begin{Code}
 \begin{lstlisting}[caption={Public methods of \texttt{RymdNode}}, label={lst:rymdnode}]
@@ -70,7 +70,7 @@ destroyResource: (guid:String):Promise
 \end{lstlisting}
 \end{Code}
 
-\texttt{RymdNode} triggers certain events on itself, which can be used for handling incoming resource sharing proposals, resource download requests, and more. The complete list of events are listed in figure~\ref{lst:rymdnode_events}. These events might initially be triggered inside some injected module, but \texttt{RymdNode} listens to events and triggers them on itself in order to present a coherent external event interface. For instance, the \texttt{request} event is triggered inside the PeerJS Connection module (section~\ref{sec:p2p}) and bubbled up to \texttt{RymdNode}.
+\texttt{RymdNode} triggers certain events on itself, which can be used for handling incoming resource sharing proposals, resource download requests, and more. The complete list of events are listed in listing~\ref{lst:rymdnode_events}. These events might initially be triggered inside some injected module, but \texttt{RymdNode} listens to events and triggers them on itself in order to present a coherent external event interface. For instance, the \texttt{request} event is triggered inside the PeerJS Connection module (section~\ref{sec:p2p}) and bubbled up to \texttt{RymdNode}.
 
 \begin{Code}
 \begin{lstlisting}[caption={Events triggered on \texttt{RymdNode}}, label={lst:rymdnode_events}]
@@ -105,7 +105,7 @@ The front-end prototype was built in order to test and implement the features of
   \item Add custom encryption keys
 \end{itemize}
 
-Shuttle uses Rymd's functionality by instantiating a global \texttt{RymdNode} object (see~\ref{sec:rymd}). This effectively makes Shuttle a node in the network. In-app notifications are shown by listening to certain events on the \texttt{rymdNode} object. Shuttle uses \texttt{RymdNode's} external interface in order to control the application logic, such as responding to and initiating resource sharing requests (see figures~\ref{lst:shuttle_request} and \ref{shuttle_show_file}).
+Shuttle uses Rymd's functionality by instantiating a global \texttt{RymdNode} object (see~\ref{sec:rymd}). This effectively makes Shuttle a node in the network. In-app notifications are shown by listening to certain events on the \texttt{rymdNode} object. Shuttle uses \texttt{RymdNode's} external interface in order to control the application logic, such as responding to and initiating resource sharing requests (see listings~\ref{lst:shuttle_request} and \ref{shuttle_show_file}).
 
 \begin{Code}
 \begin{lstlisting}[caption={Incoming download request}, label={lst:shuttle_request}]
