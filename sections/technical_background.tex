@@ -44,13 +44,18 @@ var result = DB.find(10);
 \begin{lstlisting}[caption={Asynchronous call}, label={lst:asyncCall}]
 /*
   Request a record with id 10 from a database, continue execute other code,
-  and handle result of the database operation in callback when it has finished
+  and handle result of the database operation in a success handler.
 */
 var request = DB.find(10);
 
 request.onsuccess = function(evt) {
+  // This success handler is executed when the database
+  // operation is finished at a later stage.
   var result = evt.result;
 };
+
+// ... other operations
+
 \end{lstlisting}
 \end{Code}
 
@@ -111,12 +116,15 @@ The FileSystem API allows for read and write access of files and folders on the 
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of FileSystem}, label={lst:filesystem}]
-// Requesting a sandboxed, persistent file system with a size of 2MB and success callback
+/* Request a sandboxed, persistent file system
+   with a size of 2MB and success callback.
+*/
 window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
   console.log("Opened filesystem: " + fs.name);
 
   // Create a text file
-  fs.root.getFile("test.txt", { create: true, exclusive: true }, function(fileEntry) {
+  fs.root.getFile("test.txt", { create: true, exclusive: true },
+  function(fileEntry) {
     console.log("Created " + fileEntry.name + " in " + fileEntry.fullPath);
     // => "Created test.txt in /test.txt"
   });
@@ -137,16 +145,6 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
       reader.readAsText(file);
     });
   });
-
-  // Other methods of FileEntry:
-  fileEntry.getMetadata(successCallback, opt_errorCallback);
-  fileEntry.remove(successCallback, opt_errorCallback);
-  fileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);
-  fileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);
-  fileEntry.getParent(successCallback, opt_errorCallback);
-  fileEntry.toURL(opt_mimeType);
-
-  fileEntry.createWriter(successCallback, opt_errorCallback);
 });
 \end{lstlisting}
 \end{Code}
