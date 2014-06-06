@@ -201,15 +201,46 @@ Hashing is handled by the external library \emph{crypto-js}\footnote{https://git
 
 \subsection{Interface}
 
-In short, the RymdCrypto module exposes functions handling:
-\begin{description}
-  \item[Generation of asymmetric keys] Generates RSA key pair
-  \item[Generation of symmetric keys] Generates AES key.
-  \item[Exporting and importing keys]
-  \item[Encryption and decryption] For AES and RSA
-  \item[Signing and verification] For RSA
-  \item[Hashing] Using SHA-256
-\end{description}
+The RymdCrypto library exposes functions handling key generation, encryption, decryption, signing, verification, and hashing. The methods and their signatures are presented in listing~\ref{lst:cryptointerface}.
+
+\begin{Code}
+\begin{lstlisting}[caption={Public methods of \texttt{RymdCrypto}}, label={lst:cryptointerface}]
+// Method signatures on the form <name>: [(<parameter>:<type> ...)]:<Return type>
+
+
+// Generate symmetric key 
+generateSymmetric: ():Promise(key)
+
+// Generate asymmetric key pair 
+generateKeyPair: ():Promise(privateKey, publicKey)
+
+// Import key. purpose: encrypt|sign. type: public|private|secret
+importKey: (type:String, purpose:String, key:Uint8Array):Promise(key)
+
+// Export key
+exportKey: (WebCrypto::Key key):Promise(key)
+
+// Decrypt data with key
+decryptData: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array data)
+decryptBlob: (WebCrypto::Key key, Blob blob):Promise(Uint8Array data)
+
+// Encrypt data with key
+encryptData: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array data) 
+encryptBlob: (WebCrypto::Key key, Blob blob):Promise(Uint8Array data) 
+
+// Sign data using asymmetric key
+signKey: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array signature)
+
+// Verify data signed using asymmetric key.
+verifyKey: (WebCrypto::Key key, Uint8Array data, Uint8Array signature):Promise(Boolean result)
+
+// Hashes data.
+hashString: (String data):Promise(String hash)
+hashBlob: (Blob blob):Promise(String hash)
+
+
+\end{lstlisting}
+\end{Code}
 % before it's imported into its low-level interface.
 % \begin{Code}
 % \begin{lstlisting}[caption={Common database operations}, label={lst:cryptointerface}]
