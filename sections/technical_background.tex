@@ -44,13 +44,18 @@ var result = DB.find(10);
 \begin{lstlisting}[caption={Asynchronous call}, label={lst:asyncCall}]
 /*
   Request a record with id 10 from a database, continue execute other code,
-  and handle result of the database operation in callback when it has finished
+  and handle result of the database operation in a success handler.
 */
 var request = DB.find(10);
 
 request.onsuccess = function(evt) {
+  // This success handler is executed when the database
+  // operation is finished at a later stage.
   var result = evt.result;
 };
+
+// ... other operations
+
 \end{lstlisting}
 \end{Code}
 
