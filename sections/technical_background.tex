@@ -4,10 +4,10 @@ This chapter gives a theoretical foundation and an overview of the current state
 The development of client-side data storage in HTML5 is an area that has become more stable and supported across browsers and vendors. Web applications can utilize offline storage such as databases (WebSQL and IndexedDB), key-value stores (Web Storage), and even access to the local file system (FileSystem). Under section~\ref{sec:clientstorage}, all of these technologies are presented.
 
 % Communication
-In section~\ref{sec:communication}, technologies regarding data communication are presented. There has been a steady progression in the development of communication protocols available for web applications, such as traditional client-server HTTP requests (used by XMLHttpRequest) and client-server full-duplex TCP connections (available with WebSockets). Peer-to-peer communication has recently become possible on the web with WebRTC. Issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC are explained.
+In section~\ref{sec:communication}, technologies regarding data communication are presented. There has been a steady progression in the development of communication protocols available for web applications, via traditional client-server HTTP requests (used by XMLHttpRequest) and client-server full-duplex TCP connections (available with WebSockets). Peer-to-peer communication has recently become possible on the web with WebRTC. Issues with NAT traversal in peer-to-peer communication and how they are addressed in WebRTC are explained.
 
 % Distributed storage
-Some of the new \emph{cryptocurrencies} can be utilized for distributed storage of data such as cryptographic keys. Namecoin and Ethereum are notable examples. In section~\ref{sec:distributedstorage}, they are presented together with Keybase, a service specialized for this purpose that uses a different approach of verifying identities through links at social media accounts.
+Some of the new \emph{cryptocurrencies} derived from the Bitcoin project can be utilized for distributed storage of data such as cryptographic keys. Namecoin and Ethereum are notable examples. In section~\ref{sec:distributedstorage}, they are presented together with Keybase, a service specialized for this purpose that uses a different approach of verifying identities through links at social media accounts.
 
 % Crypto
 Also of interest, the still unfinalized WebCrypto API~\cite{WebCrypto:Online} has become available in an experimental stage in recent months. In section~\ref{sec:techcryptography}, the basics of public-key cryptography and certificates are explained, together with the Web Cryptography API and the Advanced Encryption Standard as part of a symmetric encryption scheme.
@@ -25,7 +25,7 @@ Client-side storage is how arbitrary data can be persisted on disk, accessible t
   \item[Indexed Database]~\cite{IndexedDB:Online}, or \emph{IndexedDB}, is a NoSQL asynchronous data store.
 \end{description}
 
-All of these technologies offer ways of storing data on the user's hard drive instead of on a remote server. There are two main reasons for this: to make the application available offline and to improve performance (fewer requests to a server). Older storage techniques include cookies, plugin based storage (Java Applets, Flash, Google Gears), or browser-specific features.
+All of these technologies offer ways of storing data on the user's hard drive instead of on a remote server. There are three main reasons for this: to make applications available offline, to improve performance (fewer server requests and local caching of data) and to preserve privacy. Older storage techniques include cookies, plugin based storage (Java Applets, Flash, Google Gears), and browser-specific features.
 
 All four APIs tie data to a single \emph{origin}, a practice referred to as \emph{Same Origin Policy}. An origin is defined by the transfer protocol, the domain, and the port number of a website. Thus every data store is associated with an origin, which implicates certain security aspects: an application in \texttt{http://domain.com/subdir} may retrieve data from \texttt{http://domain.com/subdir/dir} since they have the same origin, but cannot retrieve data from \texttt{https://domain.com:3000} due to the different protocol and port number. This is a layer of protection against \emph{Cross Site Scripting} attacks (XSS). XSS is a general term for when a middleman injects malicious code in a web page viewed by others. Note that the Same Origin Policy in the data storage layer is no prevention against XSS holes in the other parts of the application, since a user might be attacked from malicious scripts injected elsewhere in the application.
 
@@ -43,7 +43,7 @@ var result = DB.find(10);
 
 \begin{lstlisting}[caption={Asynchronous call}, label={lst:asyncCall}]
 /*
-  Request a record with id 10 from a database, continue execute other code,
+  Request a record with id 10 from a database, continue code execution,
   and handle result of the database operation in a success handler.
 */
 var request = DB.find(10);
@@ -62,22 +62,23 @@ request.onsuccess = function(evt) {
 % Mention WebSQL, IndexedDB, etc.
 
 \subsection{Web Storage}
-Web Storage is for persisting data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in listing~\ref{lst:localStorage}. The \texttt{localStorage} object persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
+Web Storage persists data in key-value pairs through a single object in web browsers. The API is as simple as attaching values as strings on properties of the global \texttt{localStorage} object as seen in listing~\ref{lst:localStorage}. The \texttt{localStorage} object persists data through browser sessions, while the \texttt{sessionStorage} object will clear all data when the browser tab or window is closed.
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of Web Storage}, label={lst:localStorage}]
 // Save an item in the local store
-localStorage.foo = "bar";
+localStorage.foo = 'bar';
 // or
-localStorage.setItem("foo", "bar");
+localStorage.setItem('foo', 'bar');
 
+var val;
 // Retrieve item
-var val = localStorage.foo;
+val = localStorage.foo;
 // or
-var val = localStorage.getItem("foo");
+val = localStorage.getItem('foo');
 
 // Delete item
-localStorage.removeItem("foo");
+localStorage.removeItem('foo');
 \end{lstlisting}
 \end{Code}
 
@@ -103,7 +104,7 @@ db.transaction(function(tx) {
 
      for (var i = 0; i < len; i++){
        item = results.rows.item(i);
-       console.log("Name: " + item.first + " " + item.second);
+       console.log('Name: ' + item.first + ' ' + item.second);
      }
   }, null);
 });
@@ -120,17 +121,17 @@ The FileSystem API allows for read and write access of files and folders on the 
    with a size of 2MB and success callback.
 */
 window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
-  console.log("Opened filesystem: " + fs.name);
+  console.log('Opened filesystem: ' + fs.name);
 
   // Create a text file
-  fs.root.getFile("test.txt", { create: true, exclusive: true },
+  fs.root.getFile('test.txt', { create: true, exclusive: true },
   function(fileEntry) {
-    console.log("Created " + fileEntry.name + " in " + fileEntry.fullPath);
-    // => "Created test.txt in /test.txt"
+    console.log('Created ' + fileEntry.name + ' in ' + fileEntry.fullPath);
+    // => 'Created test.txt in /test.txt'
   });
 
   // Reading a file
-  fs.root.getFile("test.txt", {}, function(fileEntry) {
+  fs.root.getFile('test.txt', {}, function(fileEntry) {
 
     // Get a File object and read its contents with FileReader.
     fileEntry.file(function(file) {
@@ -151,11 +152,11 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. Its specification is a Candidate Recommendation by the W3C, as of July 2013~\cite{IndexedDB:Online}.
+IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer, and Opera. Its specification is a Candidate Recommendation by the W3C, as of July 2013~\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
 % Cursors, Object Stores, Indexes
-Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similarly to tables in relational database management systems. An object store can hold \emph{objects} of different types including binary data and JavaScript primitives and objects. Each object has a \emph{key} (either specified by the developer from the objects properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an objects properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
+Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similarly to tables in relational database management systems. An object store can hold \emph{objects} of different types including binary data and JavaScript primitives and objects. Each object has a \emph{key} (either specified by the developer, from the objects' properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
 
 % Async API
 % -----------
@@ -209,17 +210,17 @@ Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB
 
 The database in IndexedDB does not include any kind of bundled encryption or validation, which means that it is the developer's responsibility to sanitize and encrypt sensitive data before insertion into the store. Encryption is vital for the scenario where the contents of the database are compromised, since the attacker would need access to the encryption key in order to read the information in plaintext. Validation is needed in order to prevent malicious content, such as XSS, from being inserted as the data fields in the store (without the user's knowledge). Properly crafted code could otherwise pose a security risk since vulnerable applications could execute it at a later stage.
 
-Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis is the analysis of the to-be inserted data in order to detect malicious material. Dynamic analysis is the analysis of executed programs, and can be done by checking the call from the web application to the database. On success, the database operation s allowed to fully execute~\cite{IndexedDBSecurity:2012:Online}.
+Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static analysis seeks to detect malicious material by reviewing the to-be inserted data. Dynamic analysis evaluates executed programs by checking the call from the web application to the database. On success, the database operation is allowed to fully execute~\cite{IndexedDBSecurity:2012:Online}.
 
 \section{Communication}
 \label{sec:communication}
-In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHttpRequest API, thereby unlocking the creation of dynamic web applications. Since then, we have witnessed the introduction of the WebSocket protocol which enables persistent two-way communication between client and server. These techniques are centered around communication between a client and a server, but with the recent initiative of WebRTC (Web Real-Time Communication) which enables peer-to-peer communication there are some new possibilities in the field. In order to understand how these techniques work, some inherent problems with the infrastructure of the internet will be discussed in the NAT Traversal section.
+In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHttpRequest API, thereby enabling the creation of dynamic web applications. Since then, we have witnessed the introduction of the WebSocket protocol which enables persistent two-way communication between a client and server. These techniques are centered around communication between a client and a server, but with the recent initiative of WebRTC (Web Real-Time Communication) which enables peer-to-peer communication there are some new possibilities in the field. In order to understand how these techniques work, some inherent problems with the infrastructure of the internet will be discussed in the NAT Traversal section.
 
 \subsection{XMLHttpRequest}
 XMLHttpRequest (XHR) is a browser API which enables data to be fetched asynchronously from servers. This means that a web page can retrieve new updates from the server without a full page reload. The browser is responsible for the construction of HTTP requests according to parameters passed to the API. In the use case where real-time updates from the server are desired, a common technique is to poll the server at regular intervals as the possibilities for streaming are limited. Although the name of the API suggests that data transfers are limited to XML, this is not the case and the name is nothing more than a remnant of the past~\cite{XHR:Online}. Today it is much more common to transport data in the form of JavaScript-serialized objects, also known as \emph{JSON} (JavaScript Object Notation).
 
 \subsection{WebSocket}
-WebSocket (RFC 6455)~\cite{RFC6455:Online} is a protocol which was standardized in 2011. The protocol allows two way communication between a server and a client through persistent connections. The protocol runs on top of the TCP protocol and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which eases server workload.
+WebSocket (RFC 6455)~\cite{RFC6455:Online} is a protocol that was standardized in 2011. The protocol allows two way communication between a server and a client through persistent connections. The protocol runs on top of the TCP protocol and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which eases server workload.
 
 \subsection{NAT Traversal}
 \label{subsec:nattraversal}
@@ -236,7 +237,7 @@ A NAT is responsible for maintaining a table of entries that map an internal IP 
 \label{fig:NAT}
 \end{figure}
 
-The presence of NATs can pose a problem to applications leveraging the UDP protocol for transportation of data and network communication in general. The different techniques that can be used to resolve problems caused by NATs are often referred to as \emph{NAT Traversal} techniques.
+The presence of NATs can pose problems to applications leveraging the UDP protocol for transportation of data and network communication in general. The different techniques that can be used to resolve problems caused by NATs are often referred to as \emph{NAT Traversal} techniques.
 
 The underlying issue with the UDP protocol is the absence of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
 
