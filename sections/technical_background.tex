@@ -241,9 +241,9 @@ The presence of NATs can pose problems to applications leveraging the UDP protoc
 
 The underlying issue with the UDP protocol is the absence of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
 
-A technique commonly used to solve the problem with UDP entries expiring and being dropped is to utilize keepalives at regular intervals. This is is commonly referred to as \emph{UDP hole punching}~\cite{UDPHolePunching:Online}.
+A technique commonly used to solve the problem with UDP entries expiring and being dropped is to utilize keepalives at regular intervals. This is commonly referred to as \emph{UDP hole punching}~\cite{UDPHolePunching:Online}.
 
-Another problem is that internal hosts know their internal IP address but not their public one. If a host runs an application that communicates the IP address as a part of the payload to hosts outside of the private network, there would obviously be a mismatch if the internal address is chosen. Therefore it is common to utilize a protocol called STUN (Session Traversal Utilities for NAT)~\cite{RFC5389:Online}. STUN enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}).
+Another problem is that internal hosts know their internal IP address but not their public one. If a host runs an application that communicates the IP address as a part of the payload to hosts outside of the private network, there would obviously be a mismatch if the internal address is chosen. it is therefore common to utilize a protocol called STUN (Session Traversal Utilities for NAT)~\cite{RFC5389:Online}. STUN enables hosts to obtain their public IP addresses with the help of an external STUN server (See figure~\ref{fig:WebRTC - STUN}).
 
 \begin{figure}[htp]
 \centering
@@ -253,7 +253,7 @@ Another problem is that internal hosts know their internal IP address but not th
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-These techniques are not always adequate because of the fact that STUN does not work with all types of NATs. In some cases, UDP traffic might be blocked by a firewall. This is where the TURN (Traversal Using Relays around NAT) protocol~\cite{RFC5766:Online} can be leveraged.  TURN establish a TCP connection with a relay server when UDP has failed. The relay server is used to tunnel data to the other host, which means that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}).
+The mentioned techniques are not always adequate because of the fact that STUN does not work with all types of NATs. In some cases, UDP traffic might be blocked by a firewall. To solve this, another protocol called TURN (Traversal Using Relays around NAT)~\cite{RFC5766:Online} is used. TURN establishes a TCP connection with a relay server if UDP fails. The relay server is used to tunnel data through to the other host, meaning that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}).
 
 \begin{figure}[htp]
 \centering
