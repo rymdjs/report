@@ -28,7 +28,7 @@ The Rymd library is the only truly implementation-agnostic module and should be 
   \item The structure of resources and metadata
   \item The communication and authentication flow
   \item The \emph{resource store}: How resources are saved and identified independent of implementation
-  \item Management of chryptographic keys
+  \item Management of cryptographic keys
   \item Session management
 \end{itemize}
 
@@ -225,7 +225,7 @@ Commercial RSA certificates are more widely deployed compared to DSA certificate
 \subsection{Libraries}
 Until the WebCrypto Key Discovery API is available, the RymdCrypto module generates pseudo-random keys through the external library \emph{bignumber-jt}\footnote{https://www.npmjs.org/package/bignumber-jt}. To do low-level key generation directly in JavaScript is bad practice and is performed in order to make Rymd runnable until a more solid solution is available.
 
-Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys. In order to use IndexedDB for the keys they need to be parsed to certificates. This is also handled by bignumber-jt. All certificates have a static key size where asymmetric keys are of $1024bits$ and symmetric keys are of $256bits$; none are explicitly generated via the API.
+Furthermore, IndexedDB is used as makeshift storage since the WebCrypto API lacks functionality for storing keys between sessions, or even exporting private keys. In order to use IndexedDB for the keys they need to be parsed to certificates. This is also handled by bignumber-jt. All certificates have a static key size where asymmetric keys are of 1024 bits and symmetric keys are of 256 bits. Key parsing and generation is currently handled by bignumber-jt.
 
 Hashing is handled by the external library \emph{crypto-js}\footnote{https://github.com/evanvosberg/crypto-js}.
 

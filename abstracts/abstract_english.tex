@@ -10,7 +10,7 @@
 
 This thesis describes a cryptographically secured decentralized peer-to-peer file sharing system, bundled as a JavaScript developer library called \emph{Rymd}. The thesis also includes an evaluation of current web technologies to determine if they are sufficient to implement such a system.
 
-The problem domain includes how to make the system secure, decentralized and modular using web technologies. Such a system would give control of traditonally centralized services, such as messaging or storage and sharing of files, back to users. By making the system highly modular, it achieves satisfying results in reliability and technical agnosticism with regards to underlying implementations.
+The problem domain includes how to make the system secure, decentralized and modular using web technologies. Such a system would give control of traditionally centralized services, such as messaging or storage and sharing of files, back to users. By making the system highly modular, it achieves satisfying results in reliability and technical agnosticism with regards to underlying implementations.
 
 Default implementation modules of the core functionality in Rymd are given. Alongside Rymd a web application, \emph{Shuttle}, that injects these modules into Rymd is developed. IndexedDB is used for persistent data and key storage while peer-to-peer communication is achieved through WebRTC. Common cryptographic services such as encryption, decryption, signing and more are done through the Web Cryptography API. The Namecoin blockchain is used for storing user identities mapped to their public encryption keys, which in turn are used to verify peer identities.
 
