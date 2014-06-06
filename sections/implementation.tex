@@ -210,6 +210,40 @@ In short, the RymdCrypto module exposes functions handling:
   \item[Signing and verification] For RSA
   \item[Hashing] Using SHA-256
 \end{description}
+
+\begin{Code}
+\begin{lstlisting}[caption={Public methods of \texttt{RymdCrypto}}, label={lst:rymdnode}]
+// Method signatures on the form <name>: [(<parameter>:<type> ...)]:<Return type>
+
+// Generates symmetric AES key 
+generateSymmetric: ():Promise(key)
+
+// Generates asymmetric RSA key pair 
+generateKeyPair: ():Promise(privateKey, publicKey)
+
+// import key to WebCrypto, type can be public, private, or secret
+importKey: (type:String, key:Uint8Array):Promise(key)
+
+// export key
+exportKey: (WebCrypto::Key key):Promise(key)
+
+// decrypt data with key
+decryptData: (WebCrypto::Key key, Uint8Array data):Promise(data)
+
+// encrypt data with key
+encryptData: (WebCrypto::Key key, Uint8Array data):Promise(data) 
+
+// signing for RSA? -> TODO not sure, what does it return etc?
+signKey: (WebCrypto::Key key, Uint8Array data):Promise()
+
+// verification for RSA?
+verifyKey: (WebCrypto::Key key, Uint8Array privateKey, Uint8Array publicKey):Promise()
+
+// hashing
+hashData: (data):Promise
+
+\end{lstlisting}
+\end{Code}
 % before it's imported into its low-level interface.
 % \begin{Code}
 % \begin{lstlisting}[caption={Common database operations}, label={lst:cryptointerface}]
