@@ -221,7 +221,7 @@ exportKey: (WebCrypto::Key key):Promise(key)
 
 // decrypt data with key
 decryptData: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array data)
-decryptData: (WebCrypto::Key key, data):Promise(Uint8Array data)
+decryptBlob: (WebCrypto::Key key, Blob blob):Promise(Uint8Array data)
 
 // encrypt data with key
 encryptData: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array data) 
@@ -229,7 +229,6 @@ encryptBlob: (WebCrypto::Key key, Blob blob):Promise(Uint8Array data)
 
 // signing for RSA? -> TODO not sure, what does it return etc?
 signKey: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array signature)
-signBlob: (WebCrypto::Key key, Uint8Array data):Promise(Uint8Array signature)
 
 // verification for RSA?
 verifyKey: (WebCrypto::Key key, Uint8Array data, Uint8Array signature):Promise(Boolean)
