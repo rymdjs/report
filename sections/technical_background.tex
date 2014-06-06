@@ -219,7 +219,7 @@ In the beginning of the World Wide Web's history, web browsers performed full pa
 XMLHttpRequest (XHR) is a browser API which enables data to be fetched asynchronously from servers. This means that a web page can retrieve new updates from the server without a full page reload. The browser is responsible for the construction of HTTP requests according to parameters passed to the API. In the use case where real-time updates from the server are desired, a common technique is to poll the server at regular intervals as the possibilities for streaming are limited. Although the name of the API suggests that data transfers are limited to XML, this is not the case and the name is nothing more than a remnant of the past~\cite{XHR:Online}. Today it is much more common to transport data in the form of JavaScript-serialized objects, also known as \emph{JSON} (JavaScript Object Notation).
 
 \subsection{WebSocket}
-WebSocket (RFC 6455)~\cite{RFC6455:Online} is a protocol which was standardized in 2011. The protocol allows two way communication between a server and a client through persistent connections. The protocol runs on top of the TCP protocol and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which eases server workload.
+WebSocket (RFC 6455)~\cite{RFC6455:Online} is a protocol that was standardized in 2011. The protocol allows two way communication between a server and a client through persistent connections. The protocol runs on top of the TCP protocol and is independent from the HTTP protocol. The implications of this is that the server does not need to open a new TCP connection for every incoming message as in XHR, and the high overhead from HTTP is eliminated which eases server workload.
 
 \subsection{NAT Traversal}
 \label{subsec:nattraversal}
@@ -236,7 +236,7 @@ A NAT is responsible for maintaining a table of entries that map an internal IP 
 \label{fig:NAT}
 \end{figure}
 
-The presence of NATs can pose a problem to applications leveraging the UDP protocol for transportation of data and network communication in general. The different techniques that can be used to resolve problems caused by NATs are often referred to as \emph{NAT Traversal} techniques.
+The presence of NATs can pose problems to applications leveraging the UDP protocol for transportation of data and network communication in general. The different techniques that can be used to resolve problems caused by NATs are often referred to as \emph{NAT Traversal} techniques.
 
 The underlying issue with the UDP protocol is the absense of state, as opposed to the TCP protocol. The statelessness of the UDP protocol makes it difficult for a NAT to determine when a table entry is no longer relevant and should be dropped, which leads to the fact that UDP routing entries are expired based on time. If an entry is predeterminedly expired, it will cause inbound packets to be dropped since they cannot reach the source. In the case of TCP, which constitutes a well defined state, it is inherently simple to determine when an entry should be dropped.
 
