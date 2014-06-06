@@ -41,7 +41,7 @@ The conclusion was to use IndexedDB for persisted resource storage. It was chose
 
 \section{Peer-to-peer communication}
 
-Even though there are two projects which seeks to enable peer-to-peer communication in the browser - WebRTC and CU-RTC-Web - the only viable alternative for the time being is WebRTC. The project is under development by the organizations W3C and IETF and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF and is not implemented in any browsers.
+Even though there are two projects which seeks to enable peer-to-peer communication in the browser – WebRTC and CU-RTC-Web – the only viable alternative for the time being is WebRTC. The project is under development by the organizations W3C and IETF and is supported by the current versions of Chrome, Firefox and Opera. CU-RTC-Web on the other hand is not supported by either W3C or IETF and is not implemented in any browsers.
 
 For the project's intent of file sharing, the RTCPeerConnection and RTCDataChannel API were found to be most relevant. By using these APIs in conjunction arbitrary data can be sent peer-to-peer. Relating back to the project goals regarding privacy and security it is also convenient that data transfers are encrypted according to the DTLS protocol.
 
