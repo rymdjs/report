@@ -1,11 +1,11 @@
-With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a client-side web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}). Links to the source code for all modules are available in chapter~\ref{chap:source}.
+With the background of the high-level foundations presented in chapter~\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a client-side web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}). Links to the source code for all modules are available in appendix~\ref{chap:source}.
 
 In section~\ref{sec:modules} the overall areas of responsibility for the system modules were defined. This resulted in the following concrete modules described in this chapter:
 
 \begin{description}
   \item[Rymd] The business logic for the system. Has references to the other modules through dependency injection.
   \item[Shuttle] The front-end prototype – a client-side web application.
-  \item[DHT Client] Module which looks up records in the Namecoin blockchain through a NodeJS web service (see~\ref{chap:source}).
+  \item[DHT Client] Module which looks up records in the Namecoin blockchain through a NodeJS web service (see appendix~\ref{chap:source}).
   \item[RymdCrypto] Module for cryptography.
   \item[IndexedDBStore] Module for data and key storage.
   \item[PeerJS Connection] Module for communication with the PeerJS service.

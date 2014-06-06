@@ -253,7 +253,7 @@ Another problem is that internal hosts know their internal IP address but not th
 \label{fig:WebRTC - STUN}
 \end{figure}
 
-The mentioned techniques are not always adequate because of the fact that STUN does not work with all types of NATs. In some cases, UDP traffic might be blocked by a firewall. To solve this, another protocol called TURN (Traversal Using Relays around NAT)~\cite{RFC5766:Online} is used. TURN establishes a TCP connection with a relay server if UDP fails. The relay server is used to tunnel data through to the other host, meaning that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}).
+STUN does not work with all types of NATs however, meaning that the mentioned techniques are not always adequate. UDP traffic might be blocked by a firewall for instance. To solve such problems another protocol called TURN (Traversal Using Relays around NAT)~\cite{RFC5766:Online} is commonly used. TURN establishes a TCP connection with a relay server if UDP fails. The relay server is used to tunnel data through to the other host, meaning that there is no longer a direct peer-to-peer connection (See figure~\ref{fig:WebRTC - TURN}).
 
 \begin{figure}[htp]
 \centering
