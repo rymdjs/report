@@ -151,11 +151,11 @@ window.requestFileSystem(window.PERSISTENT, 2 * 1024 * 1024, function(fs) {
 
 \subsection{IndexedDB}
 \label{sec:indexeddb}
-IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer and Opera. Its specification is a Candidate Recommendation by the W3C, as of July 2013~\cite{IndexedDB:Online}.
+IndexedDB is a transactional indexed client-side database capable of storing different types of data structures with an asynchronous API. IndexedDB is actively developed and implemented in the latest versions of Mozilla Firefox, Google Chrome, Microsoft Internet Explorer, and Opera. Its specification is a Candidate Recommendation by the W3C, as of July 2013~\cite{IndexedDB:Online}.
 
 \subsubsection{Basic structure}
 % Cursors, Object Stores, Indexes
-Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similarly to tables in relational database management systems. An object store can hold \emph{objects} of different types including binary data and JavaScript primitives and objects. Each object has a \emph{key} (either specified by the developer from the objects properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an objects properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
+Due to IndexedDB's object-oriented nature, a database includes a set of \emph{object stores}, which act similarly to tables in relational database management systems. An object store can hold \emph{objects} of different types including binary data and JavaScript primitives and objects. Each object has a \emph{key} (either specified by the developer, from the objects' properties, or automatically generated and managed by the database) that is used for indexing and retrieving records. One or several \emph{indexes} can be created on a store from an object's properties for quick querying. A \emph{cursor} is used to iterate on the resulting set of objects from a query on the store.
 
 % Async API
 % -----------
