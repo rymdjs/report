@@ -221,8 +221,8 @@ generateSymmetric: ():Promise(key)
 // Generates asymmetric RSA key pair 
 generateKeyPair: ():Promise(privateKey, publicKey)
 
-// import key to WebCrypto, type can be public, private, or secret
-importKey: (type:String, key:Uint8Array):Promise(key)
+// Import key for use with WebCrypto 
+importKey: (type:String, purpose:String, key:Uint8Array):Promise(key)
 
 // export key
 exportKey: (WebCrypto::Key key):Promise(key)
