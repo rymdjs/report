@@ -263,18 +263,18 @@ The main task for the data storage module was to abstract away the low-level met
 
 \begin{Code}
 \begin{lstlisting}[caption={Common database operations}, label={lst:indexeddbapi}]
-var IndexedDbStore = require("indexeddbstore")
+var IndexedDbStore = require('indexeddbstore')
 
-var Store = new IndexedDbStore("myStore")
+var Store = new IndexedDbStore('myStore')
 
 // Fetch all records as an array
 Store.all().then(function(records) { ... })
 
 // Create a record
-Store.create("A record").then(function(record){ ... })
+Store.create('A record').then(function(record){ ... })
 
 // Insert a record
-Store.save("A record").then(function(guid){ ... })
+Store.save('A record').then(function(guid){ ... })
 
 // Fetch a record by GUID
 Store.get(guid).then(function(record) { ... })
