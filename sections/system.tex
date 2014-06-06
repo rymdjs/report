@@ -135,10 +135,9 @@ The items shown below represent the general high-level responsibilities for each
 
 \begin{description}
   \item [Cryptography] Handles encryption, decryption, signing and verification as well as key generation and hashing.
-  \item [Peer-to-peer communication] Responsible for setting up initial contact with another peer and maintaining the connection. It also deals with securing this connection through end-to-end encryption.
+  \item [Peer-to-peer communication] Responsible for setting up initial contact with another peer, maintaining the connection and transporting data. It also deals with securing this connection through end-to-end encryption.
   \item [DHT interaction] Used to interface with a Distributed Hash Table in order to retrieve peers' public key and ID.
-  \item [Data storage] Deals with persisting file data and metadata (as described in section~\ref{sec:creationofresources}) on disk, and this module also provides means of accessing and manipulating the data.
-  \item [Key storage] Solves storing and providing access to cryptographic keys.
+  \item [Data storage] Deals with persisting data (as described in section~\ref{sec:creationofresources}) to disk. Different implementations of this module can be used for metadata, resource data and key storage.
 \end{description}
 
-In reality, no distinction was made between the data storage module and the key storage module. Furthermore, it would have been appropriate to split the data storage module into two parts, one for the actual file data and one for the metadata. As it stands, metadata could not be stored if a storage solution that stores data directly on disk would be injected.
+In the current implementation, no distinction was made between the data storage module for resource data and metadata. It would have been appropriate to make these into separate concerns, for example to allow storage of resource data on the local file system and metadata in IndexedDB. Furthermore, the current Shuttle implementation uses the same store for keys and resources.

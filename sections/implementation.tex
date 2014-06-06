@@ -1,11 +1,11 @@
-With the background of the high-level foundations presented in chapter\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a NodeJS server and Shuttle runs as a client-side web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}). Links to the source code for all modules are available in appendice~\ref{chap:source}.
+With the background of the high-level foundations presented in chapter~\ref{chap:design}, this chapter details the underlying implementation of the modules of the whole system. All source code has been written in JavaScript. \texttt{DHT} is run as a Node.js server and \texttt{Shuttle} runs as a client-side web application. Rymd is the platform independent core module containing the business logic of the system. All other modules contain the specific implementations for each problem area (see figure~\ref{fig:architecture}). Links to the source code for all modules are available in appendix~\ref{chap:source}.
 
 In section~\ref{sec:modules} the overall areas of responsibility for the system modules were defined. This resulted in the following concrete modules described in this chapter:
 
 \begin{description}
   \item[Rymd] The business logic for the system. Has references to the other modules through dependency injection.
   \item[Shuttle] The front-end prototype – a client-side web application.
-  \item[DHT Client] Module which looks up records in the Namecoin blockchain through a NodeJS web service (see~\ref{chap:source}).
+  \item[DHT Client] Module which looks up records in the Namecoin blockchain through a NodeJS web service (see appendix~\ref{chap:source}).
   \item[RymdCrypto] Module for cryptography.
   \item[IndexedDBStore] Module for data and key storage.
   \item[PeerJS Connection] Module for communication with the PeerJS service.
@@ -195,22 +195,22 @@ Commercial RSA certificates are more widely deployed compared to DSA certificate
 \begin{Code}
 \begin{lstlisting}[caption={Algorithms implemented}, label={lst:cryptoalgorithms}]
   var generationAlgorithmSign =  {
-    name: "RSASSA-PKCS1-v1_5",
+    name: 'RSASSA-PKCS1-v1_5',
     modulusLength: 2048,
     publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
     hash: {
-      name: "SHA-256"
+      name: 'SHA-256'
     }
   },
 
   generationAlgorithmEncrypt =  {
-    name: "RSAES-PKCS1-v1_5",
+    name: 'RSAES-PKCS1-v1_5',
     modulusLength: 2048,
     publicExponent: new Uint8Array([0x01, 0x00, 0x01])
   },
 
   aesAlgorithmKeyGen = {
-    name: "AES-CBC",
+    name: 'AES-CBC',
     length: 256
   },
 
@@ -263,18 +263,18 @@ The main task for the data storage module was to abstract away the low-level met
 
 \begin{Code}
 \begin{lstlisting}[caption={Common database operations}, label={lst:indexeddbapi}]
-var IndexedDbStore = require("indexeddbstore")
+var IndexedDbStore = require('indexeddbstore')
 
-var Store = new IndexedDbStore("myStore")
+var Store = new IndexedDbStore('myStore')
 
 // Fetch all records as an array
 Store.all().then(function(records) { ... })
 
 // Create a record
-Store.create("A record").then(function(record){ ... })
+Store.create('A record').then(function(record){ ... })
 
 // Insert a record
-Store.save("A record").then(function(guid){ ... })
+Store.save('A record').then(function(guid){ ... })
 
 // Fetch a record by GUID
 Store.get(guid).then(function(record) { ... })
@@ -310,7 +310,7 @@ To ensure the integrity of users it is vital that the communication with the Pee
 \section{Testing}
 \label{sec:testing}
 
-Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see section~\ref{chap:libraries} for links to external libraries used).
+Automatic unit tests have been implemented where possible. Thanks to the use of isolated modules test suites were able to be short and concise. Mocha was used as test runner, with Chai as assertion library (please see appendice~\ref{chap:libraries} for links to external libraries used). Listing~\ref{lst:testsuite} shows an excerpt from the test suite, where simple operations are tested and their results are verified.
 
 \begin{Code}
 \begin{lstlisting}[caption={Sample test suite}, label={lst:testsuite}]
@@ -319,31 +319,31 @@ describe("IndexedDBStore", function() {
   var db;
 
   beforeEach(function() {
-		db = new IndexedDBStore({
-			dbName: "test"
-		});
-	});
+  	db = new IndexedDBStore({
+  		dbName: "test"
+  	});
+  });
 
   it("should have a database name", function() {
-		db.name.should.equal("test");
-	});
+  	db.name.should.equal("test");
+  });
 
   it("should save a record and return an id", function() {
-		return db.save({foo: "bar"})
-		.then(function(id) {
-			id.should.be.a("String");
-		});
-	});
+  	return db.save({foo: "bar"})
+  	.then(function(id) {
+  		id.should.be.a("String");
+  	});
+  });
 
   it("should retrieve a given record", function() {
-		return db.save({foo: "bar"})
+  	return db.save({foo: "bar"})
       .then(db.get.bind(db))
       .then(function(record) {
 
-			record.should.be.an("Object");
-			record.data.foo.should.equal("bar");
-		});
-	});
+  		record.should.be.an("Object");
+  		record.data.foo.should.equal("bar");
+  	});
+  });
 });
 \end{lstlisting}
 \end{Code}
