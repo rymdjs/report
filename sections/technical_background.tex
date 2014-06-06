@@ -165,31 +165,31 @@ The asynchronous API has patterns that might be daunting and seem complex to dev
 
 \begin{Code}
 \begin{lstlisting}[caption={Use of IndexedDB}, label={lst:indexeddb_use}]
-var request = indexedDB.open("testdatabase");
+var request = indexedDB.open('testdatabase');
 
 // On database version migrations
 request.onupgradeneeded = function(event) {
   var db = event.target.result;
 
   // Create an objectStore for this database
-  var objectStore = db.createObjectStore("store");
+  var objectStore = db.createObjectStore('store');
 };
 
 // When the database is ready to use
 request.onsuccess = function(event) {
   var db = request.result;
 
-  // Insert "foo" in the store
-  var insertTransaction = db.transaction(["store"], "readwrite").objectStore("store").put("Foo");
+  // Insert 'foo' in the store
+  var insertTransaction = db.transaction(['store'], 'readwrite').objectStore('store').put('Foo');
 
   insertTransaction.onsuccess = function(evt) {
-    console.log("Inserted 'foo'");
+    console.log('Inserted 'foo'');
   };
 
-  // Read value with key "key" from the store
-  var readTransaction = db.transaction(["store"], "read").objectStore("store").get("key");
+  // Read value with key 'key' from the store
+  var readTransaction = db.transaction(['store'], 'read').objectStore('store').get('key');
   readTransaction.onsuccess = function(evt) {
-    console.log("Found " + evt.target.result);
+    console.log('Found ' + evt.target.result);
   };
 };
 \end{lstlisting}
@@ -197,9 +197,9 @@ request.onsuccess = function(event) {
 
 \subsubsection{Security and reliability}
 \label{subsec:security}
-IndexedDB is built on a transactional model. This means that all commands run inside a transaction context. Transactions have a certain lifetime and cannot be used after they expire. This transactional model is especially useful for when several instances of a client application are using the same database and issuing commands: Without transactions, concurrency problems and other collisions might occur with data loss as a result. Transactions are able to abort and roll back the database to the state it was in before the transaction was started, should an error occur.
+IndexedDB is built on a transactional model. This means that all commands run inside a transaction context. Transactions have a certain lifetime and cannot be used after they expire. This transactional model is especially useful when several instances of an application are using the same database and issuing commands simultaneously: Without transactions, concurrency problems and other collisions might occur with data loss as a result. Transactions are able to abort and roll back the database to the state it was in before the transaction was started, should an error occur.
 
-Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB driven application in their \emph{An Investigation into Possible Attacks on HTML5 IndexedDB and their Prevention}~\cite{IndexedDBSecurity:2012:Online}:
+Kimak, Ellman and Laing highlight four important aspects of securing a IndexedDB driven application in \emph{An Investigation into Possible Attacks on HTML5 IndexedDB and their Prevention}~\cite{IndexedDBSecurity:2012:Online}:
 
 \begin{itemize}
   \item Client-side data encryption
@@ -214,7 +214,7 @@ Code analysis is divided into \emph{static} and \emph{dynamic} analysis. Static 
 
 \section{Communication}
 \label{sec:communication}
-In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHttpRequest API, thereby enabling the creation of dynamic web applications. Since then, we have witnessed the introduction of the WebSocket protocol which enables persistent two-way communication between a client and server. These techniques are centered around communication between a client and a server, but with the recent initiative of WebRTC (Web Real-Time Communication) which enables peer-to-peer communication there are some new possibilities in the field. In order to understand how these techniques work, some inherent problems with the infrastructure of the internet will be discussed in the NAT Traversal section.
+In the beginning of the World Wide Web's history, web browsers performed full page loads in order to render web pages. Further down the road, techniques such as AJAX (Asynchronous JavaScript and XML) enabled data to be fetched asynchronously from servers through the XMLHttpRequest API, thereby enabling the creation of dynamic web applications. Since then, the advent of the WebSocket protocol has enabled persistent two-way communication between a client and server. These techniques are centered around communication between a client and a server. With the recent initiative of WebRTC (Web Real-Time Communication), which enables peer-to-peer communication, there are new possibilities in the field. In order to understand how these technologies work, some inherent problems with the infrastructure of the internet will be discussed in section~\ref{subsec:nattraversal}.
 
 \subsection{XMLHttpRequest}
 XMLHttpRequest (XHR) is a browser API which enables data to be fetched asynchronously from servers. This means that a web page can retrieve new updates from the server without a full page reload. The browser is responsible for the construction of HTTP requests according to parameters passed to the API. In the use case where real-time updates from the server are desired, a common technique is to poll the server at regular intervals as the possibilities for streaming are limited. Although the name of the API suggests that data transfers are limited to XML, this is not the case and the name is nothing more than a remnant of the past~\cite{XHR:Online}. Today it is much more common to transport data in the form of JavaScript-serialized objects, also known as \emph{JSON} (JavaScript Object Notation).
@@ -265,9 +265,9 @@ These techniques are not always adequate because of the fact that STUN does not 
 
 \subsection{WebRTC}
 
-Up until recently, browsers have lacked support for direct peer-to-peer communication. Then in 2011 Google released a project called WebRTC, with the purpose of enabling real-time voice and video in the browser~\cite{WebRTCMemo:Online}. Since then, WebRTC has evolved to enable more general real-time data communication between browsers~\cite{WebRTC:Online}. It has become usable for arbitrary data streams in major browsers in 2014~\cite{WebRTCChrome:Online}~\cite{WebRTCFirefox:Online}.
+Up until recently, browsers lacked support for direct peer-to-peer communication. In 2011, however, Google released a project called WebRTC, with the purpose to enabling real-time voice and video streams in the browser~\cite{WebRTCMemo:Online}. Since then, WebRTC has evolved to enable more general real-time data communication between browsers~\cite{WebRTC:Online}. The technology became usable for arbitrary data streams in major browsers in 2014~\cite{WebRTCChrome:Online}~\cite{WebRTCFirefox:Online}.
 
-Since the announcement of WebRTC, the organizations W3C and IETF have worked together on standardizing protocols and drafting APIs. The major browser vendors Google, Mozilla and Opera support the project~\cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft supports the concept of WebRTC and contributes to the W3C WebRTC working group, it does not support Google's (or nowadays, W3C's and IETF's) version of it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft doesn't want to support the new technology until it has become a standard and does not fully agree on some constraints placed on it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft states that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft's answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which attempts to address these issues.
+Since the announcement of WebRTC, the organizations W3C and IETF worked together on standardizing protocols and drafting APIs. The major browser vendors Google, Mozilla, and Opera support the project~\cite{WebRTCAndMicrosoft:2012:Online}. While Microsoft supports the concept of WebRTC and contributes to the W3C WebRTC working group, the company does not support Google's (or nowadays, W3C's and IETF's) version of it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft does not want to support the new technology until it has become a standard and does not fully agree on some constraints placed on it~\cite{WebRTCAndMicrosoft:2012:Online}. Microsoft states that one of their issues with the current WebRTC version is that it has predetermined paths for choosing codecs and ways of sending media over the network – sort of a black box. This hinders application developers who want to optimize to suit their own needs. Microsoft's answer to this is their own CU-RTC-WEB (Customizable, Ubiquitous Real Time Communication over the Web) which attempts to address these issues.
 
 WebRTC's functionality is abstracted into three different APIs: \emph{MediaStream}, \emph{RTCPeerConnection} and \emph{RTCDataChannel}~\cite{WebRTCBasics:2012:Online}. MediaStream, or \emph{getUserMedia}, handles synchronized media streams, i.e. synchronized video and sound from a computer's camera and microphone. RTCPeerConnection manages reliable and efficient communication of the data streams, it utilizes techniques such as \emph{jitter buffering} and \emph{echo cancellation} to ensure a high standard even in unstable networks. For the intent of file sharing, the RTCDataChannel API is the most relevant.
 
